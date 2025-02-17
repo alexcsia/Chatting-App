@@ -1,20 +1,24 @@
 import Fastify, { FastifyInstance } from "fastify";
-import path from "path";
-import staticPlugin from "@fastify/static";
 import userRoutes from "./api/routes/register";
 import { connectMongoDB } from "./database";
 
 import dotenv from "dotenv";
+const PORT = parseInt(process.env.PORT || "3000");
+
+const fastify: FastifyInstance = Fastify({ logger: false });
 
 if (process.env.NODE_ENV !== "production") {
   dotenv.config();
 }
 
-const PORT = parseInt(process.env.PORT || "3000");
-const fastify: FastifyInstance = Fastify({ logger: false });
+fastify.register(require(`@fastify/cors`), {
+  origin: `http://localhost:8080`,
+  methods: [`GET`, `POST`],
+  credentials: true,
+});
 
-fastify.register(staticPlugin, {
-  root: path.join(__dirname, "../../frontend/dist"),
+fastify.get("/api/users", async (request, reply) => {
+  return { users: ["Alice", "Bob", "Charlie"] };
 });
 
 fastify.register(userRoutes);

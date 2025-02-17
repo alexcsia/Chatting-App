@@ -25,7 +25,7 @@ export default {
       this.response = null; // Reset response
 
       try {
-        const result = await axios.get("http://localhost:3000/");
+        const result = await axios.get("/api/users");
         this.response = result.data; // Store the response data
       } catch (err) {
         this.error = err.message || "An error occurred"; // Handle errors
