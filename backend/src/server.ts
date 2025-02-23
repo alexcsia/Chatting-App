@@ -1,6 +1,6 @@
 import Fastify, { FastifyInstance } from "fastify";
-import userRoutes from "./api/routes/register";
 import { connectMongoDB } from "./database";
+import { authRoutes } from "./api/routes/index";
 
 import dotenv from "dotenv";
 const PORT = parseInt(process.env.PORT || "3000");
@@ -21,7 +21,8 @@ fastify.get("/api/users", async (request, reply) => {
   return { users: ["Alice", "Bob", "Charlie"] };
 });
 
-fastify.register(userRoutes);
+fastify.register(authRoutes, { prefix: "/auth" });
+
 const start = async () => {
   try {
     await fastify.listen({ port: PORT });
