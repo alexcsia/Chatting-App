@@ -1,5 +1,4 @@
 import validators from "../../helpers/validators";
-import { User } from "../../models/user";
 
 export const registerUser = async (
   username: string,
@@ -9,9 +8,4 @@ export const registerUser = async (
   validators.validateUsername(username);
   validators.validateEmail(email);
   validators.validatePassword(password);
-};
-
-export const isEmailUnique = async (email: string) => {
-  const existingUser = await User.findOne({ email: email });
-  return !existingUser;
 };
