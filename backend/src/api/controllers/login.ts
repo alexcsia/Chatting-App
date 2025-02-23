@@ -1,4 +1,5 @@
 import { FastifyRequest, FastifyReply } from "fastify";
+import { loginService } from "../../services/auth/login.service";
 
 interface loginRequest {
   email: string;
@@ -11,5 +12,5 @@ export const loginUser = async (
 ) => {
   const { email, password } = req.body;
 
-  // loginUser(email, password)
+  loginService(email, password);
 };
