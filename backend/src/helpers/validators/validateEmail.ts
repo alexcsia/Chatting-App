@@ -1,5 +1,5 @@
 import validator from "validator";
-import { isEmailUnique } from "../../services/user/register.user";
+import { getUserByEmail } from "../../repositories/userRepo";
 import { ApiError } from "../../api/errors/ApiError";
 
 export const validateEmail = async (email: string): Promise<string> => {
@@ -16,8 +16,8 @@ export const validateEmail = async (email: string): Promise<string> => {
   const normalizedEmail =
     validator.normalizeEmail(trimmedEmail) || trimmedEmail;
 
-  const isUnique = await isEmailUnique(normalizedEmail);
-  if (!isUnique) throw new ApiError(400, "Email is already in use");
+  const foundUser = await getUserByEmail(normalizedEmail);
+  if (foundUser) throw new ApiError(400, "Email is already in use");
 
   return normalizedEmail;
 };
