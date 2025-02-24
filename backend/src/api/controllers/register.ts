@@ -1,9 +1,11 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { ApiError } from "../errors/ApiError";
+import authServices from "../../services/authServices";
 
 interface registrationRequest {
   username: string;
   email: string;
+  password: string;
 }
 
 export const registerController = async (
@@ -11,9 +13,10 @@ export const registerController = async (
   reply: FastifyReply
 ) => {
   try {
-    const { username, email } = request.body;
+    const { username, email, password } = request.body;
 
-    console.log(`${username}, ${email}`);
+    authServices.registerUser(username, email, password);
+
     reply.send({ message: "received " });
   } catch (error: unknown) {
     if (error instanceof ApiError) {
