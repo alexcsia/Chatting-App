@@ -6,7 +6,7 @@ interface loginRequest {
   password: string;
 }
 
-export const loginUser = async (
+export const loginController = async (
   req: FastifyRequest<{ Body: loginRequest }>,
   reply: FastifyReply
 ) => {

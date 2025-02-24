@@ -6,7 +6,7 @@ interface registrationRequest {
   email: string;
 }
 
-export const registerUser = async (
+export const registerController = async (
   request: FastifyRequest<{ Body: registrationRequest }>,
   reply: FastifyReply
 ) => {
