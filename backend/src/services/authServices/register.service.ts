@@ -1,3 +1,4 @@
+import { hashPassword } from "../../helpers/passwordUtils";
 import validators from "../../helpers/validators";
 import { createUser } from "../../repositories/userRepo";
 
@@ -10,7 +11,8 @@ export const registerUser = async (
   validators.validateEmail(email);
   validators.validatePassword(password);
 
+  const hashedPassword = await hashPassword(password);
   // add sanitization
 
-  createUser(username, password, email);
+  createUser(username, hashedPassword, email);
 };
