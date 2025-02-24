@@ -7,3 +7,17 @@ export const getUserByEmail = async (
 
   return user;
 };
+
+export const createUser = async (
+  username: string,
+  email: string,
+  password: string
+): Promise<UserDocument | null> => {
+  const user = await User.create({
+    username: username,
+    password: password,
+    email: email,
+    friendList: [],
+  });
+  return user;
+};
