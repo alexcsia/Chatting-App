@@ -1,23 +1,18 @@
-import { UserDocument, User } from "../models/User";
+import { User, IUser } from "../models/User";
 
-export const getUserByEmail = async (
-  email: string
-): Promise<UserDocument | null> => {
+export const getUserByEmail = async (email: string): Promise<IUser | null> => {
   const user = await User.findOne({ email: email });
 
   return user;
 };
 
 export const createUser = async (
-  username: string,
-  email: string,
-  password: string
-): Promise<UserDocument | null> => {
-  console.log("create");
+  userObj: Partial<IUser>
+): Promise<IUser | null> => {
   const user = await User.create({
-    username: username,
-    password: password,
-    email: email,
+    username: userObj.username,
+    password: userObj.password,
+    email: userObj.email,
     friendList: [],
   });
   return user;
