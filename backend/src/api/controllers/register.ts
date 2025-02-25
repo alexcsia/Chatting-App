@@ -15,12 +15,11 @@ export const registerController = async (
   try {
     const { username, email, password } = request.body;
 
-    authServices.registerUser(username, email, password);
-
-    reply.send({ message: "received " });
+    await authServices.registerUser(username, email, password);
+    reply.send("received");
   } catch (error: unknown) {
     if (error instanceof ApiError) {
-      return reply.status(error.status).send({ message: error.message });
+      reply.status(error.status).send({ message: error.message });
     }
 
     throw new ApiError(

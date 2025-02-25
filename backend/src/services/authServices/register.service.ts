@@ -10,7 +10,7 @@ export const registerUser = async (
 ) => {
   try {
     validators.validateUsername(username);
-    validators.validateEmail(email);
+    await validators.validateEmail(email);
     validators.validatePassword(password);
 
     const hashedPassword = await hashPassword(password);
@@ -19,7 +19,10 @@ export const registerUser = async (
     await createUser(username, email, hashedPassword);
   } catch (error: unknown) {
     if (error instanceof ApiError) {
-      return error;
+      throw error;
+    } else {
+      console.log(error);
+      throw new ApiError(500, "An unexpected error occurred");
     }
   }
 };
