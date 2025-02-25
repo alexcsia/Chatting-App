@@ -1,8 +1,9 @@
 export const registerRequestSchema = {
   type: "object",
-  required: ["username", "email", "firstName", "lastName", "password"],
+  required: ["username", "email", "password"],
   properties: {
     username: { type: "string" },
     email: { type: "string" },
+    password: { type: "string" },
   },
 };
