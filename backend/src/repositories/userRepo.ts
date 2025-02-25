@@ -7,12 +7,14 @@ export const getUserByEmail = async (email: string): Promise<IUser | null> => {
 };
 
 export const createUser = async (
-  userObj: Partial<IUser>
+  username: string,
+  email: string,
+  password: string
 ): Promise<IUser | null> => {
   const user = await User.create({
-    username: userObj.username,
-    password: userObj.password,
-    email: userObj.email,
+    username: username,
+    password: password,
+    email: email,
     friendList: [],
   });
   return user;
