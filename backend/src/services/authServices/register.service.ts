@@ -15,7 +15,7 @@ export const registerUser = async (
 
     const hashedPassword = await hashPassword(password);
     // add sanitization
-    const newUser = await createUser(username, hashedPassword, email);
+    await createUser(username, hashedPassword, email);
   } catch (error: unknown) {
     if (error instanceof ApiError) {
       return error;
