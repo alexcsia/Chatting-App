@@ -1,4 +1,4 @@
-import { UserDocument, User } from "../models/user";
+import { UserDocument, User } from "../models/User";
 
 export const getUserByEmail = async (
   email: string
@@ -13,6 +13,7 @@ export const createUser = async (
   email: string,
   password: string
 ): Promise<UserDocument | null> => {
+  console.log("create");
   const user = await User.create({
     username: username,
     password: password,

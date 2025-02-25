@@ -8,4 +8,7 @@ export const loginUser = async (email: string, password: string) => {
 
   const isMatch = comparePassword(user.password, password);
   if (!isMatch) throw new ApiError(401, "Email or password is incorrect");
+
+  // if(isMatch)
+
 };

@@ -1,18 +1,24 @@
 import { hashPassword } from "../../helpers/passwordUtils";
 import validators from "../../helpers/validators";
 import { createUser } from "../../repositories/userRepo";
+import { ApiError } from "../../api/errors/ApiError";
 
 export const registerUser = async (
   username: string,
   email: string,
   password: string
 ) => {
-  validators.validateUsername(username);
-  validators.validateEmail(email);
-  validators.validatePassword(password);
+  try {
+    validators.validateUsername(username);
+    validators.validateEmail(email);
+    validators.validatePassword(password);
 
-  const hashedPassword = await hashPassword(password);
-  // add sanitization
-
-  createUser(username, hashedPassword, email);
+    const hashedPassword = await hashPassword(password);
+    // add sanitization
+    const newUser = await createUser(username, hashedPassword, email);
+  } catch (error: unknown) {
+    if (error instanceof ApiError) {
+      return error;
+    }
+  }
 };
