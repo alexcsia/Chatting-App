@@ -2,12 +2,7 @@ import { FastifyRequest, FastifyReply } from "fastify";
 import authServices from "../../services/authServices/index";
 import { ApiError } from "../errors/ApiError";
 import jwtUtils from "../../helpers/jwtUtils";
-
-interface loginRequest {
-  email: string;
-  password: string;
-}
-//use login request schema instead of this interface
+import { loginRequest } from "../routes/schemas/login.schema";
 
 export const loginController = async (
   req: FastifyRequest<{ Body: loginRequest }>,

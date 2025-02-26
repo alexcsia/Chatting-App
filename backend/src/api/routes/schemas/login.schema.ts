@@ -3,3 +3,8 @@ export const loginRequestSchema = {
   required: ["email", "password"],
   properties: { email: { type: "string" }, password: { type: "string" } },
 };
+
+export interface loginRequest {
+  email: string;
+  password: string;
+}

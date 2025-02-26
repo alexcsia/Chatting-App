@@ -7,3 +7,9 @@ export const registerRequestSchema = {
     password: { type: "string" },
   },
 };
+
+export interface registrationRequest {
+  username: string;
+  email: string;
+  password: string;
+}

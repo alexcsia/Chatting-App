@@ -1,12 +1,7 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { ApiError } from "../errors/ApiError";
 import authServices from "../../services/authServices";
-
-interface registrationRequest {
-  username: string;
-  email: string;
-  password: string;
-}
+import { registrationRequest } from "../routes/schemas/register.schema";
 
 export const registerController = async (
   request: FastifyRequest<{ Body: registrationRequest }>,
