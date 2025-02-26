@@ -1,15 +1,12 @@
 import Fastify, { FastifyInstance } from "fastify";
 import { connectMongoDB } from "./database";
 import { authRoutes } from "./api/routes/index";
-
+import cookie from "@fastify/cookie";
 import dotenv from "dotenv";
+dotenv.config();
 const PORT = parseInt(process.env.PORT || "3000");
 
 const fastify: FastifyInstance = Fastify({ logger: false });
-
-if (process.env.NODE_ENV !== "production") {
-  dotenv.config();
-}
 
 fastify.register(require(`@fastify/cors`), {
   origin: `http://localhost:8080`,
@@ -17,11 +14,8 @@ fastify.register(require(`@fastify/cors`), {
   credentials: true,
 });
 
-fastify.get("/api/users", async (request, reply) => {
-  return { users: ["Alice", "Bob", "Charlie"] };
-});
-
 fastify.register(authRoutes, { prefix: "/auth" });
+fastify.register(cookie);
 
 const start = async () => {
   try {

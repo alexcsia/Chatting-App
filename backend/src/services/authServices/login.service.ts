@@ -10,7 +10,9 @@ export const loginUser = async (email: string, password: string) => {
   const isMatch = comparePassword(user.password, password);
   if (!isMatch) throw new ApiError(401, "Email or password is incorrect");
 
-  const jwt = jwtUtils.signJWT(user.username, user.email);
+  const accessJwt = await jwtUtils.signJWT(user.username, user.email);
 
-  createRefreshJWT();
+  const refreshJwt = await jwtUtils.signRefreshJWT(user.username, user.email);
+
+  return { accessJwt, refreshJwt };
 };
