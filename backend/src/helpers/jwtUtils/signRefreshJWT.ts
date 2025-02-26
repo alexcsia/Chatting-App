@@ -12,10 +12,10 @@ export const signRefreshJWT = async (
 
     const refreshToken = jwt.sign(
       { username: username, email: email },
-      REFRESH_TOKEN_SECRET || "asa",
+      REFRESH_TOKEN_SECRET,
       {
         expiresIn: "7d",
-        algorithm: "HS256",
+        algorithm: "HS256", //symmetric key encryption
       }
     );
     return refreshToken;

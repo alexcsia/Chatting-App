@@ -9,14 +9,10 @@ export const signJWT = async (
     const JWT_SECRET = process.env.JWT_SECRET;
     if (!JWT_SECRET) throw new ApiError(500, "JWT Secret not defined");
 
-    const token = jwt.sign(
-      { username: username, email: email },
-      JWT_SECRET || "sad",
-      {
-        expiresIn: "15m",
-        algorithm: "HS256",
-      }
-    );
+    const token = jwt.sign({ username: username, email: email }, JWT_SECRET, {
+      expiresIn: "15m",
+      algorithm: "HS256", //symmetric key encryption
+    });
     return token;
   } catch (error: unknown) {
     console.log(error);
