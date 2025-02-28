@@ -6,4 +6,11 @@ export const profileRequestSchema = {
     },
     required: ["cookie"],
   },
+  params: {
+    type: "object",
+    properties: {
+      userId: { type: "number" },
+    },
+    required: ["userId"],
+  },
 };

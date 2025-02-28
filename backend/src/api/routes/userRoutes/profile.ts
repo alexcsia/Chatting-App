@@ -3,5 +3,9 @@ import { profileController } from "../../controllers/profile";
 import { profileRequestSchema } from "../schemas/profile.schema";
 
 export const userRoutes: FastifyPluginAsync = async (fastify) => {
-  fastify.get("/profile", { schema: profileRequestSchema }, profileController);
+  fastify.get(
+    "/profile/:userId",
+    { schema: profileRequestSchema },
+    profileController
+  );
 };
