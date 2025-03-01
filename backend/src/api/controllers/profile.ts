@@ -4,9 +4,9 @@ export const profileController = async (
   request: FastifyRequest,
   reply: FastifyReply
 ) => {
-  const token = request.cookies;
+  const { accessToken, refreshToken } = request.cookies;
 
-  console.log(token);
+  console.log(accessToken, refreshToken);
 
   reply.send("received ");
 };

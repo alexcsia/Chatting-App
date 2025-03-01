@@ -4,6 +4,7 @@ import { authRoutes } from "./api/routes/index";
 import cookie from "@fastify/cookie";
 import dotenv from "dotenv";
 import { userRoutes } from "./api/routes/userRoutes/profile";
+import jwtPlugin from "./plugins/jwt";
 
 dotenv.config();
 const PORT = parseInt(process.env.PORT || "3000");
@@ -17,6 +18,7 @@ const fastify: FastifyInstance = Fastify({ logger: false });
 // });
 
 fastify.register(cookie);
+fastify.register(jwtPlugin);
 fastify.register(authRoutes, { prefix: "/auth" });
 fastify.register(userRoutes);
 
@@ -32,3 +34,5 @@ const start = async () => {
 };
 
 start();
+
+export default fastify;
