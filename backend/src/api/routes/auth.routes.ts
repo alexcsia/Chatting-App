@@ -16,6 +16,6 @@ export const authRoutes: FastifyPluginAsync = async (
   fastify.post(
     "/register",
     { schema: { body: registerRequestSchema } },
-    registerController
+    registerController(authService())
   );
 };

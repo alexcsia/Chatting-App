@@ -1,5 +1,5 @@
 import validator from "validator";
-import { ApiError } from "../../api/errors/ApiError";
+import { ApiError } from "../../../../api/errors/ApiError";
 
 export const validateUsername = (username: string) => {
   const trimmedUsername = username.trim();

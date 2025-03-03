@@ -1,6 +1,6 @@
 import validator from "validator";
-import { getUserByEmail } from "../../repositories/userRepo";
-import { ApiError } from "../../api/errors/ApiError";
+import { getUserByEmail } from "../../../../repositories/userRepo";
+import { ApiError } from "../../../../api/errors/ApiError";
 
 export const validateEmail = async (email: string): Promise<string> => {
   const trimmedEmail = email.trim();
