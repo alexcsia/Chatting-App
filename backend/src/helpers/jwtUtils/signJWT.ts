@@ -1,9 +1,10 @@
+import { FastifyInstance } from "fastify";
 import { ApiError } from "../../api/errors/ApiError";
-import fastify from "../../server";
 
 export const signJWT = async (
   username: string,
-  email: string
+  email: string,
+  fastify: FastifyInstance
 ): Promise<string> => {
   try {
     const JWT_SECRET = process.env.JWT_SECRET;
