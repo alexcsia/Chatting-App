@@ -2,6 +2,7 @@ import { registerUser } from "./helpers/registerUser";
 import { authenticateUser } from "./helpers/authenticateUser";
 import { FastifyInstance } from "fastify";
 import { generateTokens } from "./helpers/generateTokens";
+import { verifyJWT } from "@helpers/jwtUtils/verifyJWT";
 
 export type AuthServiceType = ReturnType<typeof authService>;
 
@@ -14,4 +15,10 @@ export const authService = (fastify?: FastifyInstance) => ({
     return generateTokens(fastify, user);
   },
   registerUser,
+  verifyJWT: (token: string) => {
+    if (!fastify) {
+      throw new Error("Fastify instance is required for verifyJWT");
+    }
+    return verifyJWT(fastify, token);
+  },
 });
