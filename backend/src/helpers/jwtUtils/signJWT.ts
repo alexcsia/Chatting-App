@@ -1,5 +1,5 @@
 import { FastifyInstance } from "fastify";
-import { ApiError } from "../../api/errors/ApiError";
+import { ApiError } from "@api/errors/ApiError";
 
 export const signJWT = async (
   username: string,

@@ -1,5 +1,5 @@
-import { ApiError } from "../../../api/errors/ApiError";
-import { getUserByEmail } from "../../../repositories/userRepo";
+import { ApiError } from "@api/errors/ApiError";
+import { getUserByEmail } from "@repositories/userRepo";
 import { comparePassword } from "./passwordUtils";
 
 export const authenticateUser = async (email: string, password: string) => {

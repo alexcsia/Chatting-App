@@ -1,7 +1,7 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import { ApiError } from "../errors/ApiError";
-import { registrationRequest } from "../routes/schemas/register.schema";
-import { AuthServiceType } from "../../services/authServices/authService";
+import { ApiError } from "@api/errors/ApiError";
+import { registrationRequest } from "@api/routes/schemas/register.schema";
+import { AuthServiceType } from "@services/authServices/authService";
 
 export const registerController =
   (authService: AuthServiceType) =>

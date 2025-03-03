@@ -1,8 +1,8 @@
 import { FastifyRequest, FastifyReply } from "fastify";
-import { ApiError } from "../errors/ApiError";
-import jwtUtils from "../../helpers/jwtUtils";
-import { loginRequest } from "../routes/schemas/login.schema";
-import { AuthServiceType } from "../../services/authServices/authService";
+import { ApiError } from "@api/errors/ApiError";
+import jwtUtils from "@helpers/jwtUtils";
+import { loginRequest } from "@api/routes/schemas/login.schema";
+import { AuthServiceType } from "@services/authServices/authService";
 
 export const loginController =
   (authService: AuthServiceType) =>

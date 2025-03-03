@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { ApiError } from "../../api/errors/ApiError";
+import { ApiError } from "@api/errors/ApiError";
 
 export const signRefreshJWT = async (
   username: string,

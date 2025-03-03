@@ -1,6 +1,6 @@
 import { FastifyInstance } from "fastify";
-import { signJWT } from "../../../helpers/jwtUtils/signJWT";
-import { signRefreshJWT } from "../../../helpers/jwtUtils/signRefreshJWT";
+import { signJWT } from "@helpers/jwtUtils/signJWT";
+import { signRefreshJWT } from "@helpers/jwtUtils/signRefreshJWT";
 
 export const generateTokens = async (
   fastify: FastifyInstance,
