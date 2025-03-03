@@ -8,5 +8,7 @@ export const profileController = async (
 
   console.log(accessToken, refreshToken);
 
+  // const userProfile = getUserFromTokens()
+
   reply.send("received ");
 };
