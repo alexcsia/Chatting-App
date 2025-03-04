@@ -1,3 +1,4 @@
+import "tsconfig-paths/register";
 import Fastify, { FastifyInstance } from "fastify";
 import { connectMongoDB } from "./database";
 import { authRoutes } from "./api/routes/index";
