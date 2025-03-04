@@ -1,14 +1,29 @@
+import { ApiError } from "@api/errors/ApiError";
+import { AuthServiceType } from "@services/authServices/authService";
 import { FastifyRequest, FastifyReply } from "fastify";
 
-export const profileController = async (
-  request: FastifyRequest,
-  reply: FastifyReply
-) => {
-  const { accessToken, refreshToken } = request.cookies;
+export const profileController =
+  (authService: AuthServiceType) =>
+  async (request: FastifyRequest, reply: FastifyReply) => {
+    try {
+      const { accessToken, refreshToken } = request.cookies;
 
-  console.log(accessToken, refreshToken);
+      console.log(accessToken, refreshToken);
 
-  // const userProfile = getUserFromTokens()
+      const { getUserFromJWT } = authService;
+      if (!refreshToken) throw new ApiError(401, "Please login first");
+      const { email, username, friendList } = await getUserFromJWT(
+        refreshToken
+      );
 
-  reply.send("received ");
-};
+      return reply.send({
+        email: email,
+        username: username,
+        friendList: friendList,
+      });
+    } catch (error: unknown) {
+      if (error instanceof ApiError)
+        reply.status(error.status).send(error.message);
+      else reply.status(500).send("Something went wrong.");
+    }
+  };
