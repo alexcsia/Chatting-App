@@ -8,7 +8,7 @@ export const signJWT = async (
 ): Promise<string> => {
   try {
     const JWT_SECRET = process.env.JWT_SECRET;
-    if (!JWT_SECRET) throw new ApiError(500, "JWT Secret not defined");
+    if (!JWT_SECRET) throw new Error("JWT Secret not defined");
 
     return await fastify.signJWT(username, email);
   } catch (error: unknown) {

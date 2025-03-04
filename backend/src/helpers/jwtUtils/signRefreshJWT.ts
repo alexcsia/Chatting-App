@@ -7,8 +7,7 @@ export const signRefreshJWT = async (
 ): Promise<string> => {
   try {
     const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET;
-    if (!REFRESH_TOKEN_SECRET)
-      throw new ApiError(500, "REFRESHJWT_SECRET not defined");
+    if (!REFRESH_TOKEN_SECRET) throw new Error("REFRESHJWT_SECRET not defined");
 
     const refreshToken = jwt.sign(
       { username: username, email: email },
