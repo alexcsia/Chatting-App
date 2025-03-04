@@ -9,8 +9,8 @@ export const profileRequestSchema = {
   params: {
     type: "object",
     properties: {
-      userId: { type: "number" },
+      username: { type: "string" },
     },
-    required: ["userId"],
+    required: ["username"],
   },
 };
