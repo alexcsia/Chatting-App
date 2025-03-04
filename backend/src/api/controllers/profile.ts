@@ -11,10 +11,8 @@ export const profileController =
       console.log(accessToken, refreshToken);
 
       const { getUserFromJWT } = authService;
-      if (!refreshToken) throw new ApiError(401, "Please login first");
-      const { email, username, friendList } = await getUserFromJWT(
-        refreshToken
-      );
+      if (!accessToken) throw new ApiError(401, "Please login first");
+      const { email, username, friendList } = await getUserFromJWT(accessToken);
 
       return reply.send({
         email: email,
