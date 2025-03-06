@@ -10,6 +10,9 @@ async function jwtPlugin(fastify: FastifyInstance) {
   await fastify.register(fastifyJwt, {
     secret: process.env.JWT_SECRET,
     cookie: { cookieName: "accessToken", signed: false },
+    formatUser: function (user) {
+      return { email: user.email, username: user.username };
+    },
   });
 
   fastify.decorate(
