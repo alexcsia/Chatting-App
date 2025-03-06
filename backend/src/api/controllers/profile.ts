@@ -7,7 +7,12 @@ export const profileController = async (
   reply: FastifyReply
 ) => {
   try {
-    console.log(request.user);
+    const userInfo = await getUserByEmail(request.user.email);
+    reply.code(200).send({
+      username: userInfo?.username,
+      email: userInfo?.email,
+      friendList: userInfo?.friendList,
+    });
   } catch (error: unknown) {
     if (error instanceof ApiError)
       reply.status(error.status).send(error.message);
