@@ -1,12 +1,16 @@
-import { FastifyPluginAsync } from "fastify";
-import { profileController } from "@api/controllers/profile";
+import { FastifyInstance, FastifyPluginAsync } from "fastify";
 import { profileRequestSchema } from "../schemas/profile.schema";
-import { authService } from "@services/authServices/authService";
+import { profileController } from "@api/controllers/profile";
 
-export const userRoutes: FastifyPluginAsync = async (fastify) => {
+export const userRoutes: FastifyPluginAsync = async (
+  fastify: FastifyInstance
+) => {
   fastify.get(
     "/profile/:username",
-    { schema: profileRequestSchema },
-    profileController(authService(fastify))
+    {
+      schema: profileRequestSchema,
+      onRequest: [fastify.verifyJWT],
+    },
+    profileController
   );
 };

@@ -1,7 +1,7 @@
 import { FastifyRequest, FastifyReply } from "fastify";
 import { ApiError } from "@api/errors/ApiError";
-import jwtUtils from "@helpers/jwtUtils";
 import { loginRequest } from "@api/routes/schemas/login.schema";
+import jwtUtils from "@helpers/jwtUtils";
 import { AuthServiceType } from "@services/authServices/authService";
 
 export const loginController =
@@ -13,6 +13,7 @@ export const loginController =
       const { authenticateUser, generateTokens } = authService;
 
       const user = await authenticateUser(email, password);
+
       const { accessJwt, refreshJwt } = await generateTokens(user);
 
       jwtUtils.setAuthCookies(accessJwt, refreshJwt, reply);
