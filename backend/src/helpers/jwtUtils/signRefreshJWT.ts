@@ -1,22 +1,14 @@
 import jwt from "jsonwebtoken";
 import { ApiError } from "@api/errors/ApiError";
 
-export const signRefreshJWT = async (
-  username: string,
-  email: string
-): Promise<string> => {
+export const signRefreshJWT = async (userId: string): Promise<string> => {
   try {
     const REFRESH_TOKEN_SECRET = process.env.JWT_SECRET;
     if (!REFRESH_TOKEN_SECRET) throw new Error("REFRESHJWT_SECRET not defined");
-    //sign using plugin here
-    const refreshToken = jwt.sign(
-      { username: username, email: email },
-      REFRESH_TOKEN_SECRET,
-      {
-        expiresIn: "7d",
-        algorithm: "HS384", //symmetric key encryption
-      }
-    );
+    const refreshToken = jwt.sign({ userId: userId }, REFRESH_TOKEN_SECRET, {
+      expiresIn: "7d",
+      algorithm: "HS384",
+    });
     return refreshToken;
   } catch (error: unknown) {
     console.log(error);

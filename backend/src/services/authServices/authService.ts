@@ -7,7 +7,11 @@ export type AuthServiceType = ReturnType<typeof authService>;
 
 export const authService = (fastify?: FastifyInstance) => ({
   authenticateUser,
-  generateTokens: (user: { username: string; email: string }) => {
+  generateTokens: (user: {
+    username: string;
+    email: string;
+    userId: string;
+  }) => {
     if (!fastify) {
       throw new Error("Fastify instance is required for generateTokens");
     }

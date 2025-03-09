@@ -4,11 +4,11 @@ import { signRefreshJWT } from "@helpers/jwtUtils/signRefreshJWT";
 
 export const generateTokens = async (
   fastify: FastifyInstance,
-  user: { username: string; email: string }
+  user: { username: string; email: string; userId: string }
 ) => {
   const accessJwt = await signJWT(user.username, user.email, fastify);
 
-  const refreshJwt = await signRefreshJWT(user.username, user.email);
+  const refreshJwt = await signRefreshJWT(user.userId);
 
   return { accessJwt, refreshJwt };
 };

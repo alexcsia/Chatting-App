@@ -6,6 +6,8 @@ import { z } from "zod";
 const RefreshTokenPayloadSchema = z
   .object({
     userId: z.string().min(1, "userId must not be empty"),
+    iat: z.number().min(10000000, "token must be emitted early"),
+    exp: z.number().min(10000000, "token must expire later"),
   })
   .strict();
 
@@ -60,7 +62,7 @@ async function jwtPlugin(fastify: FastifyInstance) {
 
         const validatedPayload = RefreshTokenPayloadSchema.safeParse(decoded);
         if (!validatedPayload.success) {
-          throw new Error("Invalid refresh token payload");
+          throw new Error(validatedPayload.error.message);
         }
 
         request.refreshUser = validatedPayload.data;
