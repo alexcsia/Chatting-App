@@ -19,3 +19,9 @@ export const createUser = async (
   });
   return user;
 };
+
+export const getUserByID = async (userId: string): Promise<IUser | null> => {
+  const user = await User.findOne({ _id: userId });
+
+  return user;
+};
