@@ -6,15 +6,15 @@ export const signRefreshJWT = async (
   email: string
 ): Promise<string> => {
   try {
-    const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET;
+    const REFRESH_TOKEN_SECRET = process.env.JWT_SECRET;
     if (!REFRESH_TOKEN_SECRET) throw new Error("REFRESHJWT_SECRET not defined");
-
+    //sign using plugin here
     const refreshToken = jwt.sign(
       { username: username, email: email },
       REFRESH_TOKEN_SECRET,
       {
         expiresIn: "7d",
-        algorithm: "HS256", //symmetric key encryption
+        algorithm: "HS384", //symmetric key encryption
       }
     );
     return refreshToken;

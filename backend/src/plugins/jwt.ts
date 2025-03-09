@@ -1,6 +1,13 @@
 import { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
 import fastifyJwt from "@fastify/jwt";
 import fp from "fastify-plugin";
+import { z } from "zod";
+
+const RefreshTokenPayloadSchema = z
+  .object({
+    userId: z.string().min(1, "userId must not be empty"),
+  })
+  .strict();
 
 async function jwtPlugin(fastify: FastifyInstance) {
   if (!process.env.JWT_SECRET) {
@@ -37,6 +44,31 @@ async function jwtPlugin(fastify: FastifyInstance) {
       }
     }
   );
-}
 
+  fastify.decorate(
+    "verifyRefreshJWT",
+    async function (
+      this: FastifyInstance,
+      request: FastifyRequest,
+      reply: FastifyReply
+    ) {
+      try {
+        const token = request.cookies.refreshToken;
+        if (!token) throw new Error("Refresh token missing");
+        const decoded = this.jwt.verify(token);
+        console.log("verified refresh token:", decoded);
+
+        const validatedPayload = RefreshTokenPayloadSchema.safeParse(decoded);
+        if (!validatedPayload.success) {
+          throw new Error("Invalid refresh token payload");
+        }
+
+        request.refreshUser = validatedPayload.data;
+      } catch (error) {
+        console.error("Refresh token verification failed:", error);
+        reply.code(401).send({ message: "Invalid or expired refresh token" });
+      }
+    }
+  );
+}
 export default fp(jwtPlugin);
