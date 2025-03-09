@@ -4,6 +4,7 @@ import { registerRequestSchema } from "./schemas/register.schema";
 import { registerController } from "../controllers/register";
 import { FastifyInstance, FastifyPluginAsync } from "fastify";
 import { authService } from "@services/authServices/authService";
+import { refreshToken } from "@api/controllers/refreshToken";
 
 export const authRoutes: FastifyPluginAsync = async (
   fastify: FastifyInstance
@@ -17,5 +18,11 @@ export const authRoutes: FastifyPluginAsync = async (
     "/register",
     { schema: { body: registerRequestSchema } },
     registerController(authService())
+  );
+
+  fastify.get(
+    "/refresh-token",
+    { onRequest: [fastify.verifyRefreshJWT] },
+    refreshToken
   );
 };

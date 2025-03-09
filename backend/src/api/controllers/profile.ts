@@ -8,6 +8,7 @@ export const profileController = async (
 ) => {
   try {
     const userInfo = await getUserByEmail(request.user.email);
+
     reply.code(200).send({
       username: userInfo?.username,
       email: userInfo?.email,
