@@ -1,18 +1,23 @@
+import { ApiError } from "@api/errors/ApiError";
+import { getUserByID } from "@repositories/userRepo";
+import { AuthServiceType } from "@services/authServices/authService";
 import { FastifyReply, FastifyRequest } from "fastify";
+import { setAccessTokenCookie } from "./helpers/setAuthCookies";
 
-export const refreshToken = async (
-  request: FastifyRequest,
-  reply: FastifyReply
-) => {
-  console.log("user from refresh token", request.refreshUser);
-  //at this stage refresh token is verified
+export const refreshToken =
+  (authService: AuthServiceType) =>
+  async (request: FastifyRequest, reply: FastifyReply) => {
+    const userId = request.refreshUser?.userId;
 
-  //exchange it for a new access token
-  const userId = request.refreshUser?.userId;
+    if (!userId) throw new ApiError(500, "Invalid token");
+    const user = await getUserByID(userId);
 
-  //   const accessTokenPayload = await getUser()
+    const { generateAuthenticationTokens } = authService;
+    if (!user) throw new ApiError(500, "");
+    const tokens = await generateAuthenticationTokens(user, {
+      refreshToken: false,
+    });
+    setAccessTokenCookie(tokens.accessJwt, reply);
 
-  //   setAccessToken(accessTokenPayload)
-
-  reply.send();
-};
+    reply.send();
+  };

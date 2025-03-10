@@ -23,6 +23,6 @@ export const authRoutes: FastifyPluginAsync = async (
   fastify.get(
     "/refresh-token",
     { onRequest: [fastify.verifyRefreshJWT] },
-    refreshToken
+    refreshToken(authService(fastify))
   );
 };

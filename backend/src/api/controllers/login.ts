@@ -14,7 +14,9 @@ export const loginController =
 
       const user = await authenticateUser(email, password);
 
-      const tokens = await generateAuthenticationTokens(user);
+      const tokens = await generateAuthenticationTokens(user, {
+        refreshToken: true,
+      });
 
       jwtUtils.setAuthCookies(tokens.accessJwt, tokens.refreshJwt, reply);
 

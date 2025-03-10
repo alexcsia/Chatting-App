@@ -2,14 +2,17 @@ import { FastifyReply } from "fastify";
 
 export const setAuthCookies = (
   accessJwt: string,
-  refreshJwt: string,
+  refreshJwt: string | undefined,
   reply: FastifyReply
 ) => {
   setAccessTokenCookie(accessJwt, reply);
-  setRefreshTokenCookie(refreshJwt, reply);
+  if (refreshJwt) setRefreshTokenCookie(refreshJwt, reply);
 };
 
-const setAccessTokenCookie = (accessJwt: string, reply: FastifyReply): void => {
+export const setAccessTokenCookie = (
+  accessJwt: string,
+  reply: FastifyReply
+): void => {
   reply.setCookie("accessToken", accessJwt, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
