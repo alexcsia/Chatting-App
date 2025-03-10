@@ -10,13 +10,13 @@ export const loginController =
     try {
       const { email, password } = req.body;
 
-      const { authenticateUser, generateTokens } = authService;
+      const { authenticateUser, generateAuthenticationTokens } = authService;
 
       const user = await authenticateUser(email, password);
 
-      const { accessJwt, refreshJwt } = await generateTokens(user);
+      const tokens = await generateAuthenticationTokens(user);
 
-      jwtUtils.setAuthCookies(accessJwt, refreshJwt, reply);
+      jwtUtils.setAuthCookies(tokens.accessJwt, tokens.refreshJwt, reply);
 
       return reply.send({ message: "Login successful" });
     } catch (error: unknown) {
