@@ -16,7 +16,7 @@ const MessageSchema: Schema = new Schema({
   },
   timeStamp: {
     type: Date,
-    required: true,
+    default: Date.now,
   },
   chatId: {
     type: String,

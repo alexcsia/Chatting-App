@@ -6,6 +6,7 @@ import cookie from "@fastify/cookie";
 import dotenv from "dotenv";
 import { userRoutes } from "./api/routes/userRoutes/profile";
 import jwtPlugin from "./plugins/jwt";
+import { setupWebsocketServer } from "websockets/websocketServer";
 
 dotenv.config();
 const PORT = parseInt(process.env.PORT || "3000");
@@ -18,6 +19,8 @@ const start = async () => {
     await fastify.register(jwtPlugin);
     await fastify.register(authRoutes, { prefix: "/auth" });
     await fastify.register(userRoutes);
+
+    const io = setupWebsocketServer(fastify);
 
     await fastify.listen({ port: PORT });
     console.log("Fastify listening on port", PORT);
