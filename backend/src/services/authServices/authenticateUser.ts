@@ -6,7 +6,10 @@ export const authenticateUser = async (email: string, password: string) => {
   const user = await getUserByEmail(email);
   if (!user) throw new ApiError(401, "Email or password is incorrect");
 
-  const isMatch = await comparePassword(user.password, password);
+  const isMatch = await comparePassword({
+    correctPassword: user.password,
+    input: password,
+  });
   if (!isMatch) throw new ApiError(401, "Email or password is incorrect");
 
   return { email: user.email, username: user.username, userId: user.id };

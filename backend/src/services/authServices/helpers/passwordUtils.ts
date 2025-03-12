@@ -1,12 +1,10 @@
 import bcrypt from "bcrypt";
 
-export const comparePassword = async (
-  input: string,
-  correctPassword: string
-) => {
-  const hashedInput = await bcrypt.hash(input, 10);
-  const isMatch = await bcrypt.compare(hashedInput, correctPassword);
-
+export const comparePassword = async (data: {
+  input: string;
+  correctPassword: string;
+}) => {
+  const isMatch = await bcrypt.compare(data.input, data.correctPassword);
   return isMatch;
 };
 
