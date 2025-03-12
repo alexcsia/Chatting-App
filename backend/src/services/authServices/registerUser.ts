@@ -8,21 +8,12 @@ export const registerUser = async (
   email: string,
   password: string
 ) => {
-  try {
-    validators.validateUsername(username);
-    await validators.validateEmail(email);
-    validators.validatePassword(password);
+  await validators.validateUsername(username);
+  await validators.validateEmail(email);
+  validators.validatePassword(password);
 
-    const hashedPassword = await hashPassword(password);
+  const hashedPassword = await hashPassword(password);
 
-    // add sanitization
-    await createUser(username, email, hashedPassword);
-  } catch (error: unknown) {
-    if (error instanceof ApiError) {
-      throw error;
-    } else {
-      console.log(error);
-      throw new ApiError(500, "An unexpected error occurred");
-    }
-  }
+  // add sanitization
+  await createUser(username, email, hashedPassword);
 };
