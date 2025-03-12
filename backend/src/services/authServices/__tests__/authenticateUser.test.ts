@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { authenticateUser } from "../authenticateUser";
+import { authenticateUser } from "../../authenticateUser";
 import { ApiError } from "@api/errors/ApiError";
 import { User } from "../../../../models/User";
 

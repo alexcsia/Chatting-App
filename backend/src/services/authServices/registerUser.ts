@@ -1,5 +1,5 @@
-import { hashPassword } from "./passwordUtils";
-import validators from "./validators";
+import { hashPassword } from "./helpers/passwordUtils";
+import validators from "./helpers/validators";
 import { createUser } from "@repositories/userRepo";
 import { ApiError } from "@api/errors/ApiError";
 
