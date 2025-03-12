@@ -1,27 +1,33 @@
 import mongoose from "mongoose";
-import { authenticateUser } from "../../authenticateUser";
+import { authenticateUser } from "../authenticateUser";
 import { ApiError } from "@api/errors/ApiError";
-import { User } from "../../../../models/User";
+import { User } from "../../../models/User";
+import bcrypt from "bcrypt";
 
 describe("authenticateUser", () => {
   const testEmail = "testuser@example.com";
-  const testPassword = "password123";
   let testUserId: any;
-  let user: any;
+  let testPassword = "password123";
+  const testUsername = "username";
 
   beforeAll(async () => {
     await mongoose.connect(
       process.env.MONGODB_URI || "mongodb://localhost:27017/chatdb",
-      {}
+      { dbName: "chatdb" }
     );
+    const hashedPassword = await bcrypt.hash(testPassword, 10);
 
-    user = new User({
+    const user = await User.create({
+      username: testUsername,
+      password: hashedPassword,
       email: testEmail,
-      password: testPassword,
-      username: "testuser",
+      friendList: [],
     });
-    const savedUser = await user.save();
-    testUserId = savedUser._id;
+
+    testUserId =
+      user._id instanceof mongoose.Types.ObjectId
+        ? user._id.toString()
+        : String(user._id);
   });
 
   afterAll(async () => {
@@ -31,12 +37,11 @@ describe("authenticateUser", () => {
 
   it("should return user data for valid email and password", async () => {
     const result = await authenticateUser(testEmail, testPassword);
-    console.log(result);
 
     expect(result).toEqual({
-      email: user.email,
-      username: user.username,
-      userId: user._id.toString(),
+      email: testEmail,
+      username: testUsername,
+      userId: testUserId,
     });
   });
 
