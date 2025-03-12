@@ -12,16 +12,16 @@ export const registerController =
     try {
       const { username, email, password } = request.body;
 
-      authService.registerUser(username, email, password);
+      await authService.registerUser(username, email, password);
       reply.send("received");
     } catch (error: unknown) {
       if (error instanceof ApiError) {
         reply.status(error.status).send({ message: error.message });
+      } else {
+        console.error("Unexpected error:", error);
+        return reply
+          .status(500)
+          .send({ error: "An unexpected error occurred" });
       }
-
-      throw new ApiError(
-        500,
-        error instanceof Error ? error.message : " User registration failed"
-      );
     }
   };
