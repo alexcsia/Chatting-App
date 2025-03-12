@@ -25,3 +25,10 @@ export const getUserByID = async (userId: string): Promise<IUser | null> => {
 
   return user;
 };
+
+export const getUserByUsername = async (
+  username: string
+): Promise<IUser | null> => {
+  const user = await User.findOne({ username: username });
+  return user;
+};
