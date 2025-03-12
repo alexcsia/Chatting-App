@@ -6,8 +6,8 @@ import { z } from "zod";
 const RefreshTokenPayloadSchema = z
   .object({
     userId: z.string().min(1, "userId must not be empty"),
-    iat: z.number().min(10000000, "token must be emitted early"),
-    exp: z.number().min(10000000, "token must expire later"),
+    iat: z.number().min(10000000, "invalid token creation time"),
+    exp: z.number().min(10000000, "invalid token expiration time"),
   })
   .strict();
 
