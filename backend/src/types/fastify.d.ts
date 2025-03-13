@@ -4,7 +4,10 @@ import { JwtPayload } from "../plugins/jwt";
 declare module "fastify" {
   interface FastifyInstance {
     signJWT: (username: string, email: string) => Promise<string>;
-    verifyJWT: (request: FastifyRequest, reply: FastifyReply) => Promise<void>;
+    verifyJWT: <T = unknown>(
+      request: FastifyRequest<{ Body?: T }>,
+      reply: FastifyReply
+    ) => Promise<void>;
     verifyRefreshJWT: (
       this: FastifyInstance,
       request: FastifyRequest,
