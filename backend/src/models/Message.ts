@@ -8,7 +8,7 @@ export interface IMessage extends Document {
 }
 
 const MessageSchema: Schema = new Schema({
-  username: { type: String, required: true, minlength: 1, maxlength: 20 },
+  authorUsername: { type: String, required: true, minlength: 1, maxlength: 20 },
   content: {
     type: String,
     required: true,
