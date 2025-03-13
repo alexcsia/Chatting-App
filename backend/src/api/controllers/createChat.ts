@@ -3,7 +3,7 @@ import { FastifyRequest, FastifyReply } from "fastify";
 import { Chat } from "models/Chat";
 import { User } from "models/User";
 
-export const newChatController = async (
+export const createChatController = async (
   request: FastifyRequest<{ Body: newChatRequest }>,
   reply: FastifyReply
 ) => {
@@ -13,7 +13,9 @@ export const newChatController = async (
   const userToText = request.body.username;
   const userToTextId = await User.findOne({ username: userToText });
 
-  const newChat = await Chat.create({ userIds: [userFromReqId, userToTextId] });
+  const newChat = await Chat.create({
+    userIds: [userFromReqId?._id, userToTextId?._id],
+  });
 
   reply.send({ chat: newChat._id });
 };

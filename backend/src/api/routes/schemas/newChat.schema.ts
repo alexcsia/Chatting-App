@@ -1,6 +1,4 @@
-import { FastifySchema } from "fastify";
-
-export const newChatSchema: FastifySchema = {
+export const newChatSchema = {
   headers: {
     type: "object",
     properties: {
