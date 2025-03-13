@@ -2,7 +2,7 @@ import { FastifyRequest, FastifyReply } from "fastify";
 import { Chat } from "models/Chat";
 import { User } from "models/User";
 
-export const fetchUserChats = async (
+export const fetchUserChatsController = async (
   request: FastifyRequest,
   reply: FastifyReply
 ) => {
