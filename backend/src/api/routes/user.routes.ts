@@ -1,5 +1,5 @@
 import { FastifyInstance, FastifyPluginAsync } from "fastify";
-import { profileRequestSchema } from "../schemas/profile.schema";
+import { profileRequestSchema } from "./schemas/profile.schema";
 import { profileController } from "@api/controllers/profile";
 
 export const userRoutes: FastifyPluginAsync = async (

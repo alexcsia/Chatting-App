@@ -1,4 +1,4 @@
-import { newChatRequest } from "@api/routes/schemas/newchat.schema";
+import { newChatRequest } from "@api/routes/schemas/newChat.schema";
 import { FastifyRequest, FastifyReply } from "fastify";
 import { Chat } from "models/Chat";
 import { User } from "models/User";
