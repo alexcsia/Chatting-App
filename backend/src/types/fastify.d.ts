@@ -5,7 +5,7 @@ declare module "fastify" {
   interface FastifyInstance {
     signJWT: (username: string, email: string) => Promise<string>;
     verifyJWT: <T = unknown>(
-      request: FastifyRequest<{ Body?: T }>,
+      request: FastifyRequest<{ Body?: T; Querystring?: T }>,
       reply: FastifyReply
     ) => Promise<void>;
     verifyRefreshJWT: (
