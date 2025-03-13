@@ -6,6 +6,8 @@ import { fetchUserChatsController } from "@api/controllers/fetchChats";
 import { fetchChatSchema } from "./schemas/fetchChat.schema";
 import { createMessageController } from "@api/controllers/createMessage";
 import { newMessageSchema } from "./schemas/newMessage.schema";
+import { fetchMessagesSchema } from "./schemas/fetchMessages.schema";
+import { fetchChatMessagesController } from "@api/controllers/fetchMessages";
 
 export const chatRoutes: FastifyPluginAsync = async (
   fastify: FastifyInstance
@@ -32,5 +34,14 @@ export const chatRoutes: FastifyPluginAsync = async (
       onRequest: [fastify.verifyJWT],
     },
     createMessageController
+  );
+
+  fastify.get(
+    "/fetch-messages",
+    {
+      schema: fetchMessagesSchema,
+      onRequest: [fastify.verifyJWT],
+    },
+    fetchChatMessagesController
   );
 };
