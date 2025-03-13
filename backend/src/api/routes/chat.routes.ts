@@ -1,4 +1,4 @@
-import { newChatController } from "@api/controllers/newChat";
+import { createChatController } from "@api/controllers/newChat";
 import { FastifyInstance } from "fastify";
 import { FastifyPluginAsync } from "fastify";
 import { newChatSchema } from "./schemas/newChat.schema";
@@ -12,6 +12,6 @@ export const chatRoutes: FastifyPluginAsync = async (
       schema: newChatSchema,
       onRequest: [fastify.verifyJWT],
     },
-    newChatController
+    createChatController
   );
 };
