@@ -11,5 +11,5 @@ export const createChatController = async (
   const targetUser = request.body.username;
   const chat = await chatServices.createChat(requestingUser, targetUser);
 
-  reply.send({ chat: chat._id });
+  reply.send({ chatId: chat._id });
 };
