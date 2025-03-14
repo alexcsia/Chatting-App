@@ -1,21 +1,15 @@
 import { newChatRequest } from "@api/routes/schemas/newChat.schema";
+import chatServices from "@services/chatService.ts";
 import { FastifyRequest, FastifyReply } from "fastify";
-import { Chat } from "models/Chat";
-import { User } from "models/User";
 
 export const createChatController = async (
   request: FastifyRequest<{ Body: newChatRequest }>,
   reply: FastifyReply
 ) => {
-  const userFromRequest = request.user.username;
-  const userFromReqId = await User.findOne({ username: userFromRequest });
+  const requestingUser = request.user.username;
 
-  const userToText = request.body.username;
-  const userToTextId = await User.findOne({ username: userToText });
+  const targetUser = request.body.username;
+  const chat = await chatServices.createChat(requestingUser, targetUser);
 
-  const newChat = await Chat.create({
-    userIds: [userFromReqId?._id, userToTextId?._id],
-  });
-
-  reply.send({ chat: newChat._id });
+  reply.send({ chat: chat._id });
 };
