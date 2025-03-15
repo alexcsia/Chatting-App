@@ -1,6 +1,6 @@
 import { FastifyRequest, FastifyReply } from "fastify";
 import { newMessageRequest } from "@api/routes/schemas/newMessage.schema";
-import { Message } from "models/Message";
+import { Message } from "@models/Message";
 
 export const createMessageController = async (
   request: FastifyRequest<{ Body: newMessageRequest }>,

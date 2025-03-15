@@ -1,6 +1,6 @@
 import mongoose, { mongo } from "mongoose";
 import { registerUser } from "../registerUser";
-import { User } from "../../../models/User";
+import { User } from "@models/User";
 
 describe("register user", () => {
   beforeAll(async () => {

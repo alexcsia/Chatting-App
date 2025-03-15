@@ -7,7 +7,7 @@ import dotenv from "dotenv";
 import { userRoutes } from "./api/routes/user.routes";
 import { chatRoutes } from "@api/routes/chat.routes";
 import jwtPlugin from "./plugins/jwt";
-import { setupWebsocketServer } from "websockets/websocketServer";
+import { setupWebsocketServer } from "./websockets/websocketServer";
 
 dotenv.config();
 const PORT = parseInt(process.env.PORT || "3000");

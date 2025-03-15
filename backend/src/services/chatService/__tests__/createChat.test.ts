@@ -1,6 +1,6 @@
 import { createChat } from "../createChat";
-import { User } from "../../../models/User";
-import { Chat } from "../../../models/Chat";
+import { User } from "@models/User";
+import { Chat } from "@models/Chat";
 import mongoose from "mongoose";
 
 describe("createChat", () => {
