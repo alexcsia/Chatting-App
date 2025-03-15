@@ -9,7 +9,7 @@ export const registerUser = async (
 ) => {
   await validators.validateUsername(username);
   await validators.validateEmail(email);
-  validators.validatePassword(password);
+  await validators.validatePassword(password);
 
   const hashedPassword = await hashPassword(password);
 
