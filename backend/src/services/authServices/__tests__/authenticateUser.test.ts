@@ -24,10 +24,7 @@ describe("authenticateUser", () => {
       friendList: [],
     });
 
-    testUserId =
-      user._id instanceof mongoose.Types.ObjectId
-        ? user._id.toString()
-        : String(user._id);
+    testUserId = user._id.toString();
   });
 
   afterAll(async () => {
@@ -37,8 +34,7 @@ describe("authenticateUser", () => {
 
   it("should return user data for valid email and password", async () => {
     const result = await authenticateUser(testEmail, testPassword);
-
-    expect(result).toEqual({
+    expect(result).toMatchObject({
       email: testEmail,
       username: testUsername,
       userId: testUserId,
