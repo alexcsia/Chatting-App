@@ -14,7 +14,8 @@
       "@errors/*": ["api/errors/*"], // Alias for errors folder
       "@services/*": ["services/*"], // Alias for services folder
       "@helpers/*": ["helpers/*"], // Alias for helpers folder
-      "@repositories/*": ["repositories/*"]
+      "@repositories/*": ["repositories/*"],
+      "@models/*": ["models/*"]
     },
     "types": ["@types/jest"]
   },
