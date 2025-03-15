@@ -1,12 +1,12 @@
 import { FastifyRequest, FastifyReply } from "fastify";
-import { fetchChatIds } from "@services/chatService/fetchChats";
+import chatService from "@services/chatService";
 
 export const fetchUserChatsController = async (
   request: FastifyRequest,
   reply: FastifyReply
 ) => {
   const user = request.user.username;
-  const chatList = await fetchChatIds(user);
+  const chatList = await chatService.fetchChatIds(user);
 
   reply.send(chatList);
 };
