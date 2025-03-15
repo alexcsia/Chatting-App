@@ -11,7 +11,7 @@ describe("createChat", () => {
   afterAll(async () => {
     await User.deleteMany({});
     await Chat.deleteMany({});
-    await mongoose.connection.close();
+    await mongoose.disconnect();
   });
 
   it("should create a chat between two existing users", async () => {

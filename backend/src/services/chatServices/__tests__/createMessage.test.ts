@@ -10,7 +10,7 @@ describe("createMessage", () => {
 
   afterAll(async () => {
     await Message.deleteMany({});
-    await mongoose.connection.close();
+    await mongoose.disconnect();
   });
 
   it("should save a sanitized message to db", async () => {

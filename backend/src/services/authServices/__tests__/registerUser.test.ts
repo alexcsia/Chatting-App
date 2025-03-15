@@ -8,7 +8,9 @@ describe("register user", () => {
   });
 
   afterAll(async () => {
-    await mongoose.connection.close();
+    await User.deleteMany();
+
+    await mongoose.disconnect();
   });
   afterEach(async () => {
     await User.deleteMany();
@@ -43,7 +45,7 @@ describe("register user", () => {
 
   it("should reject a user with a bad email", async () => {
     const user = {
-      username: "testUsername",
+      username: "testUsername1",
       email: "testEmail",
       password: "TestPassWord123!",
     };
@@ -56,7 +58,7 @@ describe("register user", () => {
 
   it("should reject a user with a bad password", async () => {
     const user = {
-      username: "testUsername",
+      username: "testUsername2",
       email: "testEmail@gmail.com",
       password: "1234",
     };

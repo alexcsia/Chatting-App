@@ -22,7 +22,7 @@ describe("fetchChatIds", () => {
   afterAll(async () => {
     await User.deleteMany();
     await Chat.deleteMany();
-    await mongoose.connection.close();
+    await mongoose.disconnect();
   });
 
   it("should fetch a user's chat IDs from the database", async () => {
