@@ -1,5 +1,5 @@
 import { FastifyRequest, FastifyReply } from "fastify";
-import chatService from "@services/chatService";
+import chatService from "@services/chatServices";
 
 export const fetchUserChatsController = async (
   request: FastifyRequest,

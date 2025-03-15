@@ -1,6 +1,6 @@
 import { FastifyRequest, FastifyReply } from "fastify";
 import { newMessageRequest } from "@api/routes/schemas/newMessage.schema";
-import chatService from "@services/chatService";
+import chatService from "@services/chatServices";
 
 export const createMessageController = async (
   request: FastifyRequest<{ Body: newMessageRequest }>,
