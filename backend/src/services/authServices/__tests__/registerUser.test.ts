@@ -4,7 +4,7 @@ import { User } from "@models/User";
 
 describe("register user", () => {
   beforeAll(async () => {
-    await mongoose.connect("mongodb://localhost:27017/testdb");
+    await mongoose.connect("mongodb://localhost:27017/chatdb");
   });
 
   afterAll(async () => {

@@ -5,7 +5,7 @@ import mongoose from "mongoose";
 
 describe("createChat", () => {
   beforeAll(async () => {
-    await mongoose.connect("mongodb://localhost:27017/testdb");
+    await mongoose.connect("mongodb://localhost:27017/chatdb");
   });
 
   afterAll(async () => {
