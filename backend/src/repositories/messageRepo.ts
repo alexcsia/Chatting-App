@@ -1,4 +1,4 @@
-import { Message } from "@models/Message";
+import { Message, IMessage } from "@models/Message";
 
 export const saveMessage = async (
   authorUsername: string,
@@ -13,4 +13,10 @@ export const saveMessage = async (
   });
 
   return newMessage;
+};
+
+export const getChatMessages = async (chatId: string): Promise<IMessage[]> => {
+  const messageList = await Message.find({ chatId: chatId });
+
+  return messageList;
 };
