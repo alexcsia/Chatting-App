@@ -1,11 +1,16 @@
-import fastify from "../../../server";
+import Fastify, { FastifyInstance } from "fastify";
+import jwtPlugin from "../../../plugins/jwt";
 import { generateAuthenticationTokens } from "../generateTokens";
 
 describe("generateAuthenticationTokens", () => {
+  let fastify: FastifyInstance;
+
   beforeAll(async () => {
-    if (!fastify.server.address()) {
-      await fastify.ready();
-    }
+    process.env.JWT_SECRET = "test_secret_key";
+
+    fastify = Fastify();
+    await fastify.register(jwtPlugin);
+    await fastify.ready();
   });
 
   afterAll(async () => {
