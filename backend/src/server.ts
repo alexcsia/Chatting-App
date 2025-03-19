@@ -1,13 +1,12 @@
 import "tsconfig-paths/register";
 import Fastify, { FastifyInstance } from "fastify";
 import { connectMongoDB } from "./database";
-import { authRoutes } from "./api/routes/index";
+import apiRoutes from "@api/routes";
 import cookie from "@fastify/cookie";
 import dotenv from "dotenv";
-import { userRoutes } from "./api/routes/user.routes";
-import { chatRoutes } from "@api/routes/chat.routes";
 import jwtPlugin from "./plugins/jwt";
 import { setupWebsocketServer } from "./websockets/websocketServer";
+import cors from "@fastify/cors";
 
 dotenv.config();
 const PORT = parseInt(process.env.PORT || "3000");
@@ -18,11 +17,17 @@ const start = async () => {
   try {
     await fastify.register(cookie);
     await fastify.register(jwtPlugin);
-    await fastify.register(authRoutes, { prefix: "/auth" });
-    await fastify.register(userRoutes);
-    await fastify.register(chatRoutes);
+    await fastify.register(apiRoutes, { prefix: "/api" });
 
     const io = setupWebsocketServer(fastify);
+
+    if (process.env.ENABLE_CORS === "true") {
+      fastify.register(cors, {
+        origin: process.env.CORS_ORIGIN || "http://localhost:8080",
+        methods: ["GET", "POST", "PUT", "DELETE"],
+        credentials: true,
+      });
+    }
 
     await fastify.listen({ port: PORT });
     console.log("Fastify listening on port", PORT);
