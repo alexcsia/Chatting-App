@@ -7,9 +7,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 import ProfileComponent from "@/components/Profile.vue";
-import profileService from "@/services/profile";
+import { useUserStore } from "@/stores/user";
 
 const userProfile = ref<{
   username: string;
@@ -17,11 +17,19 @@ const userProfile = ref<{
   friendList: string[];
 } | null>(null);
 
+const userStore = useUserStore();
+const isAuthenticated = computed(() => userStore.isAuthenticated);
+
 onMounted(async () => {
-  try {
-    userProfile.value = await profileService.getCurrentUser();
-  } catch (error) {
-    console.error("Failed to fetch profile:", error);
+  if (!isAuthenticated.value) {
+    try {
+      await userStore.fetchUser();
+      userProfile.value = userStore.user;
+    } catch (error) {
+      console.error("Failed to fetch profile:", error);
+    }
+  } else {
+    userProfile.value = userStore.user;
   }
 });
 </script>
