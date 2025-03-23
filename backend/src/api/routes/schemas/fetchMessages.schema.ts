@@ -6,7 +6,7 @@ export const fetchMessagesSchema = {
     },
     required: ["cookie"],
   },
-  querystring: {
+  params: {
     type: "object",
     required: ["chatId"],
     properties: {

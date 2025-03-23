@@ -8,15 +8,24 @@ export const newMessageSchema = {
   },
   body: {
     type: "object",
-    required: ["chatId", "content"],
+    required: ["content"],
+    properties: {
+      content: { type: "string" },
+    },
+  },
+  params: {
+    type: "object",
+    required: ["chatId"],
     properties: {
       chatId: { type: "string" },
-      content: { type: "string" },
     },
   },
 };
 
-export interface newMessageRequest {
-  chatId: string;
+export interface NewMessageBody {
   content: string;
+}
+
+export interface NewMessageParams {
+  chatId: string;
 }

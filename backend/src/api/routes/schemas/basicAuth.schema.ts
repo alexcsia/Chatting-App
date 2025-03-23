@@ -1,4 +1,4 @@
-export const fetchChatSchema = {
+export const basicAuthSchema = {
   headers: {
     type: "object",
     properties: {

@@ -5,7 +5,6 @@ import { registerController } from "../controllers/register";
 import { FastifyInstance, FastifyPluginAsync } from "fastify";
 import { authService } from "@services/authServices/authService";
 import { refreshToken } from "@api/controllers/refreshToken";
-import { userInfoController } from "@api/controllers/userInfo";
 
 export const authRoutes: FastifyPluginAsync = async (
   fastify: FastifyInstance
@@ -25,11 +24,5 @@ export const authRoutes: FastifyPluginAsync = async (
     "/refresh-token",
     { onRequest: [fastify.verifyRefreshJWT] },
     refreshToken(authService(fastify))
-  );
-
-  fastify.get(
-    "/user-info",
-    { onRequest: [fastify.verifyJWT] },
-    userInfoController
   );
 };

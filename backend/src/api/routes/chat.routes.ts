@@ -3,7 +3,7 @@ import { FastifyInstance } from "fastify";
 import { FastifyPluginAsync } from "fastify";
 import { newChatSchema } from "./schemas/newChat.schema";
 import { fetchUserChatsController } from "@api/controllers/fetchChats";
-import { fetchChatSchema } from "./schemas/fetchChat.schema";
+import { basicAuthSchema } from "./schemas/basicAuth.schema";
 import { createMessageController } from "@api/controllers/createMessage";
 import { newMessageSchema } from "./schemas/newMessage.schema";
 import { fetchMessagesSchema } from "./schemas/fetchMessages.schema";
@@ -23,12 +23,11 @@ export const chatRoutes: FastifyPluginAsync = async (
 
   fastify.get(
     "/fetch-chats",
-    { schema: fetchChatSchema, onRequest: [fastify.verifyJWT] },
+    { schema: basicAuthSchema, onRequest: [fastify.verifyJWT] },
     fetchUserChatsController
   );
-
   fastify.post(
-    "/new-message",
+    "/new-message/:chatId",
     {
       schema: newMessageSchema,
       onRequest: [fastify.verifyJWT],
@@ -37,7 +36,7 @@ export const chatRoutes: FastifyPluginAsync = async (
   );
 
   fastify.get(
-    "/fetch-messages",
+    "/fetch-messages/:chatId",
     {
       schema: fetchMessagesSchema,
       onRequest: [fastify.verifyJWT],
