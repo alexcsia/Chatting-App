@@ -9,7 +9,6 @@ export const fetchChatMessagesController = async (
   const { chatId } = request.params;
 
   const messageList = await chatService.fetchChatMessages(chatId);
-  console.log("message list controller:", messageList);
 
   reply.send(messageList);
 };
