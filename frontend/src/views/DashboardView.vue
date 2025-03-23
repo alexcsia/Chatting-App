@@ -1,6 +1,10 @@
 <template>
   <div class="dashboard">
-    <div v-if="!isAuthenticated" class="auth-container">
+    <div v-if="loading" class="loading-container">
+      <p>Loading...</p>
+    </div>
+
+    <div v-else-if="!isAuthenticated" class="auth-container">
       <h2>Welcome!</h2>
       <p>Please log in or sign up to start chatting.</p>
       <div class="button-group">
@@ -12,30 +16,27 @@
     <div v-else class="chat-container">
       <h2>Chat Dashboard</h2>
       <p>Welcome, {{ user?.username }}! Start chatting with others.</p>
-      <FriendList />
+      <FriendList :friends="user?.friends" />
     </div>
   </div>
 </template>
-
 <script setup>
-import { ref, onMounted } from "vue";
+import { computed, onMounted } from "vue";
 import { useRouter } from "vue-router";
-import profileService from "@/services/profile";
 import FriendList from "@/components/FriendList.vue";
+import { useUserStore } from "@/stores/user";
 
 const router = useRouter();
-const isAuthenticated = ref(false);
-const user = ref(null);
+const userStore = useUserStore();
 
-const checkAuth = async () => {
-  try {
-    const currentUser = await profileService.getCurrentUser();
-    user.value = currentUser;
-    isAuthenticated.value = true;
-  } catch (error) {
-    isAuthenticated.value = false;
+onMounted(() => {
+  if (!userStore.isAuthenticated) {
+    userStore.fetchUser();
   }
-};
+});
+
+const isAuthenticated = computed(() => userStore.isAuthenticated);
+const user = computed(() => userStore.user);
 
 const goToLogin = () => {
   router.push("/login");
@@ -44,8 +45,6 @@ const goToLogin = () => {
 const goToSignup = () => {
   router.push("/signup");
 };
-
-onMounted(checkAuth);
 </script>
 
 <style scoped>
@@ -94,5 +93,9 @@ onMounted(checkAuth);
   border: none;
   border-radius: 5px;
   cursor: pointer;
+}
+.loading-container {
+  text-align: center;
+  padding: 20px;
 }
 </style>

@@ -7,7 +7,7 @@ export interface UserProfile {
 }
 
 const profileService = {
-  async getCurrentUser(): Promise<UserProfile> {
+  async getCurrentUser(): Promise<UserProfile | null> {
     const response = await apiClient.get("/api/users/user-info");
     return response.data;
   },

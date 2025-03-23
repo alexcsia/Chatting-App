@@ -8,15 +8,20 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
+import { useUserStore } from "@/stores/user";
+import { useRouter } from "vue-router";
 
 const email = ref("");
 const password = ref("");
+const userStore = useUserStore();
+const router = useRouter();
 
-const emit = defineEmits<{
-  (e: "submit", credentials: { email: string; password: string }): void;
-}>();
-
-const handleSubmit = () => {
-  emit("submit", { email: email.value, password: password.value });
+const handleSubmit = async () => {
+  try {
+    await userStore.login({ email: email.value, password: password.value });
+    router.push("/dashboard");
+  } catch (error) {
+    console.error("Login failed:", error);
+  }
 };
 </script>
