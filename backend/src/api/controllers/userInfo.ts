@@ -1,15 +1,29 @@
 import { FastifyReply, FastifyRequest } from "fastify";
+import { getUserByUsername } from "@repositories/userRepo";
+import { ApiError } from "@api/errors/ApiError";
 
 export const userInfoController = async (
   request: FastifyRequest,
   reply: FastifyReply
 ) => {
   try {
-    const user = request.user;
-    if (!user) return reply.status(401).send({ error: "Unauthorized" });
+    const userFromJwt = request.user;
+    if (!userFromJwt) throw new ApiError(401, "Unauthorised");
 
-    reply.send({ username: user.username, email: user.email });
-  } catch (error) {
-    reply.status(500).send({ error: "Failed to retrieve user" });
+    const user = await getUserByUsername(userFromJwt.username);
+    if (!user) throw new ApiError(404, "User not found");
+
+    reply.send({
+      username: user.username,
+      email: user.email,
+      userId: user._id,
+      friendList: user.friendList,
+    });
+  } catch (error: unknown) {
+    if (error instanceof ApiError)
+      reply.status(error.status).send(error.message);
+    else {
+      reply.status(500).send("Internal server error");
+    }
   }
 };
