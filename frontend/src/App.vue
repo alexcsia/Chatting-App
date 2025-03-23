@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import HelloWorld from "./components/HelloWorld.vue";
+//global components that need to be displayed on every page go here.
 </script>
 
 <template>
-  <div>Welcome to my static file</div>
-  <HelloWorld msg="Vite + Vue" />
+  <router-view />
 </template>
 
 <style scoped></style>
