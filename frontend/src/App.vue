@@ -1,9 +1,25 @@
 <script setup lang="ts">
-//global components that need to be displayed on every page go here.
+import Navbar from "@/components/Navbar.vue";
 </script>
 
 <template>
-  <router-view />
+  <div class="app-container">
+    <Navbar />
+    <div class="content">
+      <router-view />
+    </div>
+  </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.content {
+  flex: 1;
+  padding-top: 60px;
+}
+</style>

@@ -14,7 +14,7 @@
     </div>
 
     <div v-else class="chat-container">
-      <h2>Chat Dashboard</h2>
+      <h2>FriendList</h2>
       <p>Welcome, {{ user?.username }}! Start chatting with others.</p>
       <FriendList :friends="user?.friends" />
     </div>
@@ -67,7 +67,8 @@ const goToSignup = () => {
   margin-top: 15px;
 }
 .login-button,
-.signup-button {
+.signup-button,
+.profile-button {
   padding: 10px 15px;
   border: none;
   border-radius: 5px;
