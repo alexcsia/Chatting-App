@@ -1,5 +1,6 @@
 import { FastifyInstance } from "fastify";
 import { JwtPayload } from "../plugins/jwt";
+import { unknown } from "zod";
 
 declare module "fastify" {
   interface FastifyInstance {
