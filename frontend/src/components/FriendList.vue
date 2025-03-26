@@ -14,6 +14,7 @@
 import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import profileService from "@/services/profile";
+import chatService from "@/services/chat";
 
 const friends = ref([]);
 const router = useRouter();
@@ -29,8 +30,10 @@ const fetchFriends = async () => {
   }
 };
 
-const openChat = (friendUsername) => {
-  router.push(`/chat/${friendUsername}`);
+const openChat = async (friendUsername) => {
+  const chatId = await chatService.getChatId(friendUsername);
+
+  router.push(`/chat/${chatId}`);
 };
 
 onMounted(fetchFriends);
