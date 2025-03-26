@@ -8,7 +8,7 @@ const chatService = {
   },
   async sendMessage(chatId: string, messageText: string) {
     const response = await apiClient.post(`/api/chats/new-message/${chatId}`, {
-      text: messageText,
+      content: messageText,
     });
     return response.data;
   },

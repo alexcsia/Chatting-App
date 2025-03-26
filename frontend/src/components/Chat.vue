@@ -28,12 +28,12 @@ import { IMessage } from "@/types/chatInterfaces";
 const route = useRoute();
 const messages = ref<IMessage[]>([]);
 const messageText = ref<string>("");
-const chatId = ref<string>("67df26077cb314552d9f990a"); //ref<string>(route.params.chatid as string);
+const chatId = ref<string>(route.params.chatId as string);
 
 const fetchMessages = async () => {
   try {
     const response = await chatService.getMessages(chatId.value);
-    console.log(response);
+    console.log("messages", response);
     messages.value = response;
   } catch (error) {
     console.error("Failed to fetch messages:", error);
