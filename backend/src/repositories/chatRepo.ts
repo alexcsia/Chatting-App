@@ -10,3 +10,13 @@ export const getUserChats = async (userId: string): Promise<IChat[]> => {
 
   return chatList;
 };
+
+export const getChatBetweenUsers = async (
+  userIds: string[]
+): Promise<IChat | null> => {
+  const chat = await Chat.findOne({
+    userIds: { $all: userIds, $size: userIds.length },
+  });
+
+  return chat;
+};
