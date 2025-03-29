@@ -18,41 +18,66 @@
     </div>
   </div>
 </template>
-
 <script lang="ts" setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, onBeforeUnmount } from "vue";
 import { useRoute } from "vue-router";
+import { io } from "socket.io-client";
 import chatService from "@/services/chat";
 import { IMessage } from "@/types/chatInterfaces";
+import { useUserStore } from "@/stores/user";
 
 const route = useRoute();
 const messages = ref<IMessage[]>([]);
 const messageText = ref<string>("");
 const chatId = ref<string>(route.params.chatId as string);
+const userStore = useUserStore();
+const authorUsername = userStore.user?.username;
+
+const socket = io("http://localhost:3000", {
+  path: "/ws",
+  transports: ["websocket"],
+});
 
 const fetchMessages = async () => {
   try {
     const response = await chatService.getMessages(chatId.value);
-    console.log("messages", response);
     messages.value = response;
   } catch (error) {
     console.error("Failed to fetch messages:", error);
   }
 };
 
+onMounted(() => {
+  fetchMessages();
+
+  socket.emit("joinChat", chatId.value);
+
+  socket.on("receiveMessage", (message: IMessage) => {
+    messages.value.push(message);
+  });
+});
+
 const sendMessage = async () => {
   if (messageText.value.trim()) {
+    const message = {
+      chatId: chatId.value,
+      content: messageText.value,
+      authorUsername: authorUsername,
+    };
+
     try {
       await chatService.sendMessage(chatId.value, messageText.value);
+      socket.emit("sendMessage", message);
       messageText.value = "";
-      fetchMessages();
     } catch (error) {
       console.error("Failed to send message:", error);
     }
   }
 };
 
-onMounted(fetchMessages);
+onBeforeUnmount(() => {
+  socket.disconnect();
+});
 </script>
 
 <style scoped>
