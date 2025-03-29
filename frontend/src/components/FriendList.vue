@@ -23,8 +23,6 @@ const user = userStore.user;
 
 const fetchFriends = async () => {
   try {
-    console.log("User data:", user);
-
     friends.value = user.friendList;
   } catch (error) {
     console.error("Failed to fetch friends:", error);
