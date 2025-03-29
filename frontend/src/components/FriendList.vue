@@ -13,15 +13,16 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
-import profileService from "@/services/profile";
+import { useUserStore } from "@/stores/user";
 import chatService from "@/services/chat";
 
 const friends = ref([]);
 const router = useRouter();
+const userStore = useUserStore();
+const user = userStore.user;
 
 const fetchFriends = async () => {
   try {
-    const user = await profileService.getCurrentUser();
     console.log("User data:", user);
 
     friends.value = user.friendList;

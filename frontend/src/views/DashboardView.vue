@@ -31,6 +31,7 @@ const userStore = useUserStore();
 
 onMounted(() => {
   if (!userStore.isAuthenticated) {
+    console.log("unauthenticated");
     userStore.fetchUser();
   }
 });
