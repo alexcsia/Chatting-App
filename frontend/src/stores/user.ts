@@ -17,6 +17,7 @@ export const useUserStore = defineStore(
       } catch (error) {
         user.value = null;
         isAuthenticated.value = false;
+        logout();
       }
     }
 
