@@ -23,7 +23,8 @@ const start = async () => {
 
     if (process.env.ENABLE_CORS === "true") {
       fastify.register(cors, {
-        origin: process.env.CORS_ORIGIN || "http://localhost:8080",
+        origin:
+          process.env.NODE_ENV === "production" ? process.env.CORS_ORIGIN : "*",
         methods: ["GET", "POST", "PUT", "DELETE"],
         credentials: true,
       });

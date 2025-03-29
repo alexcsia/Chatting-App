@@ -2,9 +2,11 @@ import { FastifyInstance } from "fastify";
 import { Server } from "socket.io";
 
 export function setupWebsocketServer(fastify: FastifyInstance) {
+  const allowedOrigin = process.env.CORS_ORIGIN;
+
   const io = new Server(fastify.server, {
     cors: {
-      origin: "*",
+      origin: process.env.NODE_ENV === "production" ? allowedOrigin : "*",
     },
     path: "/ws",
   });
