@@ -18,9 +18,9 @@ jobs:
         working-directory: ./backend
         run: |
           npm ci
-          ls -la src/models/
           npm run build -- --verbose
           npx tsc-alias --verbose
+          npm run test
 
       - name: Setup Frontend
         working-directory: ./frontend
