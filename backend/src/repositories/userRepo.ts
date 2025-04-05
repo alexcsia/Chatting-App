@@ -30,5 +30,5 @@ export const getUserByUsername = async (
   username: string
 ): Promise<IUser | null> => {
   const user = await User.findOne({ username: username });
-  return user;
+  return user as IUser;
 };
