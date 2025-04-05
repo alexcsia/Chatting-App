@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "npx jest  --runInBand --testPathIgnorePatterns='websocketServer.test.ts'",
-    "build": "tsc && tsc-alias",
+    "build": "tsc --build && tsc-alias",
     "start": "node -r tsconfig-paths/register -r module-alias/register dist/server.js",
     "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
     "lint": "eslint src"
@@ -45,6 +45,7 @@
     "@types/he": "^1.2.3",
     "@types/jest": "^29.5.14",
     "@types/node": "^22.13.2",
+    "@types/validator": "^13.12.3",
     "@typescript-eslint/eslint-plugin": "^8.24.0",
     "@typescript-eslint/parser": "^8.24.0",
     "babel-jest": "^29.7.0",

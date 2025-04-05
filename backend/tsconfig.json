@@ -3,21 +3,21 @@
     "outDir": "./dist",
     "rootDir": "./src",
     "target": "es2020",
-    "module": "commonjs" /* Specify what module code is generated. */,
+    "module": "commonjs",
     "esModuleInterop": true /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables 'allowSyntheticDefaultImports' for type compatibility. */,
     "forceConsistentCasingInFileNames": true /* Ensure that casing is correct in imports. */,
     "strict": true /* Enable all strict type-checking options. */,
     "skipLibCheck": true /* Skip type checking all .d.ts files. */,
     "baseUrl": "./src", // Base directory for resolving paths
     "paths": {
-      "@api/*": ["api/*"], // Alias for api folder
-      "@errors/*": ["api/errors/*"], // Alias for errors folder
-      "@services/*": ["services/*"], // Alias for services folder
-      "@helpers/*": ["helpers/*"], // Alias for helpers folder
+      "@api/*": ["api/*"],
+      "@errors/*": ["api/errors/*"],
+      "@services/*": ["services/*"],
+      "@helpers/*": ["helpers/*"],
       "@repositories/*": ["repositories/*"],
-      "@models/*": ["models/*"]
-    },
-    "types": ["@types/jest"]
+      "@models/*": ["models/*"],
+      "validator": ["node_modules/validator"]
+    }
   },
   "include": ["src/**/*"] //include all files inside src
 }
