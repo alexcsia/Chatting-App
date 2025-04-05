@@ -11,9 +11,15 @@ jobs:
       - name: Setup Backend
         working-directory: ./backend
         run: |
+          npm ci
           npm install
-          npm run build
-        #   npm test
+          npm run build -- --verbose
+          #npm test
+
+          echo "=== Checking Models ==="
+          ls -la src/models/
+          echo "=== Compiled Files ==="
+          ls -la dist/
 
       - name: Setup Frontend
         working-directory: ./frontend
