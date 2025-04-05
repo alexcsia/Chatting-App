@@ -1,0 +1,28 @@
+name: Deploy Chat App
+
+on: push
+
+jobs:
+  test-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Backend
+        working-directory: ./backend
+        run: |
+          npm install
+          npm run build
+          npm test
+
+      - name: Setup Frontend
+        working-directory: ./frontend
+        run: |
+          npm install
+          npm run build
+          npm test
+
+      - name: Deploy
+        run: |
+          echo "deployed"
+        # add deployment cmds
