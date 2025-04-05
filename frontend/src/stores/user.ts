@@ -11,12 +11,11 @@ export const useUserStore = defineStore(
 
     async function fetchUser() {
       try {
+        console.log("have called getCurrentUser");
         const data = await profileService.getCurrentUser();
         user.value = data;
         isAuthenticated.value = true;
       } catch (error) {
-        user.value = null;
-        isAuthenticated.value = false;
         logout();
       }
     }
@@ -26,7 +25,7 @@ export const useUserStore = defineStore(
         await authService.login(credentials);
         await fetchUser();
       } catch (error) {
-        console.error("Login failed:", error);
+        console.log("Login failed:", error);
       }
     }
 
@@ -44,6 +43,8 @@ export const useUserStore = defineStore(
     };
   },
   {
-    persist: true,
+    persist: {
+      storage: sessionStorage,
+    },
   }
 );

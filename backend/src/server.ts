@@ -1,4 +1,5 @@
 import "tsconfig-paths/register";
+import "module-alias/register";
 import Fastify, { FastifyInstance } from "fastify";
 import { connectMongoDB } from "./database";
 import apiRoutes from "@api/routes";

@@ -12,7 +12,8 @@ export function setupWebsocketServer(fastify: FastifyInstance) {
   });
 
   io.on("connection", (socket) => {
-    console.log(`User connected: ${socket.id}`);
+    // console.log(`User connected: ${socket.id}`);
+    fastify.log.info(`User connected: ${socket.id}`);
 
     socket.on("joinChat", (chatId) => {
       socket.join(chatId);
@@ -20,6 +21,10 @@ export function setupWebsocketServer(fastify: FastifyInstance) {
     });
 
     socket.on("sendMessage", (message) => {
+      if (!message?.chatId || !message?.content || !message?.authorUsername) {
+        console.error("Invalid message format", message);
+        return;
+      }
       console.log("Message received:", message);
       io.to(message.chatId).emit("receiveMessage", message);
     });
