@@ -17,7 +17,9 @@ jobs:
       - name: Verify file casing
         run: |
           cd backend
-          [ -f src/models/User.ts ] || (echo "User.ts not found!" && exit 1)
+          echo "Checking src/models directory..."
+          ls -la src/models/
+          [ -f src/models/User.ts ] || (echo "User.ts was not found!" && exit 1)
 
       - name: Setup Backend
         working-directory: ./backend
