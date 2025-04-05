@@ -1,4 +1,4 @@
-name: Deploy Chat App
+name: CI Pipeline
 
 on: push
 
@@ -14,22 +14,26 @@ jobs:
           node-version: 20
           cache: "npm"
 
-      - name: Setup Backend
+      - name: Install backend dependencies
+        working-directory: ./backend
+        run: npm ci
+
+      - name: Test backend
         working-directory: ./backend
         run: |
-          npm ci
-          npm run build -- --verbose
-          npx tsc-alias --verbose
           npm run test
 
-      - name: Setup Frontend
+      - name: Build backend
+        working-directory: ./backend
+        run: |
+          npm run build -- --verbose
+          npx tsc-alias --verbose
+
+      - name: Setup frontend
         working-directory: ./frontend
         run: |
           npm install
           npm run build
-        #   npm test
 
       - name: Deploy
-        run: |
-          echo "deployed"
-        # add deployment cmds
+        run: echo "deployed"
