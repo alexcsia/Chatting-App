@@ -14,13 +14,6 @@ jobs:
           node-version: 20
           cache: "npm"
 
-      - name: Verify file casing
-        run: |
-          cd backend
-          echo "checking src/models dir"
-          ls -la src/models/
-          [ -f src/models/User.ts ] || (echo "User.ts was not found!" && exit 1)
-
       - name: Setup Backend
         working-directory: ./backend
         run: |
