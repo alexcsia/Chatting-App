@@ -1,4 +1,5 @@
 import { getUserByUsername } from "@repositories/userRepo";
+import { IUser } from "@models/User";
 
 export const returnUserIds = async (
   ...usernames: string[]
@@ -7,7 +8,9 @@ export const returnUserIds = async (
     usernames.map((username) => getUserByUsername(username))
   );
 
-  const userIds = users.filter((user) => user != null).map((user) => user!._id);
+  const userIds = users
+    .filter((user): user is IUser => user != null)
+    .map((user) => user._id);
 
   return userIds;
 };
