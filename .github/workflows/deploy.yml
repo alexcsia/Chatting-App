@@ -17,7 +17,7 @@ jobs:
       - name: Verify file casing
         run: |
           cd backend
-          echo "Checking src/models directory..."
+          echo "checking src/models dir"
           ls -la src/models/
           [ -f src/models/User.ts ] || (echo "User.ts was not found!" && exit 1)
 
