@@ -8,18 +8,19 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+
       - name: Setup Backend
         working-directory: ./backend
         run: |
           npm ci
-          npm install
-          npm run build -- --verbose
-          #npm test
-
-          echo "=== Checking Models ==="
           ls -la src/models/
-          echo "=== Compiled Files ==="
-          ls -la dist/
+          npm run build -- --verbose
+          npx tsc-alias --verbose
 
       - name: Setup Frontend
         working-directory: ./frontend
