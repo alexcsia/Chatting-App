@@ -45,9 +45,12 @@ describe("fetchChatMessages", () => {
 
     expect(decodedMessages).toBeInstanceOf(Array);
     expect(decodedMessages.length).toBe(2);
+    console.log("content", decodedMessages[0].content);
 
-    expect(decodedMessages[0]).toBe("<script>alert('test');</script>!${}");
-    expect(decodedMessages[1]).toBe("${false}<script/><b></b>");
+    expect(decodedMessages[0].content).toBe(
+      "<script>alert('test');</script>!${}"
+    );
+    expect(decodedMessages[1].content).toBe("${false}<script/><b></b>");
   });
 
   it("should return an empty array if no messages are found", async () => {
