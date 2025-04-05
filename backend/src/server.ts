@@ -20,7 +20,7 @@ const start = async () => {
     await fastify.register(jwtPlugin);
     await fastify.register(apiRoutes, { prefix: "/api" });
 
-    const io = setupWebsocketServer(fastify);
+    setupWebsocketServer(fastify);
 
     if (process.env.ENABLE_CORS === "true") {
       fastify.register(cors, {
