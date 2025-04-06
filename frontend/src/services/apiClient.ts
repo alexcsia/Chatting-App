@@ -18,8 +18,6 @@ apiClient.interceptors.response.use(
 
     const isAuthCheckRequest = requestUrl?.endsWith("/user-info");
 
-    router.currentRoute.value.path === "/login";
-
     if (error.response?.status === 401 && !isAuthCheckRequest) {
       userStore.logout();
 
