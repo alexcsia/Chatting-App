@@ -14,14 +14,21 @@ apiClient.interceptors.response.use(
   (response) => response,
   (error) => {
     const userStore = useUserStore();
+    const requestUrl = error.config?.url;
 
-    if (error.response?.status === 401) {
+    const isAuthCheckRequest = requestUrl?.endsWith("/user-info");
+
+    router.currentRoute.value.path === "/login";
+
+    if (error.response?.status === 401 && !isAuthCheckRequest) {
       userStore.logout();
 
-      router.push({
-        path: "/login",
-        query: { redirect: router.currentRoute.value.fullPath },
-      });
+      if (!router.currentRoute.value.path.startsWith("/login")) {
+        router.push({
+          path: "/login",
+          query: { redirect: router.currentRoute.value.fullPath },
+        });
+      }
 
       return new Promise(() => {});
     }

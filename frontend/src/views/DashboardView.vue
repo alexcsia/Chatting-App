@@ -29,10 +29,10 @@ import { useUserStore } from "@/stores/user";
 const router = useRouter();
 const userStore = useUserStore();
 
-onMounted(() => {
+onMounted(async () => {
   if (!userStore.isAuthenticated) {
     console.log("unauthenticated");
-    userStore.fetchUser();
+    await userStore.fetchUser();
   }
 });
 

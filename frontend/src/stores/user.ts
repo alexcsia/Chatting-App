@@ -11,7 +11,6 @@ export const useUserStore = defineStore(
 
     async function fetchUser() {
       try {
-        console.log("have called getCurrentUser");
         const data = await profileService.getCurrentUser();
         user.value = data;
         isAuthenticated.value = true;
