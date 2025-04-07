@@ -49,8 +49,9 @@ jobs:
         with:
           workload_identity_provider: "projects/539787510516/locations/global/workloadIdentityPools/github-pool/providers/github-provider"
           service_account: "github-deployer@chat-app-456116.iam.gserviceaccount.com"
+          create_credentials_file: true
 
-      - name: Configure docker for GCloud run
+      - name: Auth docker for GCloud run
         run: gcloud auth configure-docker gcr.io --quiet
 
       - name: Setup docker buildx
