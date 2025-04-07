@@ -12,37 +12,37 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: "npm"
+      # - name: Setup Node.js
+      #   uses: actions/setup-node@v4
+      #   with:
+      #     node-version: 20
+      #     cache: "npm"
 
-      - name: Install backend dependencies
-        working-directory: ./backend
-        run: npm ci
+      # - name: Install backend dependencies
+      #   working-directory: ./backend
+      #   run: npm ci
 
-      - name: Start MongoDB
-        uses: supercharge/mongodb-github-action@1.7.0
-        with:
-          mongodb-version: 6.0
+      # - name: Start MongoDB
+      #   uses: supercharge/mongodb-github-action@1.7.0
+      #   with:
+      #     mongodb-version: 6.0
 
       # - name: Test backend
       #   working-directory: ./backend
       # run: |
       #   npm run test
 
-      - name: Build backend
-        working-directory: ./backend
-        run: |
-          npm run build -- --verbose
-          npx tsc-alias --verbose
+      # - name: Build backend
+      #   working-directory: ./backend
+      #   run: |
+      #     npm run build -- --verbose
+      #     npx tsc-alias --verbose
 
-      - name: Setup frontend
-        working-directory: ./frontend
-        run: |
-          npm install
-          npm run build
+      # - name: Setup frontend
+      #   working-directory: ./frontend
+      #   run: |
+      #     npm install
+      #     npm run build
 
       - name: Authenticate to GCloud
         uses: google-github-actions/auth@v2
