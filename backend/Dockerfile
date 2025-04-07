@@ -1,4 +1,4 @@
-FROM node:20
+FROM node:20 AS build
 
 WORKDIR /app
 
@@ -6,13 +6,20 @@ COPY package*.json ./
 
 RUN npm install
 
-RUN npm ls typescript
-RUN ./node_modules/.bin/tsc --version
-
 COPY . .
 
-RUN ./node_modules/.bin/tsc && npm run tsc-alias
+RUN npm run build
+
+FROM node:20
 
 ENV NODE_ENV=production
+
+COPY package*.json ./
+
+RUN npm install
+
+COPY --from=build /app/dist dist
+
 EXPOSE 3000
+
 CMD ["npm", "start"]
