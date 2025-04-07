@@ -40,5 +40,26 @@ jobs:
           npm install
           npm run build
 
-      - name: Deploy
-        run: echo "deployed"
+      - name: Authenticate to GCloud
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: "projects/539787510516/locations/global/workloadIdentityPools/github-pool/providers/github-provider"
+          service_account: "github-deployer@chat-app-456116.iam.gserviceaccount.com"
+
+      - name: Setup docker buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v4
+        with:
+          push: true
+          tags: gcr.io/${{ secrets.GCP_PROJECT_ID }}/chat-app:latest
+          file: ./backend/Dockerfile
+
+      - name: Deploy to GCloud run
+        uses: google-github-actions/deploy-cloudrun@v2
+        with:
+          service: "chat-app"
+          image: gcr.io/${{ secrets.GCP_PROJECT_ID }}/chat-app:latest
+          region: ${{ secrets.GCP_REGION }}
+          flags: "--cpu=1 --memory=512Mi --max-instances=2 --min-instances=0 --port=3000"
