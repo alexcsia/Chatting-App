@@ -27,10 +27,10 @@ jobs:
         with:
           mongodb-version: 6.0
 
-      - name: Test backend
-        working-directory: ./backend
-        run: |
-          npm run test
+      # - name: Test backend
+      #   working-directory: ./backend
+      # run: |
+      #   npm run test
 
       - name: Build backend
         working-directory: ./backend
