@@ -6,12 +6,13 @@ COPY package*.json ./
 
 RUN npm install
 
+RUN npm ls typescript
+RUN ./node_modules/.bin/tsc --version
+
 COPY . .
 
-RUN npx tsc --version && npm run build
+RUN ./node_modules/.bin/tsc && npm run tsc-alias
 
 ENV NODE_ENV=production
-
 EXPOSE 3000
- 
 CMD ["npm", "start"]
