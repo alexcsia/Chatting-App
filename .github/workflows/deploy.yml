@@ -51,6 +51,9 @@ jobs:
           service_account: "github-deployer@chat-app-456116.iam.gserviceaccount.com"
           create_credentials_file: true
 
+      - name: check gcloud auth
+        run: gcloud auth print-access-token
+
       - name: Auth docker for GCloud run
         run: gcloud auth configure-docker europe-west3-docker.pkg.dev --quiet
 
