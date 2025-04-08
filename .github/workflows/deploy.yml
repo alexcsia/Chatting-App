@@ -81,7 +81,7 @@ jobs:
             --min-instances=0
             --port=3000
             --verbosity=debug
-            --set-env-vars MONGODB_URI=projects/${{ secrets.GCP_PROJECT_ID }}/secrets/MONGODB_URI/versions/latest,
+            --set-secrets MONGODB_URI=projects/${{ secrets.GCP_PROJECT_ID }}/secrets/MONGODB_URI/versions/latest,
                              JWT_SECRET=projects/${{ secrets.GCP_PROJECT_ID }}/secrets/JWT_SECRET/versions/latest,
                              REFRESH_TOKEN_SECRET=projects/${{ secrets.GCP_PROJECT_ID }}/secrets/REFRESH_TOKEN_SECRET/versions/latest,
                              ENABLE_CORS=projects/${{ secrets.GCP_PROJECT_ID }}/secrets/ENABLE_CORS/versions/latest,
