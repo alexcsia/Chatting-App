@@ -76,8 +76,8 @@ jobs:
           region: ${{ secrets.GCP_REGION }}
           flags: --cpu=1 --memory=512Mi --max-instances=2 --min-instances=0 --port=3000 --verbosity=debug
           secrets: |
-            MONGODB_URI=projects/${{ secrets.GCP_PROJECT_ID }}/secrets/MONGODB_URI/versions/latest
-            JWT_SECRET=projects/${{ secrets.GCP_PROJECT_ID }}/secrets/JWT_SECRET/versions/latest
-            REFRESH_TOKEN_SECRET=projects/${{ secrets.GCP_PROJECT_ID }}/secrets/REFRESH_TOKEN_SECRET/versions/latest
-            ENABLE_CORS=projects/${{ secrets.GCP_PROJECT_ID }}/secrets/ENABLE_CORS/versions/latest
-            CORS_ORIGIN=projects/${{ secrets.GCP_PROJECT_ID }}/secrets/CORS_ORIGIN/versions/latest
+            MONGODB_URI=MONGODB_URI:latest
+            JWT_SECRET=JWT_SECRET:latest
+            REFRESH_TOKEN_SECRET=REFRESH_TOKEN_SECRET:latest
+            ENABLE_CORS=ENABLE_CORS:latest
+            CORS_ORIGIN=CORS_ORIGIN:latest
