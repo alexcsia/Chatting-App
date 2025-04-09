@@ -35,7 +35,7 @@ const start = async () => {
 
     await fastify.listen({
       port: PORT,
-      host: process.env.NODE_ENV === "production" ? "127.0.0.1" : "0.0.0.0",
+      host: "0.0.0.0",
     });
     console.log("Fastify listening on port", PORT);
 
