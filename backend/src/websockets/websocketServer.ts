@@ -39,6 +39,7 @@ export function setupWebsocketServer(fastify: FastifyInstance) {
 
     socket.on("joinChat", (chatId) => {
       socket.join(chatId);
+      socket.data.chatId = chatId;
       activeChats.add(chatId);
       console.log(`User ${socket.id} joined chat ${chatId}`);
     });
@@ -62,6 +63,12 @@ export function setupWebsocketServer(fastify: FastifyInstance) {
 
     socket.on("disconnect", () => {
       console.log(`User disconnected: ${socket.id}`);
+      const chatId = socket.data.chatId;
+      console.log(socket.data);
+      if (chatId) {
+        activeChats.delete(chatId);
+        console.log("removed from active chats:", chatId);
+      }
     });
   });
 
