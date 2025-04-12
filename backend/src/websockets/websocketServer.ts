@@ -1,5 +1,15 @@
 import { FastifyInstance } from "fastify";
 import { Server } from "socket.io";
+import { pub, sub } from "../redis";
+
+interface IChatMessage {
+  content: string;
+  chatId: string;
+  authorUsername: string;
+  timeStamp: string;
+}
+
+const activeChats = new Set<string>();
 
 export function setupWebsocketServer(fastify: FastifyInstance) {
   const allowedOrigin = process.env.CORS_ORIGIN;
@@ -11,22 +21,43 @@ export function setupWebsocketServer(fastify: FastifyInstance) {
     path: "/ws",
   });
 
+  sub.subscribe("chat", () => {
+    console.log("subscribed to redis channel");
+  });
+
+  sub.on("message", (channel, rawMessage) => {
+    const message: IChatMessage = JSON.parse(rawMessage);
+    console.log("message", message, "channel", channel);
+
+    if (activeChats.has(message.chatId)) {
+      io.to(message.chatId).emit("receiveMessage", message);
+    }
+  });
+
   io.on("connection", (socket) => {
-    // console.log(`User connected: ${socket.id}`);
-    fastify.log.info(`User connected: ${socket.id}`);
+    console.log(`User connected: ${socket.id}`);
 
     socket.on("joinChat", (chatId) => {
       socket.join(chatId);
+      activeChats.add(chatId);
       console.log(`User ${socket.id} joined chat ${chatId}`);
     });
 
-    socket.on("sendMessage", (message) => {
-      if (!message?.chatId || !message?.content || !message?.authorUsername) {
+    //use zod to validate
+    socket.on("sendMessage", (message: IChatMessage) => {
+      if (
+        !message?.chatId ||
+        !message?.content ||
+        !message?.authorUsername
+        // || !message?.timeStamp
+      ) {
         console.error("Invalid message format", message);
         return;
       }
+
       console.log("Message received:", message);
-      io.to(message.chatId).emit("receiveMessage", message);
+      pub.publish("chat", JSON.stringify(message));
+      // io.to(message.chatId).emit("receiveMessage", message);
     });
 
     socket.on("disconnect", () => {
