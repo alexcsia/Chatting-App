@@ -4,7 +4,7 @@ import { AuthServiceType } from "@services/authServices/authService";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { setAccessTokenCookie } from "./helpers/setAuthCookies";
 
-export const refreshToken =
+export const refreshTokenController =
   (authService: AuthServiceType) =>
   async (request: FastifyRequest, reply: FastifyReply) => {
     const userId = request.refreshUser?.userId;
