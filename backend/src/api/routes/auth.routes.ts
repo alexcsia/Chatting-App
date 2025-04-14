@@ -1,10 +1,10 @@
 import { loginRequestSchema } from "./schemas/login.schema";
-import { loginController } from "../controllers/login";
+import { loginController } from "../controllers/auth/login";
 import { registerRequestSchema } from "./schemas/register.schema";
-import { registerController } from "../controllers/register";
+import { registerController } from "../controllers/auth/register";
 import { FastifyInstance, FastifyPluginAsync } from "fastify";
 import { authService } from "@services/authServices/authService";
-import { refreshToken } from "@api/controllers/refreshToken";
+import { refreshToken } from "@api/controllers/auth/refreshToken";
 
 export const authRoutes: FastifyPluginAsync = async (
   fastify: FastifyInstance
