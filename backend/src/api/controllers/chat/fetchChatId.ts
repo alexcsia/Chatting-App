@@ -1,5 +1,5 @@
 import { ApiError } from "@api/errors/ApiError";
-import { FetchChatQuery } from "@api/routes/schemas/fetchChat.schema";
+import { FetchChatQuery } from "@api/routes/schemas/chat/fetchChat.schema";
 import chatServices from "@services/chatServices";
 import { FastifyReply, FastifyRequest } from "fastify";
 

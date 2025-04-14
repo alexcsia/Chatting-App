@@ -1,5 +1,5 @@
 import { FastifyRequest, FastifyReply } from "fastify";
-import { fetchMessagesQuery } from "@api/routes/schemas/fetchMessages.schema";
+import { fetchMessagesQuery } from "@api/routes/schemas/chat/fetchMessages.schema";
 import chatService from "@services/chatServices";
 
 export const fetchChatMessagesController = async (

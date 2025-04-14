@@ -1,6 +1,6 @@
 import { FastifyRequest, FastifyReply } from "fastify";
 import { ApiError } from "@api/errors/ApiError";
-import { loginRequest } from "@api/routes/schemas/login.schema";
+import { loginRequest } from "@api/routes/schemas/auth/login.schema";
 import jwtUtils from "@helpers/jwtUtils";
 import { AuthServiceType } from "@services/authServices/authService";
 

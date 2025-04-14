@@ -4,7 +4,7 @@ import { ApiError } from "@api/errors/ApiError";
 import {
   NewMessageBody,
   NewMessageParams,
-} from "@api/routes/schemas/newMessage.schema";
+} from "@api/routes/schemas/chat/newMessage.schema";
 
 export const createMessageController = async (
   request: FastifyRequest<{ Body: NewMessageBody; Params: NewMessageParams }>,

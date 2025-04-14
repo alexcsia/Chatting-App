@@ -1,6 +1,6 @@
 import { FastifyInstance, FastifyPluginAsync } from "fastify";
-import { userInfoController } from "@api/controllers/userInfo";
-import { basicAuthSchema } from "./schemas/basicAuth.schema";
+import { userInfoController } from "@api/controllers/user/userInfo";
+import { basicAuthSchema } from "./schemas/auth/basicAuth.schema";
 
 export const userRoutes: FastifyPluginAsync = async (
   fastify: FastifyInstance

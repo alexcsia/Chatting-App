@@ -1,6 +1,6 @@
-import { loginRequestSchema } from "./schemas/login.schema";
+import { loginRequestSchema } from "./schemas/auth/login.schema";
 import { loginController } from "../controllers/auth/login";
-import { registerRequestSchema } from "./schemas/register.schema";
+import { registerRequestSchema } from "./schemas/auth/register.schema";
 import { registerController } from "../controllers/auth/register";
 import { FastifyInstance, FastifyPluginAsync } from "fastify";
 import { authService } from "@services/authServices/authService";

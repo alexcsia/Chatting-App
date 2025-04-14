@@ -1,15 +1,18 @@
-import { createChatController } from "@api/controllers/createChat";
+import { createChatController } from "@api/controllers/chat/createChat";
 import { FastifyInstance } from "fastify";
 import { FastifyPluginAsync } from "fastify";
-import { newChatSchema } from "./schemas/newChat.schema";
-import { fetchUserChatsController } from "@api/controllers/fetchChats";
-import { basicAuthSchema } from "./schemas/basicAuth.schema";
-import { createMessageController } from "@api/controllers/createMessage";
-import { newMessageSchema } from "./schemas/newMessage.schema";
-import { fetchMessagesSchema } from "./schemas/fetchMessages.schema";
-import { fetchChatMessagesController } from "@api/controllers/fetchMessages";
-import { FetchChatQuery, fetchChatSchema } from "./schemas/fetchChat.schema";
-import { fetchChatIdController } from "@api/controllers/fetchChatId";
+import { newChatSchema } from "./schemas/chat/newChat.schema";
+import { fetchUserChatsController } from "@api/controllers/chat/fetchChats";
+import { basicAuthSchema } from "./schemas/auth/basicAuth.schema";
+import { createMessageController } from "@api/controllers/chat/createMessage";
+import { newMessageSchema } from "./schemas/chat/newMessage.schema";
+import { fetchMessagesSchema } from "./schemas/chat/fetchMessages.schema";
+import { fetchChatMessagesController } from "@api/controllers/chat/fetchMessages";
+import {
+  FetchChatQuery,
+  fetchChatSchema,
+} from "./schemas/chat/fetchChat.schema";
+import { fetchChatIdController } from "@api/controllers/chat/fetchChatId";
 
 export const chatRoutes: FastifyPluginAsync = async (
   fastify: FastifyInstance
