@@ -1,28 +1,12 @@
-import { loginRequestSchema } from "./schemas/auth/login.schema";
-import { loginController } from "../controllers/auth/login";
-import { registerRequestSchema } from "./schemas/auth/register.schema";
-import { registerController } from "../controllers/auth/register";
 import { FastifyInstance, FastifyPluginAsync } from "fastify";
-import { authService } from "@services/authServices/authService";
-import { refreshToken } from "@api/controllers/auth/refreshToken";
+import { loginRoute } from "./auth/login";
+import { registerRoute } from "./auth/register";
+import { refreshTokenRoute } from "./auth/refreshToken";
 
 export const authRoutes: FastifyPluginAsync = async (
   fastify: FastifyInstance
 ) => {
-  fastify.post(
-    "/login",
-    { schema: { body: loginRequestSchema } },
-    loginController(authService(fastify))
-  );
-  fastify.post(
-    "/register",
-    { schema: { body: registerRequestSchema } },
-    registerController(authService())
-  );
-
-  fastify.get(
-    "/refresh-token",
-    { onRequest: [fastify.verifyRefreshJWT] },
-    refreshToken(authService(fastify))
-  );
+  loginRoute(fastify);
+  registerRoute(fastify);
+  refreshTokenRoute(fastify);
 };
