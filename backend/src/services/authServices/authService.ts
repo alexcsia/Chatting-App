@@ -1,7 +1,7 @@
-import { registerUser } from "./registerUser";
-import { authenticateUser } from "./authenticateUser";
+import { registerUser } from "./utils/registerUser";
+import { authenticateUser } from "./utils/authenticateUser";
 import { FastifyInstance } from "fastify";
-import { generateAuthenticationTokens } from "./generateTokens";
+import { generateAuthenticationTokens } from "./utils/generateTokens";
 
 export type AuthServiceType = ReturnType<typeof authService>;
 

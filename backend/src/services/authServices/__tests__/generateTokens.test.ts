@@ -1,6 +1,6 @@
 import Fastify, { FastifyInstance } from "fastify";
 import jwtPlugin from "../../../plugins/jwt";
-import { generateAuthenticationTokens } from "../generateTokens";
+import { generateAuthenticationTokens } from "../utils/generateTokens";
 
 describe("generateAuthenticationTokens", () => {
   let fastify: FastifyInstance;
