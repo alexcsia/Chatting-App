@@ -1,4 +1,4 @@
-import { createChat } from "../createChat";
+import { createChat } from "../utils/createChat";
 import { User } from "@models/User";
 import { Chat } from "@models/Chat";
 import mongoose from "mongoose";

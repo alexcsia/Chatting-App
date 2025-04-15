@@ -1,8 +1,8 @@
-import { createChat } from "./createChat";
-import { createMessage } from "./createMessage";
-import { fetchChatIds } from "./fetchChats";
-import { fetchChatMessages } from "./fetchMessages";
-import { fetchChatId } from "./fetchChatId";
+import { createChat } from "./utils/createChat";
+import { createMessage } from "./utils/createMessage";
+import { fetchChatIds } from "./utils/fetchChats";
+import { fetchChatMessages } from "./utils/fetchMessages";
+import { fetchChatId } from "./utils/fetchChatId";
 
 export default {
   fetchChatMessages,

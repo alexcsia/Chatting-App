@@ -1,4 +1,4 @@
-import { fetchChatIds } from "../fetchChats";
+import { fetchChatIds } from "../utils/fetchChats";
 import mongoose from "mongoose";
 import { User } from "@models/User";
 import { Chat } from "@models/Chat";
