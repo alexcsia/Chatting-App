@@ -4,6 +4,7 @@ import { receiveMessage } from "redis/sub";
 import { IMessage } from "@models/Message";
 import { subscribeRedis } from "redis/sub";
 import { publishToRedis } from "redis/pub";
+import { messageSchema } from "./validation/message.schema";
 
 const activeChats = new Set<string>();
 
@@ -36,16 +37,15 @@ export function setupWebsocketServer(fastify: FastifyInstance) {
     });
 
     //use zod to validate
-    socket.on("sendMessage", (message: IMessage) => {
-      if (
-        !message?.chatId ||
-        !message?.content ||
-        !message?.authorUsername ||
-        !message?.timeStamp
-      ) {
-        console.error("Invalid message format", message);
+    socket.on("sendMessage", (receivedMessage) => {
+      const result = messageSchema.safeParse(receivedMessage);
+
+      if (!result.success) {
+        console.error("invalid message format", result.error.format());
         return;
       }
+
+      const message = result.data;
 
       console.log("Message received:", message);
 
