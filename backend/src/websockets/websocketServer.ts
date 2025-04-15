@@ -1,13 +1,9 @@
 import { FastifyInstance } from "fastify";
 import { Server } from "socket.io";
 import { pub, sub } from "../redis";
-
-interface IChatMessage {
-  content: string;
-  chatId: string;
-  authorUsername: string;
-  timeStamp: string;
-}
+import { receiveMessage } from "redis/sub";
+import { IMessage } from "@models/Message";
+import { subscribeRedis } from "redis/sub";
 
 const activeChats = new Set<string>();
 
@@ -21,14 +17,9 @@ export function setupWebsocketServer(fastify: FastifyInstance) {
     path: "/ws",
   });
 
-  sub.subscribe("chat", () => {
-    console.log("subscribed to redis channel");
-  });
+  subscribeRedis();
 
-  sub.on("message", (channel, rawMessage) => {
-    const message: IChatMessage = JSON.parse(rawMessage);
-    console.log("message", message, "channel", channel);
-
+  receiveMessage((message: IMessage) => {
     if (activeChats.has(message.chatId)) {
       io.to(message.chatId).emit("receiveMessage", message);
     }
@@ -45,12 +36,12 @@ export function setupWebsocketServer(fastify: FastifyInstance) {
     });
 
     //use zod to validate
-    socket.on("sendMessage", (message: IChatMessage) => {
+    socket.on("sendMessage", (message: IMessage) => {
       if (
         !message?.chatId ||
         !message?.content ||
-        !message?.authorUsername
-        // || !message?.timeStamp
+        !message?.authorUsername ||
+        !message?.timeStamp
       ) {
         console.error("Invalid message format", message);
         return;
@@ -58,7 +49,6 @@ export function setupWebsocketServer(fastify: FastifyInstance) {
 
       console.log("Message received:", message);
       pub.publish("chat", JSON.stringify(message));
-      // io.to(message.chatId).emit("receiveMessage", message);
     });
 
     socket.on("disconnect", () => {
