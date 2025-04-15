@@ -33,7 +33,9 @@ const chatId = ref<string>(route.params.chatId as string);
 const userStore = useUserStore();
 const authorUsername = userStore.user?.username;
 
-const socket = io("http://localhost:3000", {
+const backendURL = import.meta.env.VITE_BACKEND_URL;
+
+const socket = io(backendURL, {
   path: "/ws",
   transports: ["websocket"],
 });
