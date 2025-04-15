@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { authenticateUser } from "../authenticateUser";
+import { authenticateUser } from "../utils/authenticateUser";
 import { ApiError } from "@api/errors/ApiError";
 import { User } from "@models/User";
 import bcrypt from "bcrypt";

@@ -1,5 +1,5 @@
 import mongoose, { mongo } from "mongoose";
-import { registerUser } from "../registerUser";
+import { registerUser } from "../utils/registerUser";
 import { User } from "@models/User";
 
 describe("register user", () => {
