@@ -1,7 +1,7 @@
 import he from "he";
 import mongoose from "mongoose";
 import { Message } from "@models/Message";
-import { createMessage } from "../createMessage";
+import { createMessage } from "../utils/createMessage";
 
 describe("createMessage", () => {
   beforeAll(async () => {

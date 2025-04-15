@@ -1,6 +1,6 @@
 import { Chat } from "@models/Chat";
 import mongoose from "mongoose";
-import { fetchChatMessages } from "../fetchMessages";
+import { fetchChatMessages } from "../utils/fetchMessages";
 import { Message } from "@models/Message";
 import he from "he";
 import { IChat } from "@models/Chat";
