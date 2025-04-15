@@ -1,9 +1,9 @@
 import { FastifyInstance } from "fastify";
 import { Server } from "socket.io";
-import { pub, sub } from "../redis";
 import { receiveMessage } from "redis/sub";
 import { IMessage } from "@models/Message";
 import { subscribeRedis } from "redis/sub";
+import { publishToRedis } from "redis/pub";
 
 const activeChats = new Set<string>();
 
@@ -48,7 +48,8 @@ export function setupWebsocketServer(fastify: FastifyInstance) {
       }
 
       console.log("Message received:", message);
-      pub.publish("chat", JSON.stringify(message));
+
+      publishToRedis(message);
     });
 
     socket.on("disconnect", () => {
