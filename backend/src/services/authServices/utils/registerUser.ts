@@ -1,5 +1,5 @@
-import { hashPassword } from "./helpers/passwordUtils";
-import validators from "./helpers/validators";
+import { hashPassword } from "../helpers/passwordUtils";
+import validators from "../helpers/validators";
 import { createUser } from "@repositories/userRepo";
 
 export const registerUser = async (

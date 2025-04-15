@@ -1,5 +1,5 @@
 import { saveMessage } from "@repositories/messageRepo";
-import { sanitizeMessage } from "./helpers/sanitizeMessageContent";
+import { sanitizeMessage } from "../helpers/sanitizeMessageContent";
 
 export const createMessage = async (
   authorUsername: string,

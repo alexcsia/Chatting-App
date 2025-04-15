@@ -1,5 +1,5 @@
 import { getChatMessages } from "@repositories/messageRepo";
-import { decodeContent } from "./helpers/decodeSanitizedMessage";
+import { decodeContent } from "../helpers/decodeSanitizedMessage";
 
 export const fetchChatMessages = async (chatId: string) => {
   const messages = await getChatMessages(chatId);

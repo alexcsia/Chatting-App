@@ -1,7 +1,7 @@
-import { authRoutes } from "./auth.routes";
-import { chatRoutes } from "./chat.routes";
+import { authRoutes } from "./authRoutes";
+import { chatRoutes } from "./chatRoutes";
 import { FastifyInstance } from "fastify";
-import { userRoutes } from "./user.routes";
+import { userRoutes } from "./userRoutes";
 
 export default async function apiRoutes(fastify: FastifyInstance) {
   fastify.register(authRoutes, { prefix: "/auth" });

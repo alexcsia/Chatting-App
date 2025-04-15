@@ -1,6 +1,6 @@
 import { getChatBetweenUsers } from "@repositories/chatRepo";
 import { ApiError } from "@api/errors/ApiError";
-import { returnUserIds } from "./helpers/returnUserIds";
+import { returnUserIds } from "../helpers/returnUserIds";
 
 export const fetchChatId = async (...usernames: string[]) => {
   const userIds = await returnUserIds(...usernames);
