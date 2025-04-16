@@ -5,6 +5,7 @@ import redisUtils from "redis";
 import { messageSchema } from "./validation/message.schema";
 import { joinChat } from "./events";
 import { sendMessage } from "./events/sendMessage";
+import { disconnect } from "./events/disconnect";
 
 const activeChats = new Set<string>();
 
@@ -29,16 +30,7 @@ export function setupWebsocketServer(fastify: FastifyInstance) {
   io.on("connection", (socket) => {
     socket.on("joinChat", joinChat(socket, activeChats));
     socket.on("sendMessage", sendMessage(socket));
-
-    socket.on("disconnect", () => {
-      console.log(`User disconnected: ${socket.id}`);
-      const chatId = socket.data.chatId;
-      console.log(socket.data);
-      if (chatId) {
-        activeChats.delete(chatId);
-        console.log("removed from active chats:", chatId);
-      }
-    });
+    socket.on("disconnect", disconnect(socket, activeChats));
   });
 
   return io;
