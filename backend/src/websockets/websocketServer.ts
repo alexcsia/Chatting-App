@@ -4,6 +4,7 @@ import { IMessage } from "@models/Message";
 import redisUtils from "redis";
 import { messageSchema } from "./validation/message.schema";
 import { joinChat } from "./events";
+import { sendMessage } from "./events/sendMessage";
 
 const activeChats = new Set<string>();
 
@@ -27,21 +28,7 @@ export function setupWebsocketServer(fastify: FastifyInstance) {
 
   io.on("connection", (socket) => {
     socket.on("joinChat", joinChat(socket, activeChats));
-
-    socket.on("sendMessage", (receivedMessage) => {
-      const result = messageSchema.safeParse(receivedMessage);
-
-      if (!result.success) {
-        console.error("invalid message format", result.error.format());
-        return;
-      }
-
-      const message = result.data;
-
-      console.log("Message received:", message);
-
-      redisUtils.publishToRedis(message);
-    });
+    socket.on("sendMessage", sendMessage(socket));
 
     socket.on("disconnect", () => {
       console.log(`User disconnected: ${socket.id}`);
