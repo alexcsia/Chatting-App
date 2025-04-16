@@ -1,5 +1,5 @@
 import Fastify from "fastify";
-import { setupWebsocketServer } from "../websockets/websocketServer";
+import { setupWebsocketServer } from "websockets/websocketServer";
 import { Server } from "socket.io";
 import { io as Client } from "socket.io-client";
 
