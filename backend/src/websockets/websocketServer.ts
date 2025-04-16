@@ -1,9 +1,7 @@
 import { FastifyInstance } from "fastify";
 import { Server } from "socket.io";
-import { receiveMessage } from "redis/sub";
 import { IMessage } from "@models/Message";
-import { subscribeRedis } from "redis/sub";
-import { publishToRedis } from "redis/pub";
+import redisUtils from "redis";
 import { messageSchema } from "./validation/message.schema";
 
 const activeChats = new Set<string>();
@@ -18,9 +16,9 @@ export function setupWebsocketServer(fastify: FastifyInstance) {
     path: "/ws",
   });
 
-  subscribeRedis();
+  redisUtils.subscribeRedis();
 
-  receiveMessage((message: IMessage) => {
+  redisUtils.receiveMessage((message: IMessage) => {
     if (activeChats.has(message.chatId)) {
       io.to(message.chatId).emit("receiveMessage", message);
     }
@@ -36,7 +34,6 @@ export function setupWebsocketServer(fastify: FastifyInstance) {
       console.log(`User ${socket.id} joined chat ${chatId}`);
     });
 
-    //use zod to validate
     socket.on("sendMessage", (receivedMessage) => {
       const result = messageSchema.safeParse(receivedMessage);
 
@@ -49,7 +46,7 @@ export function setupWebsocketServer(fastify: FastifyInstance) {
 
       console.log("Message received:", message);
 
-      publishToRedis(message);
+      redisUtils.publishToRedis(message);
     });
 
     socket.on("disconnect", () => {
