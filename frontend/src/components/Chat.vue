@@ -65,6 +65,7 @@ const sendMessage = async () => {
       chatId: chatId.value,
       content: messageText.value,
       authorUsername: authorUsername,
+      timeStamp: Date.now(),
     };
 
     try {
