@@ -3,6 +3,7 @@ import { Server } from "socket.io";
 import { IMessage } from "@models/Message";
 import redisUtils from "redis";
 import { messageSchema } from "./validation/message.schema";
+import { joinChat } from "./events";
 
 const activeChats = new Set<string>();
 
@@ -25,14 +26,7 @@ export function setupWebsocketServer(fastify: FastifyInstance) {
   });
 
   io.on("connection", (socket) => {
-    console.log(`User connected: ${socket.id}`);
-
-    socket.on("joinChat", (chatId) => {
-      socket.join(chatId);
-      socket.data.chatId = chatId;
-      activeChats.add(chatId);
-      console.log(`User ${socket.id} joined chat ${chatId}`);
-    });
+    socket.on("joinChat", joinChat(socket, activeChats));
 
     socket.on("sendMessage", (receivedMessage) => {
       const result = messageSchema.safeParse(receivedMessage);
