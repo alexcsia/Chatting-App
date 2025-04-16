@@ -2,10 +2,7 @@ import { FastifyInstance } from "fastify";
 import { Server } from "socket.io";
 import { IMessage } from "@models/Message";
 import redisUtils from "redis";
-import { messageSchema } from "./validation/message.schema";
-import { joinChat } from "./events";
-import { sendMessage } from "./events/sendMessage";
-import { disconnect } from "./events/disconnect";
+import { joinChat, disconnect, sendMessage } from "./events";
 
 const activeChats = new Set<string>();
 

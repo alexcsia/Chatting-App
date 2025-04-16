@@ -1,3 +1,4 @@
 import { joinChat } from "./joinChat";
-
-export { joinChat };
+import { disconnect } from "./disconnect";
+import { sendMessage } from "./sendMessage";
+export { joinChat, disconnect, sendMessage };
