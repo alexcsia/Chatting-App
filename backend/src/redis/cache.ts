@@ -1,4 +1,5 @@
 import { IMessage } from "@models/Message";
+import { getChatMessages } from "@repositories/messageRepo";
 import { cache } from "redis";
 
 export const cacheMessages = async (chatId: string, messages: IMessage[]) => {
@@ -20,4 +21,15 @@ export const getCachedMessages = async (
 
 export const deleteCachedMessages = async (chatId: string) => {
   await cache.del(`chat:messages:${chatId}`);
+};
+
+export const updateCachedMessages = async (
+  chatId: string,
+  newMessage: IMessage
+) => {
+  const cached = await getCachedMessages(chatId);
+
+  const updatedCache = cached ? [...cached, newMessage] : [newMessage];
+
+  cacheMessages(chatId, updatedCache);
 };

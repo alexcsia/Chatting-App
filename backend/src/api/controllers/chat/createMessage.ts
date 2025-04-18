@@ -5,7 +5,7 @@ import {
   NewMessageBody,
   NewMessageParams,
 } from "@api/routes/schemas/chat/newMessage.schema";
-import { deleteCachedMessages } from "redis/cache";
+import { deleteCachedMessages, updateCachedMessages } from "redis/cache";
 
 export const createMessageController = async (
   request: FastifyRequest<{ Body: NewMessageBody; Params: NewMessageParams }>,
@@ -22,7 +22,7 @@ export const createMessageController = async (
       chatId
     );
 
-    await deleteCachedMessages(chatId);
+    await updateCachedMessages(chatId, newMessage);
 
     return reply.send(newMessage);
   } catch (error: unknown) {

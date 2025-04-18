@@ -10,7 +10,7 @@ export const fetchChatMessagesController = async (
   const { chatId } = request.params;
 
   const cachedMessages = await getCachedMessages(chatId);
-  if (cachedMessages) reply.send(cachedMessages);
+  if (cachedMessages) return reply.send(cachedMessages);
   const messageList = await chatService.fetchChatMessages(chatId);
 
   await cacheMessages(chatId, messageList);
