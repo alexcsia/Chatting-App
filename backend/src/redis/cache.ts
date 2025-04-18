@@ -9,3 +9,11 @@ export const cacheMessages = async (chatId: string, messages: IMessage[]) => {
     60 * 5
   ); //5 mins
 };
+
+export const getCachedMessages = async (
+  chatId: string
+): Promise<IMessage[] | null> => {
+  const messages = await cache.get(`chat:messages:${chatId}`);
+
+  return messages ? JSON.parse(messages) : null;
+};
