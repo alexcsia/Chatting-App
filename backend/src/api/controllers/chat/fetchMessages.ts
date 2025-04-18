@@ -1,7 +1,7 @@
 import { FastifyRequest, FastifyReply } from "fastify";
 import { fetchMessagesQuery } from "@api/routes/schemas/chat/fetchMessages.schema";
 import chatService from "@services/chatServices";
-import { cacheMessages } from "redis/cache";
+import { cacheMessages, getCachedMessages } from "redis/cache";
 
 export const fetchChatMessagesController = async (
   request: FastifyRequest<{ Params: fetchMessagesQuery }>,
@@ -9,6 +9,8 @@ export const fetchChatMessagesController = async (
 ) => {
   const { chatId } = request.params;
 
+  const cachedMessages = await getCachedMessages(chatId);
+  if (cachedMessages) reply.send(cachedMessages);
   const messageList = await chatService.fetchChatMessages(chatId);
 
   await cacheMessages(chatId, messageList);
