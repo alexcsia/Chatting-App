@@ -3,6 +3,7 @@ import { Server } from "socket.io";
 import { IMessage } from "@models/Message";
 import redisUtils from "redis";
 import { joinChat, disconnect, sendMessage } from "./events";
+import { deleteCachedMessages } from "redis/cache";
 
 const activeChats = new Set<string>();
 
@@ -21,6 +22,7 @@ export function setupWebsocketServer(fastify: FastifyInstance) {
   redisUtils.receiveMessage((message: IMessage) => {
     if (activeChats.has(message.chatId)) {
       io.to(message.chatId).emit("receiveMessage", message);
+      deleteCachedMessages(message.chatId);
     }
   });
 
