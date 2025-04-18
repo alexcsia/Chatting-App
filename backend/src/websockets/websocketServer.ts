@@ -5,7 +5,7 @@ import redisUtils from "redis";
 import { joinChat, disconnect, sendMessage } from "./events";
 import { deleteCachedMessages } from "redis/cache";
 
-const activeChats = new Set<string>();
+const activeChats = new Map<string, Set<string>>();
 
 export function setupWebsocketServer(fastify: FastifyInstance) {
   const allowedOrigin = process.env.CORS_ORIGIN;
