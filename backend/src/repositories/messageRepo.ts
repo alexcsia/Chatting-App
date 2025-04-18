@@ -16,7 +16,9 @@ export const saveMessage = async (
 };
 
 export const getChatMessages = async (chatId: string): Promise<IMessage[]> => {
-  const messageList = await Message.find({ chatId: chatId });
+  const messageList = await Message.find({ chatId: chatId })
+    .sort({ timeStamp: -1 })
+    .limit(20);
 
-  return messageList;
+  return messageList.reverse();
 };
