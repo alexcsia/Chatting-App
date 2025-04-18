@@ -3,7 +3,7 @@ import { Server } from "socket.io";
 import { IMessage } from "@models/Message";
 import redisUtils from "redis";
 import { joinChat, disconnect, sendMessage } from "./events";
-import { deleteCachedMessages, updateCachedMessages } from "redis/cache";
+import { updateCachedMessages } from "redis/cache";
 
 const activeChats = new Map<string, Set<string>>();
 

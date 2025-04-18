@@ -1,7 +1,5 @@
 import { IMessage } from "@models/Message";
-import { getChatMessages } from "@repositories/messageRepo";
 import { cache } from "redis";
-
 export const cacheMessages = async (chatId: string, messages: IMessage[]) => {
   await cache.set(
     `chat:messages:${chatId}`,
@@ -29,7 +27,15 @@ export const updateCachedMessages = async (
 ) => {
   const cached = await getCachedMessages(chatId);
 
-  const updatedCache = cached ? [...cached, newMessage] : [newMessage];
+  if (!cached) return;
 
-  cacheMessages(chatId, updatedCache);
+  if (!cached.some((msg) => msg._id === newMessage._id)) {
+    const updatedCache = [...cached, newMessage];
+    await cache.set(
+      `chat:messages:${chatId}`,
+      JSON.stringify(updatedCache),
+      "EX",
+      60 * 5
+    );
+  }
 };
