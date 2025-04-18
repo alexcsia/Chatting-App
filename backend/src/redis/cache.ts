@@ -1,3 +1,4 @@
+import chat from "@api/routes/chat";
 import { IMessage } from "@models/Message";
 import { cache } from "redis";
 
@@ -16,4 +17,8 @@ export const getCachedMessages = async (
   const messages = await cache.get(`chat:messages:${chatId}`);
 
   return messages ? JSON.parse(messages) : null;
+};
+
+export const deleteCachedMessages = async (chatId: string) => {
+  await cache.del(`chats:messages:${chatId}`);
 };
