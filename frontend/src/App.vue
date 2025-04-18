@@ -6,7 +6,12 @@ import Navbar from "@/components/Navbar.vue";
   <div class="app-container">
     <Navbar />
     <div class="content">
-      <router-view />
+      <router-view v-slot="{ Component, route }">
+        <component
+          :is="Component"
+          :key="route.name === 'chat' ? route.fullPath : route.name"
+        />
+      </router-view>
     </div>
   </div>
 </template>

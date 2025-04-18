@@ -12,7 +12,7 @@ const routes: Array<RouteRecordRaw> = [
   { path: "/dashboard", component: DashboardView },
   { path: "/signup", component: SignUpView },
   { path: "/profile", component: ProfileView },
-  { path: "/chat/:chatId", component: ChatView },
+  { path: "/chat/:chatId", component: ChatView, name: "chat" },
 ];
 
 const router = createRouter({
