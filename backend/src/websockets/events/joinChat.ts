@@ -1,17 +1,24 @@
+import { FastifyInstance } from "fastify";
 import { Socket } from "socket.io";
 
 export function joinChat(
   socket: Socket,
-  activeChats: Map<string, Set<string>>
+  activeChats: Map<string, Set<string>>,
+  fastify: FastifyInstance
 ) {
   return (chatId: string) => {
-    socket.join(chatId);
-    socket.data.chatId = chatId;
-    if (!activeChats.get(chatId)) {
-      activeChats.set(chatId, new Set());
-    }
-    activeChats.get(chatId)?.add(socket.id);
+    try {
+      socket.join(chatId);
+      socket.data.chatId = chatId;
 
-    console.log(`User ${socket.id} joined chat ${chatId}`);
+      if (!activeChats.get(chatId)) {
+        activeChats.set(chatId, new Set());
+      }
+      activeChats.get(chatId)?.add(socket.id);
+
+      fastify.log.info(`user ${socket.id} joined chat ${chatId}`);
+    } catch (err) {
+      fastify.log.error({ err }, "error in joinChat");
+    }
   };
 }
