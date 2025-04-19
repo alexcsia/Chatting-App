@@ -41,7 +41,6 @@ async function jwtPlugin(fastify: FastifyInstance) {
       try {
         await request.jwtVerify({ onlyCookie: true });
       } catch (error) {
-        console.error("JWT verification failed:", error);
         reply.code(401).send({ message: "Invalid or expired token" });
       }
     }
@@ -58,7 +57,6 @@ async function jwtPlugin(fastify: FastifyInstance) {
         const token = request.cookies.refreshToken;
         if (!token) throw new Error("Refresh token missing");
         const decoded = this.jwt.verify(token);
-        console.log("verified refresh token:", decoded);
 
         const validatedPayload = RefreshTokenPayloadSchema.safeParse(decoded);
         if (!validatedPayload.success) {
@@ -67,7 +65,6 @@ async function jwtPlugin(fastify: FastifyInstance) {
 
         request.refreshUser = validatedPayload.data;
       } catch (error) {
-        console.error("Refresh token verification failed:", error);
         reply.code(401).send({ message: "Invalid or expired refresh token" });
       }
     }
