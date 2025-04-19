@@ -26,11 +26,11 @@ export const createMessageController = async (
 
     return reply.send(newMessage);
   } catch (error: unknown) {
-    if (error instanceof ApiError)
-      return reply.status(error.status).send({ error: error.message });
-    else {
-      console.error(error);
-      return reply.status(500).send({ error: "Internal server error" });
+    if (error instanceof ApiError) {
+      reply.status(error.status).send({ message: error.message });
+    } else {
+      console.error("Unexpected error:", error);
+      return reply.status(500).send({ error: "An unexpected error occurred" });
     }
   }
 };

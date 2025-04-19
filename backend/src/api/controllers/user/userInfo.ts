@@ -20,10 +20,11 @@ export const userInfoController = async (
       friendList: user.friendList,
     });
   } catch (error: unknown) {
-    if (error instanceof ApiError)
-      reply.status(error.status).send(error.message);
-    else {
-      reply.status(500).send("Internal server error");
+    if (error instanceof ApiError) {
+      reply.status(error.status).send({ message: error.message });
+    } else {
+      console.error("Unexpected error:", error);
+      return reply.status(500).send({ error: "An unexpected error occurred" });
     }
   }
 };
