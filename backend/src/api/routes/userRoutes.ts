@@ -6,4 +6,5 @@ export const userRoutes: FastifyPluginAsync = async (
 ) => {
   user.userInfoRoute(fastify);
   user.addFriendRoute(fastify);
+  user.findUsersRoute(fastify);
 };
