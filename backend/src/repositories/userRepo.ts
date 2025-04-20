@@ -42,3 +42,14 @@ export const addToFriendList = async (
     { $addToSet: { friendList: usernameToAdd } }
   );
 };
+
+export const findMatchingUsers = async (username: string) => {
+  const users = await User.find({
+    $or: [
+      { username: username },
+      { username: { $regex: username, $options: "i" } },
+    ],
+  });
+
+  return users;
+};
