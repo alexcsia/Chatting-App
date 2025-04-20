@@ -32,3 +32,13 @@ export const getUserByUsername = async (
   const user = await User.findOne({ username: username });
   return user as IUser;
 };
+
+export const addToFriendList = async (
+  requestingUser: IUser,
+  usernameToAdd: string
+) => {
+  await User.updateOne(
+    { username: requestingUser.username },
+    { $addToSet: { friendList: usernameToAdd } }
+  );
+};
