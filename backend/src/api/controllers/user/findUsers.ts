@@ -4,13 +4,15 @@ import { findUsersQuery } from "@api/routes/schemas/user/findUsers.schema";
 import userServices from "@services/userServices";
 
 export const findUsersController = async (
-  request: FastifyRequest<{ Params: findUsersQuery }>,
+  request: FastifyRequest<{ Querystring: findUsersQuery }>,
   reply: FastifyReply
 ) => {
   try {
-    const usersToFind = request.params.username;
+    const usersToFind = request.query.username;
 
-    await userServices.findUsers(usersToFind);
+    const userList = await userServices.findUsers(usersToFind);
+
+    reply.send(userList);
   } catch (error: unknown) {
     if (error instanceof ApiError) {
       reply.status(error.status).send({ message: error.message });

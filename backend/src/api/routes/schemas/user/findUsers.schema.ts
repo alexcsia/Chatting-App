@@ -6,12 +6,12 @@ export const findUsersSchema = {
     },
     required: ["cookie"],
   },
-  params: {
+  querystring: {
     type: "object",
-    required: ["username"],
     properties: {
       username: { type: "string" },
     },
+    required: ["username"],
   },
 };
 
