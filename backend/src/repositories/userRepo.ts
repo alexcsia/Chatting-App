@@ -49,7 +49,7 @@ export const findMatchingUsers = async (username: string) => {
       { username: username },
       { username: { $regex: username, $options: "i" } },
     ],
-  });
+  }).select("username");
 
   return users;
 };
