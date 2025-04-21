@@ -9,10 +9,9 @@ export const findUsersController = async (
 ) => {
   try {
     const usersToFind = request.query.username;
-
     const userList = await userServices.findUsers(usersToFind);
 
-    reply.send(userList);
+    reply.send({ userlist: userList });
   } catch (error: unknown) {
     if (error instanceof ApiError) {
       reply.status(error.status).send({ message: error.message });
