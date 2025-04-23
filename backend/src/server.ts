@@ -28,8 +28,9 @@ const start = async () => {
             ? process.env.CORS_ORIGIN
             : "http://localhost:8080",
         methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-        allowedHeaders: ["Content-Type", "Authorization"],
+        allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
         credentials: true,
+        preflightContinue: true,
       });
     }
 
