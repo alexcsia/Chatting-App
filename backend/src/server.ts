@@ -34,6 +34,16 @@ const start = async () => {
         credentials: true,
       });
     }
+
+    console.log(
+      "cors origin:",
+      process.env.CORS_ORIGIN,
+      "node env",
+      process.env.NODE_ENV,
+      "enable cors",
+      process.env.ENABLE_CORS
+    );
+
     await fastify.listen({
       port: PORT,
       host: "0.0.0.0",
