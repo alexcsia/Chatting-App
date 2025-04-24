@@ -1,6 +1,6 @@
 import { Socket } from "socket.io";
 import { messageSchema } from "websockets/validation/message.schema";
-import redisUtils from "redis";
+import redisUtils from "redisDb";
 import { FastifyInstance } from "fastify";
 
 export function sendMessage(socket: Socket, fastify: FastifyInstance) {
