@@ -1,9 +1,9 @@
 import { FastifyInstance } from "fastify";
 import { Server } from "socket.io";
 import { IMessage } from "@models/Message";
-import redisUtils from "redis";
+import redisUtils from "redisDb";
 import { joinChat, disconnect, sendMessage } from "./events";
-import { updateCachedMessages } from "redis/cache";
+import { updateCachedMessages } from "redisDb/cache";
 
 const activeChats = new Map<string, Set<string>>();
 
