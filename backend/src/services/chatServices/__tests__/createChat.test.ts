@@ -14,6 +14,10 @@ describe("createChat", () => {
     await mongoose.disconnect();
   });
 
+  beforeEach(async () => {
+    await User.deleteMany({});
+  });
+
   it("should create a chat between two existing users", async () => {
     const user1 = await User.create({
       username: "user1",

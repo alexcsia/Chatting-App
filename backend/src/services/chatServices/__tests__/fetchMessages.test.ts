@@ -45,7 +45,6 @@ describe("fetchChatMessages", () => {
 
     expect(decodedMessages).toBeInstanceOf(Array);
     expect(decodedMessages.length).toBe(2);
-    console.log("content", decodedMessages[0].content);
 
     expect(decodedMessages[0].content).toBe(
       "<script>alert('test');</script>!${}"
