@@ -19,16 +19,26 @@ export function setupWebsocketServer(fastify: FastifyInstance) {
 
   redisUtils.subscribeRedis();
 
-  redisUtils.receiveMessage(async (message: IMessage) => {
-    try {
-      if (activeChats.has(message.chatId)) {
-        io.to(message.chatId).emit("receiveMessage", message);
-        await updateCachedMessages(message.chatId, message);
+  function receiveMessage(
+    io: Server,
+    activeChats: Map<string, Set<string>>,
+    fastify: FastifyInstance
+  ) {
+    return async (message: IMessage) => {
+      try {
+        if (activeChats.has(message.chatId)) {
+          io.to(message.chatId).emit("receiveMessage", message);
+          await updateCachedMessages(message.chatId, message);
+        }
+      } catch (err) {
+        fastify.log.error(
+          { err, message },
+          "error when receiving redis pubsub"
+        );
       }
-    } catch (err) {
-      fastify.log.error({ err, message }, "error when receiving redis pubsub");
-    }
-  });
+    };
+  }
+  redisUtils.receiveMessage(receiveMessage(io, activeChats, fastify));
 
   io.on("connection", (socket) => {
     socket.on("joinChat", joinChat(socket, activeChats, fastify));
