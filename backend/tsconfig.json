@@ -16,7 +16,10 @@
       "@services/*": ["services/*"],
       "@helpers/*": ["helpers/*"],
       "@repositories/*": ["repositories/*"],
-      "@models/*": ["models/*"]
+      "@models/*": ["models/*"],
+      "redisDb": ["redisDb/index.ts"],
+      "redisDb/*": ["redisDb/*"],
+      "websockets/*": ["websockets/*"]
     }
   },
   "include": ["src/**/*"]
