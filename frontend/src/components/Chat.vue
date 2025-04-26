@@ -53,18 +53,9 @@ const fetchMessages = async () => {
 onMounted(() => {
   fetchMessages();
 
-  socket.on("connect", () => {
-    console.log("connected to ws server:", socket.id);
-  });
-
-  socket.on("connect_error", (err) => {
-    console.error("connection error:", err);
-  });
-
   socket.emit("joinChat", chatId.value);
 
   socket.on("receiveMessage", (message: IMessage) => {
-    console.log("message received:", message);
     messages.value.push(message);
   });
 });
@@ -81,7 +72,6 @@ const sendMessage = async () => {
     try {
       await chatService.sendMessage(chatId.value, messageText.value);
       socket.emit("sendMessage", message);
-      console.log("message sent", message);
       messageText.value = "";
     } catch (error) {
       console.error("Failed to send message:", error);
