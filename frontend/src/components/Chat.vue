@@ -81,6 +81,7 @@ const sendMessage = async () => {
     try {
       await chatService.sendMessage(chatId.value, messageText.value);
       socket.emit("sendMessage", message);
+      console.log("message sent", message);
       messageText.value = "";
     } catch (error) {
       console.error("Failed to send message:", error);
