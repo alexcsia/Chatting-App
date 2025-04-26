@@ -16,7 +16,7 @@ import { connectRedis } from "redisDb";
 
 const PORT = parseInt(process.env.PORT || "3000");
 
-const fastify: FastifyInstance = Fastify({ logger: false });
+const fastify: FastifyInstance = Fastify({ logger: true });
 
 const start = async () => {
   try {
