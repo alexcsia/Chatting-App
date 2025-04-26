@@ -1,6 +1,6 @@
 import { createClient } from "redis";
 import { publishToRedis } from "./pub";
-import { subscribeRedis, receiveMessage } from "./sub";
+import { subscribeRedis } from "./sub";
 
 const pub = createClient({ url: process.env.REDIS_URL });
 const sub = createClient({ url: process.env.REDIS_URL });
@@ -23,4 +23,4 @@ async function connectRedis() {
 }
 
 export { pub, sub, cache, connectRedis };
-export default { publishToRedis, subscribeRedis, receiveMessage };
+export default { publishToRedis, subscribeRedis };

@@ -17,8 +17,7 @@ export function setupWebsocketServer(fastify: FastifyInstance) {
       path: "/ws",
     });
 
-    redisUtils.subscribeRedis();
-    redisUtils.receiveMessage(receiveMessage(io, activeChats, fastify));
+    redisUtils.subscribeRedis(receiveMessage(io, activeChats, fastify));
 
     io.on("connection", (socket) => {
       console.log("socket connected:", socket.id);

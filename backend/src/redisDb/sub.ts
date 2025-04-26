@@ -3,19 +3,15 @@ import { IMessage } from "@models/Message";
 
 let subscribed = false;
 
-export const subscribeRedis = () => {
+export const subscribeRedis = (callback: (message: IMessage) => void) => {
   if (subscribed) return;
   subscribed = true;
 
-  sub.subscribe("chat", () => {
-    console.log("subscribed to redis channel");
-  });
-};
-
-export const receiveMessage = (callback: (message: IMessage) => void) => {
-  sub.on("message", (channel, rawMessage) => {
+  sub.subscribe("chat", (rawMessage) => {
     const message: IMessage = JSON.parse(rawMessage);
-    console.log("message", message, "channel", channel);
+    console.log("redis sub message:", message);
     callback(message);
   });
+
+  console.log("subscribed to redis channel");
 };
