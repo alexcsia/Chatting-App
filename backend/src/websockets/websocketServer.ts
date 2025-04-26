@@ -21,6 +21,7 @@ export function setupWebsocketServer(fastify: FastifyInstance) {
     redisUtils.receiveMessage(receiveMessage(io, activeChats, fastify));
 
     io.on("connection", (socket) => {
+      console.log("socket connected:", socket.id);
       socket.on("joinChat", joinChat(socket, activeChats, fastify));
       socket.on("sendMessage", sendMessage(socket, fastify));
       socket.on("disconnect", disconnect(socket, activeChats, fastify));
