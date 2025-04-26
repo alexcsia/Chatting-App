@@ -38,6 +38,7 @@ const backendURL = import.meta.env.VITE_BACKEND_URL;
 const socket = io(backendURL, {
   path: "/ws",
   transports: ["websocket"],
+  secure: true,
 });
 
 const fetchMessages = async () => {
