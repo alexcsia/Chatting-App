@@ -8,6 +8,7 @@ export function disconnect(
 ) {
   return () => {
     try {
+      console.log(`user disconnected: ${socket.id}`);
       fastify.log.info(`user disconnected: ${socket.id}`);
       const chatId = socket.data.chatId;
 

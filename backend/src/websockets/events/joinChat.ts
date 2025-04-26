@@ -17,6 +17,7 @@ export function joinChat(
       activeChats.get(chatId)?.add(socket.id);
 
       fastify.log.info(`user ${socket.id} joined chat ${chatId}`);
+      console.log(`user ${socket.id} joined chat ${chatId}`);
     } catch (err) {
       fastify.log.error({ err }, "error in joinChat");
     }
