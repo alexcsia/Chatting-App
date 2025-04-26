@@ -11,7 +11,6 @@ export function receiveMessage(
   return async (message: IMessage) => {
     try {
       if (activeChats.has(message.chatId)) {
-        console.log("received a message", message.content);
         io.to(message.chatId).emit("receiveMessage", message);
         await updateCachedMessages(message.chatId, message);
       }

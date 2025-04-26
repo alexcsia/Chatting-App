@@ -17,7 +17,6 @@ export function sendMessage(socket: Socket, fastify: FastifyInstance) {
 
     const message = result.data;
     fastify.log.info({ message }, "message received");
-    console.log({ message }, "message sent");
 
     redisUtils.publishToRedis(message);
   };
