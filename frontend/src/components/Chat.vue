@@ -56,6 +56,7 @@ onMounted(() => {
   socket.emit("joinChat", chatId.value);
 
   socket.on("receiveMessage", (message: IMessage) => {
+    console.log(message);
     messages.value.push(message);
   });
 });
