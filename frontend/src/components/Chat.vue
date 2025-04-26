@@ -53,10 +53,18 @@ const fetchMessages = async () => {
 onMounted(() => {
   fetchMessages();
 
+  socket.on("connect", () => {
+    console.log("connected to ws server:", socket.id);
+  });
+
+  socket.on("connect_error", (err) => {
+    console.error("connection error:", err);
+  });
+
   socket.emit("joinChat", chatId.value);
 
   socket.on("receiveMessage", (message: IMessage) => {
-    console.log(message);
+    console.log("message received:", message);
     messages.value.push(message);
   });
 });
