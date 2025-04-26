@@ -7,24 +7,28 @@ import { receiveMessage } from "./events/receiveMessage";
 const activeChats = new Map<string, Set<string>>();
 
 export function setupWebsocketServer(fastify: FastifyInstance) {
-  const allowedOrigin = process.env.CORS_ORIGIN;
+  try {
+    const allowedOrigin = process.env.CORS_ORIGIN;
 
-  const io = new Server(fastify.server, {
-    cors: {
-      origin: process.env.NODE_ENV === "production" ? allowedOrigin : "*",
-    },
-    path: "/ws",
-  });
+    const io = new Server(fastify.server, {
+      cors: {
+        origin: process.env.NODE_ENV === "production" ? allowedOrigin : "*",
+      },
+      path: "/ws",
+    });
 
-  redisUtils.subscribeRedis();
+    redisUtils.subscribeRedis();
+    redisUtils.receiveMessage(receiveMessage(io, activeChats, fastify));
 
-  redisUtils.receiveMessage(receiveMessage(io, activeChats, fastify));
-
-  io.on("connection", (socket) => {
-    socket.on("joinChat", joinChat(socket, activeChats, fastify));
-    socket.on("sendMessage", sendMessage(socket, fastify));
-    socket.on("disconnect", disconnect(socket, activeChats, fastify));
-  });
-
-  return io;
+    io.on("connection", (socket) => {
+      socket.on("joinChat", joinChat(socket, activeChats, fastify));
+      socket.on("sendMessage", sendMessage(socket, fastify));
+      socket.on("disconnect", disconnect(socket, activeChats, fastify));
+    });
+    console.log("ws server is set up");
+    return io;
+  } catch (error: unknown) {
+    fastify.log.error("error setting up ws server:", error);
+    throw error;
+  }
 }
