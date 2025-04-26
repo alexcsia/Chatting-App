@@ -37,6 +37,8 @@ const start = async () => {
     }
 
     await fastify.register(apiRoutes, { prefix: "/api" });
+    await connectMongoDB();
+    await connectRedis();
 
     setupWebsocketServer(fastify);
 
@@ -45,9 +47,6 @@ const start = async () => {
       host: "0.0.0.0",
     });
     console.log("Fastify listening on port", PORT);
-
-    await connectMongoDB();
-    await connectRedis();
   } catch (err) {
     fastify.log.error(err);
     process.exit(1);
