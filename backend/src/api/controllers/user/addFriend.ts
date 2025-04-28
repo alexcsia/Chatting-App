@@ -13,6 +13,7 @@ export const addFriendController = async (
     const userToAdd = request.body.username;
 
     await userServices.addUserToFriendList(requestingUser, userToAdd);
+    reply.status(200).send();
   } catch (error: unknown) {
     if (error instanceof ApiError) {
       reply.status(error.status).send({ message: error.message });

@@ -13,7 +13,7 @@ export const registerController =
       const { username, email, password } = request.body;
 
       await authService.registerUser(username, email, password);
-      reply.send("received");
+      reply.status(201).send("received");
     } catch (error: unknown) {
       if (error instanceof ApiError) {
         reply.status(error.status).send({ message: error.message });

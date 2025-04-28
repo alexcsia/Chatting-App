@@ -13,7 +13,7 @@ export const createChatController = async (
     const targetUser = request.body.username;
     const chat = await chatServices.createChat(requestingUser, targetUser);
 
-    reply.send({ chatId: chat._id });
+    reply.status(201).send({ chatId: chat._id });
   } catch (error: unknown) {
     if (error instanceof ApiError) {
       reply.status(error.status).send({ message: error.message });

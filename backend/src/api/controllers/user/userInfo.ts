@@ -13,7 +13,7 @@ export const userInfoController = async (
     const user = await getUserByUsername(userFromJwt.username);
     if (!user) throw new ApiError(404, "User not found");
 
-    reply.send({
+    reply.status(200).send({
       username: user.username,
       email: user.email,
       userId: user._id,
