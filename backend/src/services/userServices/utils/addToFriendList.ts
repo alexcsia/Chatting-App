@@ -1,16 +1,23 @@
 import { getUserByUsername } from "@repositories/userRepo";
 import { ApiError } from "@api/errors/ApiError";
 import { addToFriendList } from "@repositories/userRepo";
-
 export const addUserToFriendList = async (
-  requestingUser: string,
+  requestingUsername: string,
   usernameToAdd: string
 ) => {
-  const user = await getUserByUsername(requestingUser);
-  if (!user) throw new ApiError(404, "User not found");
-
-  if (user.username === usernameToAdd)
+  if (requestingUsername === usernameToAdd) {
     throw new ApiError(400, "Cannot add yourself to friendlist");
+  }
 
-  await addToFriendList(user, usernameToAdd);
+  const requestingUser = await getUserByUsername(requestingUsername);
+  if (!requestingUser) {
+    throw new ApiError(404, "User not found");
+  }
+
+  const friendUser = await getUserByUsername(usernameToAdd);
+  if (!friendUser) {
+    throw new ApiError(404, "User not found");
+  }
+
+  await addToFriendList(requestingUser, usernameToAdd);
 };
