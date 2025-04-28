@@ -1,11 +1,10 @@
 import mongoose from "mongoose";
 
-export async function connectMongoDB() {
-  try {
-    const uri = process.env.MONGODB_URI;
-    if (uri) await mongoose.connect(uri, { dbName: "chatdb" });
-    console.log("successfully connected to mongoDB");
-  } catch (error: unknown) {
-    if (error instanceof Error) console.log(error.message);
+export const connectMongoDB = async (mongoUri?: string) => {
+  const uri = mongoUri || process.env.MONGO_URI;
+  if (!uri) {
+    throw new Error("mongodb uri is missing");
   }
-}
+  await mongoose.connect(uri);
+  console.log("successfully connected to mongoDB");
+};
