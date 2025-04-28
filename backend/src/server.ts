@@ -49,7 +49,7 @@ const start = async () => {
     console.log("Fastify listening on port", PORT);
   } catch (err) {
     fastify.log.error(err);
-    process.exit(1);
+    if (process.env.NODE_ENV == "production") process.exit(1);
   }
 };
 
