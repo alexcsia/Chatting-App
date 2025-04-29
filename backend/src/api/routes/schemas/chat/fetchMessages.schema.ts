@@ -13,6 +13,13 @@ export const fetchMessagesSchema = {
       chatId: { type: "string" },
     },
   },
+  querystring: {
+    type: "object",
+    properties: {
+      before: { type: "string", pattern: "^[0-9]+$" },
+    },
+    required: [],
+  },
 };
 
 export interface fetchMessagesQuery {
