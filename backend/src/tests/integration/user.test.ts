@@ -1,3 +1,15 @@
+jest.mock("redis", () => ({
+  createClient: jest.fn(() => ({
+    connect: jest.fn(),
+    on: jest.fn(),
+    subscribe: jest.fn(),
+    publish: jest.fn(),
+    set: jest.fn(),
+    get: jest.fn(),
+    quit: jest.fn(),
+  })),
+}));
+
 import fastify from "../../server";
 import { connectMongoDB } from "../../database";
 import { User } from "@models/User";
