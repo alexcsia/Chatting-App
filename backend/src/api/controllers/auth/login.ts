@@ -20,7 +20,7 @@ export const loginController =
 
       jwtUtils.setAuthCookies(tokens.accessJwt, tokens.refreshJwt, reply);
 
-      return reply.send({ message: "Login successful" });
+      return reply.status(200).send({ message: "Login successful" });
     } catch (error: unknown) {
       if (error instanceof ApiError) {
         reply.status(error.status).send({ message: error.message });

@@ -9,20 +9,19 @@ export const refreshTokenController =
   async (request: FastifyRequest, reply: FastifyReply) => {
     try {
       const userId = request.refreshUser?.userId;
-
-      if (!userId) throw new ApiError(500, "Invalid token");
+      if (!userId) throw new ApiError(401, "Invalid token");
       const user = await getUserByID(userId);
 
       const { generateAuthenticationTokens } = authService;
 
-      if (!user) throw new ApiError(500, "User not found");
+      if (!user) throw new ApiError(404, "User not found");
 
       const tokens = await generateAuthenticationTokens(user, {
         refreshToken: false,
       });
       setAccessTokenCookie(tokens.accessJwt, reply);
 
-      reply.send();
+      reply.status(200).send();
     } catch (error: unknown) {
       if (error instanceof ApiError) {
         reply.status(error.status).send({ message: error.message });
