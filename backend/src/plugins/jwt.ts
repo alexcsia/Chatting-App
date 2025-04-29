@@ -2,6 +2,7 @@ import { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
 import fastifyJwt from "@fastify/jwt";
 import fp from "fastify-plugin";
 import { z } from "zod";
+import jwt from "jsonwebtoken";
 
 const RefreshTokenPayloadSchema = z
   .object({
@@ -13,8 +14,15 @@ const RefreshTokenPayloadSchema = z
 
 async function jwtPlugin(fastify: FastifyInstance) {
   if (!process.env.JWT_SECRET) {
-    throw new Error("JWT_SECRET is not defined in environment variables");
+    throw new Error("JWT_SECRET  is not defined in environment variables");
   }
+  if (!process.env.REFRESH_TOKEN_SECRET) {
+    throw new Error(
+      "REFRESH_TOKEN_SECRET  is not defined in environment variables"
+    );
+  }
+
+  const REFRESH_SECRET = process.env.REFRESH_TOKEN_SECRET;
 
   await fastify.register(fastifyJwt, {
     secret: process.env.JWT_SECRET,
@@ -56,7 +64,8 @@ async function jwtPlugin(fastify: FastifyInstance) {
       try {
         const token = request.cookies.refreshToken;
         if (!token) throw new Error("Refresh token missing");
-        const decoded = this.jwt.verify(token);
+
+        const decoded = jwt.verify(token, REFRESH_SECRET);
 
         const validatedPayload = RefreshTokenPayloadSchema.safeParse(decoded);
         if (!validatedPayload.success) {
