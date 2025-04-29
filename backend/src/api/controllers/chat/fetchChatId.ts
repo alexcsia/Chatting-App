@@ -13,7 +13,7 @@ export const fetchChatIdController = async (
 
     const usernames: string[] = [usernameFromReq, usernameFromQuery];
 
-    const chatId = await chatServices.fetchChatId(...usernames);
+    const chatId = await chatServices.fetchChatId(usernames);
 
     reply.send(chatId);
   } catch (error: unknown) {
