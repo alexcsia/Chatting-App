@@ -31,6 +31,7 @@ jobs:
         working-directory: ./backend
         env:
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          REFRESH_TOKEN_SECRET: ${{secrets.REFRESH_TOKEN_SECRET}}
         run: |
           npm run test
 
