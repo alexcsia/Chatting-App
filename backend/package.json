@@ -4,7 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "npx jest  --runInBand  --detectOpenHandles",
+    "test": "npx jest  --runInBand --clearCache --detectOpenHandles",
     "build": "tsc && tsc-alias",
     "start": "node dist/server.js",
     "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
