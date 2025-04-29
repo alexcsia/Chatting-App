@@ -15,8 +15,17 @@ export const saveMessage = async (
   return newMessage;
 };
 
-export const getChatMessages = async (chatId: string): Promise<IMessage[]> => {
-  const messageList = await Message.find({ chatId: chatId })
+export const getChatMessages = async (
+  chatId: string,
+  before?: number
+): Promise<IMessage[]> => {
+  const query: any = { chatId };
+
+  if (before) {
+    query.timeStamp = { $lt: before };
+  }
+
+  const messageList = await Message.find(query)
     .sort({ timeStamp: -1 })
     .limit(20);
 
