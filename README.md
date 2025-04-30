@@ -11,24 +11,32 @@ real-time messaging with caching and persistance, as well container-to-container
 
   - Sign up, log in, log out
   - Secure authentication using JWT
+  - User data is validated and stored securely using MongoDB Atlas
 
 - **Real-Time Chat**:
 
-  - Send and receive messages in real-time.
-  - Chat with other users who are online or offline.
+  - Send and receive messages in real-time via websockets
+  - Chat with other users who are online or offline
   - Infinite scrolling chat
 
 - **Friend Management**:
 
-  - Add other users as friends.
-  - View your list of friends and be able to message them or start new chats.
+  - Add other users as friends
+  - View your list of friends and be able to message them or start new chats
 
 - **Profile Page**:
 
   - View your active chats and profile
 
 - **Performance**:
-  - Caching of chat messages
+
+  - Caching of chat messages to reduce database load
+  - Lazy loading avoids loading the entire message history at once
+
+- **Scalability**
+
+  - Users can talk to each other no matter if they are connected to different containers
+  - The backend can be deployed with multiple container instances (via Google Cloud Run) to handle increased load
 
 ---
 
