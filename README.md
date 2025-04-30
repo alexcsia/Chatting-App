@@ -1,6 +1,7 @@
-# Chatting Application
+# Chatting Application (a better name is in the works)
 
-A real-time chatting application built with **MongoDB**, **TypeScript**, **Fastify**, **Vue.js**, and **Redis**. This application provides secure user authentication, real-time messaging and friend list management
+A chatting application that relies on websockets and provides secure user authentication,
+real-time messaging with caching and persistance, as well container-to-container communication using Pub/Sub.
 
 ---
 
@@ -8,47 +9,38 @@ A real-time chatting application built with **MongoDB**, **TypeScript**, **Fasti
 
 - **User Authentication & Authorization**:
 
-  - Secure JWT-based authentication.
-  - User registration and login.
+  - Sign up, log in, log out
+  - Secure authentication using JWT
 
 - **Real-Time Chat**:
 
   - Send and receive messages in real-time.
-  - Chat with other users who are online.
+  - Chat with other users who are online or offline.
+  - Infinite scrolling chat
 
 - **Friend Management**:
 
   - Add other users as friends.
-  - View your list of friends and their online status.
+  - View your list of friends and be able to message them or start new chats.
 
 - **Profile Page**:
 
-  - Update your profile information (e.g., name, profile picture).
-  - View your activity and chat history.
+  - View your active chats and profile
 
-- **Caching with Redis**:
-  - Improve performance with Redis caching for frequently accessed data, such as messages.
+- **Performance**:
+  - Caching of chat messages
 
 ---
 
-## Technologies Used
+## Tech stack
 
-- **Backend**:
-
-  - **Fastify**: A fast and low-overhead web framework for Node.js.
-  - **TypeScript**: For type-safe and scalable code.
-  - **MongoDB**: A NoSQL database for storing user data, messages, and friend lists.
-  - **Redis**: For caching and improving application performance.
-  - **JSON Web Tokens (JWT)**: For secure user authentication and authorization.
-  - **Redis**: For message caching
-
-- **Frontend**:
-
-  - **Vue.js**: A progressive JavaScript framework for building user interfaces.
-  - **Axios**: For making HTTP requests to the backend.
-
-- **Real-Time Communication**:
-  - **WebSocket**: For real-time messaging between users.
+- **Frontend**: Vue.js, Axios
+- **Backend**: Fastify(Node.js), Websockets, Typescript
+- **Database**: MongoDB Atlas
+- **Caching and Pub/Sub**: Redis Cloud
+- **Containerization**: Docker
+- **Deployment**: Google Cloud Run
+- **Testing**: Jest
 
 ---
 
@@ -57,8 +49,57 @@ A real-time chatting application built with **MongoDB**, **TypeScript**, **Fasti
 ### Prerequisites
 
 - Node.js (v16 or higher)
-- MongoDB (running locally or remotely)
-- Redis (running locally or remotely)
+- MongoDB client (running locally or remotely)
+- Redis client (running locally or remotely)
+- Docker
 - npm or yarn
 
 ---
+
+### Installation
+
+- Clone repository
+
+  git clone https://github.com/alexcsia/Chatting-App.git
+
+- Install dependencies
+
+  npm install
+
+- Environment variables (backend)
+
+  Create a .env file inside backend folder and create these variables:
+  MONGODB_URI, PORT, JWT_SECRET, REFRESH_TOKEN_SECRET, NODE_ENV, ENABLE_CORS, CORS_ORIGIN, REDIS_URL
+
+- Environment variables (frontend)
+  Create a .env file inside frontend folder and create these variables:
+  VITE_BACKEND_URL
+
+### Starting the application
+
+_Make sure you are running an instance of MongoDB and Redis, either locally, with Docker or remotely_
+
+- Starting the application in dev mode:
+
+npm run dev
+
+- Starting in production mode:
+
+npm run build
+
+npm start
+
+- Testing backend:
+
+npm run test
+
+### CI/CD Deployment
+
+This project uses GitHub Actions for continuous integration and deployment. On every push:
+
+- The backend tests run
+- Both the backend and the frontend are compiled and bundled
+- The backend is containerized and pushed to Google Artifact Registry
+- The Docker image is deployed to the Cloud Run service with secrets passed from Secret Manager.
+
+_The frontend (deployed with Vercel) re-deploys automatically_
