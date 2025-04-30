@@ -1,5 +1,4 @@
 import { getChatMessages } from "@repositories/messageRepo";
-import { decodeContent } from "../helpers/decodeSanitizedMessage";
 import { IMessage } from "@models/Message";
 
 export const fetchChatMessages = async (
@@ -8,13 +7,5 @@ export const fetchChatMessages = async (
 ): Promise<IMessage[]> => {
   const messages = await getChatMessages(chatId, before);
 
-  const decodedMessages = messages.map((message) => {
-    const messageObject = message.toObject();
-    return {
-      ...messageObject,
-      content: decodeContent(message.content),
-    };
-  });
-
-  return decodedMessages;
+  return messages;
 };
