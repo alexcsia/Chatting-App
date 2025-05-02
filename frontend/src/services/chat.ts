@@ -36,9 +36,15 @@ const chatService = {
         `/api/chats/fetch-chat?username=${encodeURIComponent(username)}`
       );
       return response.data;
-    } catch (error) {
-      console.error("Error getting chat ID:", error);
-      throw error;
+    } catch (error: any) {
+      if (error.response && error.response.status === 404) {
+        const res = await apiClient.post(`/api/chats/new-chat`, {
+          username: username,
+        });
+        return res.data.chatId;
+      } else {
+        throw error;
+      }
     }
   },
 };
