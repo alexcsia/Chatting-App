@@ -14,6 +14,7 @@
         <button @click="addFriend(user)" class="add-button">Add Friend</button>
       </li>
     </ul>
+    <p v-if="errorMessage" class="message">{{ errorMessage }}</p>
   </div>
 </template>
 
@@ -24,6 +25,7 @@ import userService from "@/services/user";
 const searchQuery = ref("");
 const searchResults = ref<string[]>([]);
 const searchContainer = ref<HTMLElement | null>(null);
+const errorMessage = ref("");
 
 const handleSearch = async () => {
   try {
@@ -37,9 +39,12 @@ const handleSearch = async () => {
 const addFriend = async (username: string) => {
   try {
     await userService.addFriend(username);
-    alert(`Friend request sent to ${username}`);
+    errorMessage.value = `Friend request sent to ${username}`;
+    setTimeout(() => (errorMessage.value = ""), 3000);
   } catch (error: any) {
     console.error("Failed to add friend:", error);
+    errorMessage.value = error.message || "Failed to send friend request.";
+    setTimeout(() => (errorMessage.value = ""), 3000);
   }
 };
 
@@ -83,6 +88,18 @@ onUnmounted(() => {
   cursor: pointer;
   font-size: 16px;
   color: white;
+}
+
+.message {
+  position: absolute;
+  top: 80px;
+  left: 100px;
+  background-color: #f0f0f0;
+  color: #aa2d2d;
+  padding: 6px 12px;
+  border-radius: 4px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+  font-size: 14px;
 }
 
 .search-results {
