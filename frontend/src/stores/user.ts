@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import profileService, { UserProfile } from "@/services/profile";
+import userService, { UserProfile } from "@/services/user";
 import authService from "@/services/auth";
 
 export const useUserStore = defineStore(
@@ -11,7 +11,7 @@ export const useUserStore = defineStore(
 
     async function fetchUser() {
       try {
-        const data = await profileService.getCurrentUser();
+        const data = await userService.getCurrentUser();
         user.value = data;
         isAuthenticated.value = true;
       } catch (error) {
