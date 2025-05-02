@@ -6,17 +6,26 @@ export interface UserProfile {
   friendList: string[];
 }
 
+export interface ISearchResult {
+  username: string;
+}
+
 const userService = {
   async getCurrentUser(): Promise<UserProfile | null> {
     const response = await apiClient.get("/api/users/user-info");
     return response.data;
   },
 
-  async findUsers(username: string) {
+  async findUsers(username: string): Promise<ISearchResult[]> {
     const response = await apiClient.get(
       `/api/users/?username=${encodeURIComponent(username)}`
     );
-    return response.data.userlist;
+    return response.data.userList;
+  },
+
+  async addFriend(username: string) {
+    const response = await apiClient.post("/api/users/add-friend", username);
+    return response.data;
   },
 };
 

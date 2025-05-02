@@ -28,7 +28,7 @@ const searchContainer = ref<HTMLElement | null>(null);
 const handleSearch = async () => {
   try {
     const results = await userService.findUsers(searchQuery.value);
-    searchResults.value = results;
+    searchResults.value = results.map((user) => user.username);
   } catch (error) {
     console.error("Search failed", error);
   }
@@ -36,7 +36,7 @@ const handleSearch = async () => {
 
 const addFriend = async (username: string) => {
   try {
-    // await userService.addFriend(username);
+    await userService.addFriend(username);
     alert(`Friend request sent to ${username}`);
   } catch (error) {
     console.error("Failed to add friend:", error);
