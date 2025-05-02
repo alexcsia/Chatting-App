@@ -3,26 +3,12 @@
     <router-link to="/profile" class="nav-link">Profile</router-link>
     <router-link to="/dashboard" class="nav-link">Chats</router-link>
 
-    <div class="search-container">
-      <input
-        v-model="searchQuery"
-        type="text"
-        placeholder="Search for a friend's username"
-        class="search-input"
-      />
-      <button @click="handleSearch" class="search-button">Search</button>
-    </div>
+    <div class="search-container"><SearchBar /></div>
   </nav>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
-
-const searchQuery = ref("");
-
-const handleSearch = () => {
-  console.log("searching for:", searchQuery.value);
-};
+import SearchBar from "./SearchBar.vue";
 </script>
 
 <style scoped>
@@ -57,22 +43,5 @@ const handleSearch = () => {
   align-items: center;
   flex-grow: 1;
   justify-content: center;
-}
-
-.search-input {
-  padding: 5px 10px;
-  border: none;
-  border-radius: 20px;
-  width: 250px;
-  outline: none;
-}
-
-.search-button {
-  margin-left: 5px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 16px;
-  color: white;
 }
 </style>
