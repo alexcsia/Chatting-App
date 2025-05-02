@@ -21,7 +21,7 @@
   </div>
 </template>
 <script setup>
-import { computed, onMounted } from "vue";
+import { onMounted } from "vue";
 import { useRouter } from "vue-router";
 import FriendList from "@/components/FriendList.vue";
 import { useUserStore } from "@/stores/user";
@@ -36,8 +36,8 @@ onMounted(async () => {
   }
 });
 
-const isAuthenticated = computed(() => userStore.isAuthenticated);
-const user = computed(() => userStore.user);
+const isAuthenticated = userStore.isAuthenticated;
+const user = userStore.user;
 
 const goToLogin = () => {
   router.push("/login");
