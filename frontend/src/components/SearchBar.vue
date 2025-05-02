@@ -11,7 +11,13 @@
     <ul v-if="searchResults.length" class="search-results">
       <li v-for="user in searchResults" :key="user" class="search-item">
         {{ user }}
-        <button @click="addFriend(user)" class="add-button">Add Friend</button>
+        <button
+          v-if="!userStore.user?.friendList.includes(user)"
+          @click="addFriend(user)"
+          class="add-button"
+        >
+          Add Friend
+        </button>
       </li>
     </ul>
     <p v-if="errorMessage" class="message">{{ errorMessage }}</p>
@@ -21,11 +27,13 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from "vue";
 import userService from "@/services/user";
+import { useUserStore } from "@/stores/user";
 
 const searchQuery = ref("");
 const searchResults = ref<string[]>([]);
 const searchContainer = ref<HTMLElement | null>(null);
 const errorMessage = ref("");
+const userStore = useUserStore();
 
 const handleSearch = async () => {
   try {
@@ -39,7 +47,8 @@ const handleSearch = async () => {
 const addFriend = async (username: string) => {
   try {
     await userService.addFriend(username);
-    errorMessage.value = `Friend request sent to ${username}`;
+    userStore.addToFriend(username);
+
     setTimeout(() => (errorMessage.value = ""), 3000);
   } catch (error: any) {
     console.error("Failed to add friend:", error);

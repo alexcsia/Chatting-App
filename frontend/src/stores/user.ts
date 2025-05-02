@@ -33,12 +33,26 @@ export const useUserStore = defineStore(
       isAuthenticated.value = false;
     }
 
+    function addToFriend(username: string) {
+      try {
+        if (
+          user.value?.friendList &&
+          !user.value.friendList.includes(username)
+        ) {
+          user.value.friendList = [...user.value.friendList, username];
+        }
+      } catch (error) {
+        console.log("Error adding a friend", error);
+      }
+    }
+
     return {
       user,
       isAuthenticated,
       fetchUser,
       login,
       logout,
+      addToFriend,
     };
   },
   {
