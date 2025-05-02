@@ -18,7 +18,7 @@ async function jwtPlugin(fastify: FastifyInstance) {
   }
   if (!process.env.REFRESH_TOKEN_SECRET) {
     throw new Error(
-      "REFRESH_TOKEN_SECRET  is not defined in environment variables"
+      "REFRESH_TOKEN_SECRET is not defined in environment variables"
     );
   }
 
