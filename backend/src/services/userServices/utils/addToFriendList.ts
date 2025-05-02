@@ -6,7 +6,7 @@ export const addUserToFriendList = async (
   usernameToAdd: string
 ) => {
   if (requestingUsername === usernameToAdd) {
-    throw new ApiError(400, "Cannot add yourself to friendlist");
+    throw new ApiError(409, "Cannot add yourself to friendlist");
   }
 
   const requestingUser = await getUserByUsername(requestingUsername);
