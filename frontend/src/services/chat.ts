@@ -2,11 +2,12 @@ import apiClient from "@/services/apiClient";
 import { IMessage } from "@/types/chatInterfaces";
 
 const chatService = {
-  async getMessages(chatId: string): Promise<IMessage[]> {
+  async getMessages(chatId: string, before?: number): Promise<IMessage[]> {
     try {
-      const response = await apiClient.get(
-        `/api/chats/fetch-messages/${chatId}`
-      );
+      const url = before
+        ? `/api/chats/fetch-messages/${chatId}?before=${before}`
+        : `/api/chats/fetch-messages/${chatId}`;
+      const response = await apiClient.get(url);
       return response.data;
     } catch (error) {
       console.error("Error fetching messages:", error);
