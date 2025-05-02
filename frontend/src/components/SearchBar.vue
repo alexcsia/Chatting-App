@@ -38,7 +38,7 @@ const addFriend = async (username: string) => {
   try {
     await userService.addFriend(username);
     alert(`Friend request sent to ${username}`);
-  } catch (error) {
+  } catch (error: any) {
     console.error("Failed to add friend:", error);
   }
 };

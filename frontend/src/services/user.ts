@@ -24,8 +24,16 @@ const userService = {
   },
 
   async addFriend(username: string) {
-    const response = await apiClient.post("/api/users/add-friend", username);
-    return response.data;
+    try {
+      const response = await apiClient.post("/api/users/add-friend", {
+        username,
+      });
+      return response.data;
+    } catch (error: any) {
+      const message =
+        error.response?.data?.message || "Failed to send friend request.";
+      throw new Error(message);
+    }
   },
 };
 
