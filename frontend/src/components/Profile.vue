@@ -1,12 +1,12 @@
 <template>
   <div class="profile">
-    <h2>{{ userProfile.username }}'s Profile</h2>
-    <p>Email: {{ userProfile.email }}</p>
+    <h2>{{ userStore.user?.username }}'s Profile</h2>
+    <p>Email: {{ userStore.user?.email }}</p>
 
     <div class="friends">
       <h3>Friends</h3>
       <ul>
-        <li v-for="friend in userProfile.friendList" :key="friend">
+        <li v-for="friend in userStore.user?.friendList" :key="friend">
           {{ friend }}
         </li>
       </ul>
@@ -15,11 +15,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, defineProps } from "vue";
+import { useUserStore } from "@/stores/user";
 
-const props = defineProps<{
-  userProfile: { username: string; email: string; friendList: string[] };
-}>();
+const userStore = useUserStore();
 </script>
 
 <style scoped>
