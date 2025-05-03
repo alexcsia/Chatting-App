@@ -1,4 +1,4 @@
-export const addFriendSchema = {
+export const basicFriendReqSchema = {
   headers: {
     type: "object",
     properties: {
@@ -15,6 +15,6 @@ export const addFriendSchema = {
   },
 };
 
-export interface IAddFriend {
+export interface IBasicFriendReq {
   username: string;
 }

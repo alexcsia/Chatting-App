@@ -1,10 +1,10 @@
 import { ApiError } from "@api/errors/ApiError";
+import { IBasicFriendReq } from "@api/routes/schemas/user/addFriend.schema";
 import userServices from "@services/userServices";
 import { FastifyReply, FastifyRequest } from "fastify";
-import { IAddFriend } from "@api/routes/schemas/user/addFriend.schema";
 
 export const addFriendController = async (
-  request: FastifyRequest<{ Body: IAddFriend }>,
+  request: FastifyRequest<{ Body: IBasicFriendReq }>,
   reply: FastifyReply
 ) => {
   try {
@@ -13,7 +13,7 @@ export const addFriendController = async (
     const userToAdd = request.body.username;
 
     await userServices.addUserToFriendList(requestingUser, userToAdd);
-    reply.status(200).send();
+    reply.status(200).send({ message: "Friend added" });
   } catch (error: unknown) {
     if (error instanceof ApiError) {
       reply.status(error.status).send({ message: error.message });
