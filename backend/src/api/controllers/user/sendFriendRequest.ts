@@ -1,4 +1,4 @@
-import { IBasicFriendReq } from "@api/routes/schemas/user/addFriend.schema";
+import { IBasicFriendReq } from "@api/routes/schemas/user/basicFriendReq.schema";
 import { FastifyRequest, FastifyReply } from "fastify";
 import { ApiError } from "@api/errors/ApiError";
 import userServices from "@services/userServices";
