@@ -7,6 +7,7 @@ export interface IUser extends Document {
   password: string;
   friendList: Array<string>;
   userId: string;
+  pendingFriendRequests: Array<string>;
 }
 
 const UserSchema: Schema = new Schema({
@@ -31,6 +32,10 @@ const UserSchema: Schema = new Schema({
     maxlength: 64,
   },
   friendList: {
+    type: Array<string>,
+    required: true,
+  },
+  pendingFriendRequests: {
     type: Array<string>,
     required: true,
   },

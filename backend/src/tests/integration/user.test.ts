@@ -35,7 +35,7 @@ describe("add friend endpoint", () => {
   let user: any;
   let newFriend: any;
 
-  beforeAll(async () => {
+  beforeEach(async () => {
     user = await User.create({
       username: "testuser2",
       password: "ABCabc!@#123",
@@ -63,7 +63,9 @@ describe("add friend endpoint", () => {
       },
     });
 
+    const updatedFriend = await User.findOne({ username: newFriend.username });
     expect(response.statusCode).toBe(200);
+    expect(updatedFriend?.friendList).toContain(user.username);
   });
 
   it("should reject adding a user that does not exist", async () => {
@@ -78,8 +80,10 @@ describe("add friend endpoint", () => {
       },
     });
 
+    const updatedFriend = await User.findOne({ username: newFriend.username });
     expect(response.statusCode).toBe(404);
     expect(response.json()).toHaveProperty("message");
+    expect(updatedFriend?.friendList).not.toContain(user.username);
   });
 });
 
@@ -87,7 +91,7 @@ describe("user info endpoint", () => {
   let token: string;
   let user: any;
 
-  beforeAll(async () => {
+  beforeEach(async () => {
     user = await User.create({
       username: "testuser2",
       password: "ABCabc!@#123",
@@ -106,6 +110,14 @@ describe("user info endpoint", () => {
       },
     });
 
+    const data = JSON.parse(response.body);
+
+    expect(data).toMatchObject({
+      username: user.username,
+      email: user.email,
+      userId: user._id.toString(),
+      friendList: [],
+    });
     expect(response.statusCode).toBe(200);
   });
 
@@ -119,5 +131,61 @@ describe("user info endpoint", () => {
     });
 
     expect(response.statusCode).toBe(401);
+  });
+});
+
+describe("friend requests", () => {
+  let token: string;
+  let user: any;
+  let newFriend: any;
+
+  beforeEach(async () => {
+    user = await User.create({
+      username: "testuser2",
+      password: "ABCabc!@#123",
+      email: "abcd2@def.com",
+    });
+
+    newFriend = await User.create({
+      username: "newFriend",
+      password: "ABCabc!@#123",
+      email: "example@def.com",
+    });
+
+    token = await fastify.signJWT(user.username, user.email);
+  });
+
+  it("sends a friend request to another user", async () => {
+    const response = await fastify.inject({
+      method: "POST",
+      url: "/api/users/friend-req",
+      cookies: {
+        accessToken: token,
+      },
+      payload: {
+        username: newFriend.username,
+      },
+    });
+    const updatedFriend = await User.findOne({ username: newFriend.username });
+    expect(response.statusCode).toBe(200);
+    expect(updatedFriend?.pendingFriendRequests).toContain(user.username);
+  });
+  it("throws an error if friend request was already sent", async () => {
+    await User.updateOne(
+      { _id: newFriend._id },
+      { $addToSet: { pendingFriendRequests: user.username } }
+    );
+    const response = await fastify.inject({
+      method: "POST",
+      url: "/api/users/friend-req",
+      cookies: {
+        accessToken: token,
+      },
+      payload: {
+        username: newFriend.username,
+      },
+    });
+
+    expect(response.statusCode).toBe(400);
   });
 });

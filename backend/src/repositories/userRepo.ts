@@ -53,3 +53,13 @@ export const findMatchingUsers = async (username: string) => {
 
   return users;
 };
+
+export const addPendingRequest = async (
+  requestingUser: IUser,
+  receivingUser: IUser
+) => {
+  await User.updateOne(
+    { _id: receivingUser._id },
+    { $addToSet: { pendingFriendRequests: requestingUser.username } }
+  );
+};

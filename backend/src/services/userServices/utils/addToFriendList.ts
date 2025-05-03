@@ -3,21 +3,23 @@ import { ApiError } from "@api/errors/ApiError";
 import { addToFriendList } from "@repositories/userRepo";
 export const addUserToFriendList = async (
   requestingUsername: string,
-  usernameToAdd: string
+  targetUsername: string
 ) => {
-  if (requestingUsername === usernameToAdd) {
+  if (requestingUsername === targetUsername) {
     throw new ApiError(409, "Cannot add yourself to friendlist");
   }
 
-  const requestingUser = await getUserByUsername(requestingUsername);
-  if (!requestingUser) {
+  const requester = await getUserByUsername(requestingUsername);
+  const receiver = await getUserByUsername(targetUsername);
+
+  if (!receiver || !requester) {
     throw new ApiError(404, "User not found");
   }
 
-  const friendUser = await getUserByUsername(usernameToAdd);
-  if (!friendUser) {
-    throw new ApiError(404, "User not found");
+  if (!receiver.friendList.includes(requester.username)) {
+    await addToFriendList(receiver, requester.username);
   }
-
-  await addToFriendList(requestingUser, usernameToAdd);
+  if (!requester.friendList.includes(receiver.username)) {
+    await addToFriendList(requester, receiver.username);
+  }
 };
