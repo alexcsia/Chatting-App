@@ -3,7 +3,7 @@ import { IBasicFriendReq } from "@api/routes/schemas/user/addFriend.schema";
 import userServices from "@services/userServices";
 import { FastifyReply, FastifyRequest } from "fastify";
 
-export const addFriendController = async (
+export const resolveFriendReqController = async (
   request: FastifyRequest<{ Body: IBasicFriendReq }>,
   reply: FastifyReply
 ) => {
