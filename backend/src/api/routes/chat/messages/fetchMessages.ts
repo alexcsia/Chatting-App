@@ -1,6 +1,6 @@
 import { FastifyInstance } from "fastify";
-import { fetchChatMessagesController } from "@api/controllers/chat/fetchMessages";
-import { fetchMessagesSchema } from "../schemas/chat/fetchMessages.schema";
+import { fetchChatMessagesController } from "@api/controllers/chat/messages/fetchMessages";
+import { fetchMessagesSchema } from "../../schemas/chat/messages/fetchMessages.schema";
 
 export const fetchMessagesRoute = (fastify: FastifyInstance) => {
   fastify.get(

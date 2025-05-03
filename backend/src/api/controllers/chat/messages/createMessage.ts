@@ -4,7 +4,7 @@ import { ApiError } from "@api/errors/ApiError";
 import {
   NewMessageBody,
   NewMessageParams,
-} from "@api/routes/schemas/chat/newMessage.schema";
+} from "@api/routes/schemas/chat/messages/newMessage.schema";
 import { updateCachedMessages } from "redisDb/cache";
 
 export const createMessageController = async (

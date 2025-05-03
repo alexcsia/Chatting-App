@@ -1,8 +1,8 @@
 import { createChatRoute } from "./createChat";
-import { createMessageRoute } from "./createMessage";
+import { createMessageRoute } from "./messages/createMessage";
 import { fetchChatIdRoute } from "./fetchChatId";
 import { fetchChatsRoute } from "./fetchChats";
-import { fetchMessagesRoute } from "./fetchMessages";
+import { fetchMessagesRoute } from "./messages/fetchMessages";
 
 export default {
   createChatRoute,
