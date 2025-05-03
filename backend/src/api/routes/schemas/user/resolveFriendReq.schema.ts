@@ -1,4 +1,4 @@
-export const basicFriendReqSchema = {
+export const resolveFriendReqSchema = {
   headers: {
     type: "object",
     properties: {
@@ -8,6 +8,13 @@ export const basicFriendReqSchema = {
   },
   body: {
     type: "object",
+    required: ["accepted"],
+    properties: {
+      accepted: { type: "boolean" },
+    },
+  },
+  params: {
+    type: "object",
     required: ["username"],
     properties: {
       username: { type: "string" },
@@ -15,6 +22,10 @@ export const basicFriendReqSchema = {
   },
 };
 
-export interface IBasicFriendReq {
+export interface IResolveFriendRequestBody {
+  accepted: boolean;
+}
+
+export interface IResolveRequestParams {
   username: string;
 }

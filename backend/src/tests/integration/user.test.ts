@@ -30,7 +30,7 @@ afterAll(async () => {
   await mongoose.disconnect();
 });
 
-describe("add friend endpoint", () => {
+describe("resolve friend request endpoint", () => {
   let token: string;
   let user: any;
   let newFriend: any;
@@ -54,12 +54,12 @@ describe("add friend endpoint", () => {
   it("should add a user to another user's friendlist", async () => {
     const response = await fastify.inject({
       method: "POST",
-      url: "/api/users/add-friend",
+      url: `/api/users/friend-request/${newFriend.username}`,
       cookies: {
         accessToken: token,
       },
       payload: {
-        username: "newFriend",
+        accepted: true,
       },
     });
 
@@ -68,22 +68,22 @@ describe("add friend endpoint", () => {
     expect(updatedFriend?.friendList).toContain(user.username);
   });
 
-  it("should reject adding a user that does not exist", async () => {
+  it("should reject adding a user", async () => {
     const response = await fastify.inject({
       method: "POST",
-      url: "/api/users/add-friend",
+      url: `/api/users/friend-request/${newFriend.username}`,
       cookies: {
         accessToken: token,
       },
       payload: {
-        username: "nonExistingUser",
+        accepted: false,
       },
     });
 
-    const updatedFriend = await User.findOne({ username: newFriend.username });
-    expect(response.statusCode).toBe(404);
+    const updatedFriend = await User.findOne({ username: user.username });
+    expect(response.statusCode).toBe(200);
     expect(response.json()).toHaveProperty("message");
-    expect(updatedFriend?.friendList).not.toContain(user.username);
+    expect(updatedFriend?.friendList).not.toContain(newFriend.username);
   });
 });
 

@@ -1,6 +1,11 @@
 import { userInfoRoute } from "./userInfo";
-import { addFriendRoute } from "./addFriend";
+import { resolveFriendReqRoute } from "./resolveFriendReq";
 import { findUsersRoute } from "./findUsers";
 import { sendFriendReq } from "./sendFriendReq";
 
-export default { userInfoRoute, addFriendRoute, findUsersRoute, sendFriendReq };
+export default {
+  userInfoRoute,
+  resolveFriendReqRoute,
+  findUsersRoute,
+  sendFriendReq,
+};

@@ -63,3 +63,13 @@ export const addPendingRequest = async (
     { $addToSet: { pendingFriendRequests: requestingUser.username } }
   );
 };
+
+export const removeFromPendingRequests = async (
+  requestingUser: IUser,
+  targetUsername: string
+) => {
+  await User.updateOne(
+    { _id: requestingUser._id },
+    { $pull: { pendingFriendRequests: targetUsername } }
+  );
+};
