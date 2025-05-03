@@ -6,15 +6,16 @@ export const sendFriendRequest = async (
   requestingUsername: string,
   receivingUsername: string
 ) => {
+  if (receivingUsername === requestingUsername)
+    throw new ApiError(400, "Cannot send yourself a friend request");
+
   const requestingUser = await getUserByUsername(requestingUsername);
   if (!requestingUser) {
-    console.log("requestingUser not found");
     throw new ApiError(404, "User not found");
   }
 
   const receivingUser = await getUserByUsername(receivingUsername);
   if (!receivingUser) {
-    console.log("receiving user not found");
     throw new ApiError(404, "User not found");
   }
 
