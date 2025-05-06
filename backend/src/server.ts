@@ -5,11 +5,7 @@ if (process.env.NODE_ENV !== "production") {
 import dotenv from "dotenv";
 dotenv.config();
 
-import Fastify, {
-  FastifyInstance,
-  FastifyReply,
-  FastifyRequest,
-} from "fastify";
+import Fastify, { FastifyInstance } from "fastify";
 import { connectMongoDB } from "./database";
 import apiRoutes from "@api/routes";
 import cookie from "@fastify/cookie";
