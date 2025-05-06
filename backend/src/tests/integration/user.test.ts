@@ -7,6 +7,12 @@ jest.mock("redis", () => ({
     set: jest.fn(),
     get: jest.fn(),
     quit: jest.fn(),
+    sIsMember: jest.fn(),
+    sAdd: jest.fn(),
+    sRem: jest.fn(),
+    lRange: jest.fn(),
+    unsubscribe: jest.fn(),
+    rPush: jest.fn(),
   })),
 }));
 
