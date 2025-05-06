@@ -5,6 +5,7 @@ import {
 } from "@api/routes/schemas/user/resolveFriendReq.schema";
 import userServices from "@services/userServices";
 import { FastifyReply, FastifyRequest } from "fastify";
+import { cache, pub } from "redisDb";
 
 export const resolveFriendReqController = async (
   request: FastifyRequest<{
@@ -18,9 +19,24 @@ export const resolveFriendReqController = async (
     const targetUser = request.params.username;
     const requestAccepted = request.body.accepted;
 
-    if (requestAccepted)
+    if (requestAccepted) {
       await userServices.addUserToFriendList(requestingUser, targetUser);
-    else await userServices.removeFriendRequest(requestingUser, targetUser);
+
+      const isOnline = await cache.sIsMember("online-users", targetUser);
+
+      const payload = {
+        event: "friendRequestAccepted",
+        data: { from: requestingUser },
+      };
+      if (isOnline) {
+        await pub.publish(`sse:${targetUser}`, JSON.stringify(payload));
+      } else {
+        await cache.rPush(
+          `pending-requests:${targetUser}`,
+          JSON.stringify(payload)
+        );
+      }
+    } else await userServices.removeFriendRequest(requestingUser, targetUser);
 
     reply.status(200).send({ message: "Action successful" });
   } catch (error: unknown) {
