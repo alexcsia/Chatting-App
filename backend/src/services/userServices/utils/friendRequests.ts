@@ -1,6 +1,7 @@
 import { getUserByUsername } from "@repositories/userRepo";
 import { ApiError } from "@api/errors/ApiError";
 import { addPendingRequest } from "@repositories/userRepo";
+import { cache, pub } from "redisDb";
 
 export const sendFriendRequest = async (
   requestingUsername: string,
@@ -27,4 +28,22 @@ export const sendFriendRequest = async (
   }
 
   await addPendingRequest(requestingUser, receivingUser);
+
+  const isOnline = await cache.sIsMember("online-users", receivingUsername);
+
+  const payload = {
+    event: "friendRequestReceived",
+    data: {
+      from: requestingUser.username,
+    },
+  };
+
+  if (isOnline) {
+    await pub.publish(`sse:${receivingUsername}`, JSON.stringify(payload));
+  } else {
+    await cache.rPush(
+      `pending-requests:${receivingUsername}`,
+      JSON.stringify(payload)
+    );
+  }
 };
