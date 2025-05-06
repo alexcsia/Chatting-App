@@ -5,7 +5,11 @@ if (process.env.NODE_ENV !== "production") {
 import dotenv from "dotenv";
 dotenv.config();
 
-import Fastify, { FastifyInstance } from "fastify";
+import Fastify, {
+  FastifyInstance,
+  FastifyReply,
+  FastifyRequest,
+} from "fastify";
 import { connectMongoDB } from "./database";
 import apiRoutes from "@api/routes";
 import cookie from "@fastify/cookie";
@@ -13,6 +17,7 @@ import jwtPlugin from "./plugins/jwt";
 import { setupWebsocketServer } from "./websockets/websocketServer";
 import cors from "@fastify/cors";
 import { connectRedis } from "redisDb";
+import FastifySSEPlugin from "fastify-sse-v2";
 
 const PORT = parseInt(process.env.PORT || "3000");
 
@@ -22,6 +27,7 @@ const start = async () => {
   try {
     await fastify.register(cookie);
     await fastify.register(jwtPlugin);
+    fastify.register(FastifySSEPlugin);
 
     if (process.env.ENABLE_CORS === "true") {
       fastify.register(cors, {
