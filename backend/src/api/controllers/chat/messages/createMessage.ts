@@ -5,7 +5,7 @@ import {
   NewMessageBody,
   NewMessageParams,
 } from "@api/routes/schemas/chat/messages/newMessage.schema";
-import { updateCachedMessages } from "redisDb/cache";
+import { updateCachedMessages } from "redisDb/cache/messageCache";
 
 export const createMessageController = async (
   request: FastifyRequest<{ Body: NewMessageBody; Params: NewMessageParams }>,

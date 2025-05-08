@@ -1,6 +1,6 @@
 import { FastifyInstance } from "fastify";
 import { IMessage } from "@models/Message";
-import { updateCachedMessages } from "redisDb/cache";
+import { updateCachedMessages } from "redisDb/cache/messageCache";
 import { Server } from "socket.io";
 
 export function receiveMessage(

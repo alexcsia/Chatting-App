@@ -1,6 +1,6 @@
 import { FastifyInstance } from "fastify";
 import { receiveMessage } from "../events/receiveMessage";
-import * as redisDb from "redisDb/cache";
+import * as redisDb from "redisDb/cache/messageCache";
 import { Server } from "socket.io";
 import { IMessage } from "@models/Message";
 
