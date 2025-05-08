@@ -1,40 +1,36 @@
+import sseServices from "@services/sseServices";
 import { FastifyRequest, FastifyReply } from "fastify";
 import { cache, pub, sub } from "redisDb";
+import { removeFromOnlineList } from "redisDb/cache/sseCache";
+import { subscribeSSE, unsubscribeSSE } from "redisDb/sub/sub";
 
 export const sseConnectController = async (
   request: FastifyRequest,
   reply: FastifyReply
 ) => {
-  const username = request.user.username;
-  //create redis function
-  await cache.sAdd("online-users", username);
+  try {
+    const username = request.user.username;
 
-  const pending = await cache.lRange(`pending-requests:${username}`, 0, -1);
-  console.log("pending requests", pending);
+    const requests = await sseServices.fetchAndClearPendingEvents(username);
 
-  //create separate function for sending sse (user offline)
-  for (let request in pending) {
-    const { event, data } = JSON.parse(request);
-    reply.sse({ event: event, data: JSON.stringify(data) });
+    for (const { event, data } of requests) {
+      reply.sse({ event, data: JSON.stringify(data) });
+    }
+
+    const handler = (data: string, event: string) => {
+      reply.sse({ event, data: JSON.stringify(data) });
+    };
+
+    subscribeSSE(username, handler);
+
+    const cleanup = async () => {
+      unsubscribeSSE(username, handler);
+      await removeFromOnlineList(username);
+      request.raw.removeListener("close", cleanup);
+    };
+
+    request.raw.on("close", cleanup);
+  } catch (error: unknown) {
+    reply.code(500).send({ error: "SSE connection failed" });
   }
-
-  await cache.del(`pending-requests:${username}`);
-
-  //create separate function for sending sse (user online)
-  const channel = `sse:${username}`;
-  const handler = (msg: string) => {
-    const { event, data } = JSON.parse(msg);
-    reply.sse({ event, data: JSON.stringify(data) });
-  };
-
-  await sub.subscribe(channel, handler);
-
-  const cleanup = async () => {
-    await sub.unsubscribe(channel, handler);
-    await cache.sRem("online-users", username);
-    console.log(`client ${username} disconnected`);
-    request.raw.removeListener("close", cleanup);
-  };
-
-  request.raw.on("close", cleanup);
 };
