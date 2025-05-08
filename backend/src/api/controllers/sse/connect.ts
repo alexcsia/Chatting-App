@@ -1,6 +1,5 @@
 import sseServices from "@services/sseServices";
 import { FastifyRequest, FastifyReply } from "fastify";
-import { cache, pub, sub } from "redisDb";
 import { removeFromOnlineList } from "redisDb/cache/sseCache";
 import { subscribeSSE, unsubscribeSSE } from "redisDb/sub/sub";
 
