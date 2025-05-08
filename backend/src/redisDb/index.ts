@@ -1,6 +1,6 @@
 import { createClient } from "redis";
-import { publishToRedis } from "./pub";
-import { subscribeRedis } from "./sub";
+import { publishToRedis } from "./pub/pub";
+import { subscribeRedis } from "./sub/sub";
 
 const pub = createClient({ url: process.env.REDIS_URL });
 const sub = createClient({ url: process.env.REDIS_URL });
