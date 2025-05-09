@@ -46,8 +46,7 @@ const handleSearch = async () => {
 
 const addFriend = async (username: string) => {
   try {
-    await userService.addFriend(username);
-    userStore.addToFriend(username);
+    await userService.sendFriendRequest(username);
 
     setTimeout(() => (errorMessage.value = ""), 3000);
   } catch (error: any) {

@@ -23,11 +23,14 @@ const userService = {
     return response.data.userList;
   },
 
-  async addFriend(username: string) {
+  async sendFriendRequest(username: string) {
     try {
-      const response = await apiClient.post("/api/users/add-friend", {
+      const response = await apiClient.post("/api/users/friend-req", {
         username,
       });
+      console.log("sent friend request");
+      console.log(response.data);
+
       return response.data;
     } catch (error: any) {
       const message =
