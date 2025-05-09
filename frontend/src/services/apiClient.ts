@@ -1,6 +1,5 @@
 import axios from "axios";
-import { useUserStore } from "@/stores/user";
-import router from "@/router";
+import { tryRefreshAuth } from "./helpers/refreshToken";
 
 const backendURL = import.meta.env.VITE_BACKEND_URL;
 
@@ -15,7 +14,6 @@ const apiClient = axios.create({
 apiClient.interceptors.response.use(
   (response) => response,
   async (error) => {
-    const userStore = useUserStore();
     const originalRequest = error.config;
     const requestUrl = originalRequest?.url;
     const isAuthCheckRequest = requestUrl?.endsWith("/user-info");
@@ -27,22 +25,10 @@ apiClient.interceptors.response.use(
     ) {
       originalRequest._retry = true;
 
-      try {
-        await axios.get(backendURL + "/api/auth/refresh-token", {
-          withCredentials: true,
-        });
+      const success = await tryRefreshAuth();
 
+      if (success) {
         return apiClient(originalRequest);
-      } catch (err) {
-        userStore.logout();
-        if (!router.currentRoute.value.path.startsWith("/login")) {
-          router.push({
-            path: "/login",
-            query: { redirect: router.currentRoute.value.fullPath },
-          });
-        }
-
-        return Promise.reject(err);
       }
     }
 
