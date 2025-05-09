@@ -17,44 +17,57 @@
 <script setup lang="ts">
 import { useUserStore } from "@/stores/user";
 import { onMounted, onBeforeUnmount, ref } from "vue";
+import { tryRefreshAuth } from "@/services/helpers/refreshToken";
 
 const userStore = useUserStore();
 const backendURL = import.meta.env.VITE_BACKEND_URL;
 
 const eventSource = ref<EventSource | null>(null);
 
-onMounted(async () => {
-  if (!userStore.isAuthenticated) {
-    console.log("unauthenticated");
-    await userStore.fetchUser();
+const setupSSE = () => {
+  if (eventSource.value) {
+    eventSource.value.close();
   }
 
   if (userStore.user?.username) {
-    try {
-      eventSource.value = new EventSource(`${backendURL}/api/sse/connect`, {
-        withCredentials: true,
-      });
-      console.log("sse connection established");
+    eventSource.value = new EventSource(`${backendURL}/api/sse/connect`, {
+      withCredentials: true,
+    });
 
-      eventSource.value.addEventListener("friendRequestAccepted", (event) => {
-        const data = JSON.parse(event.data);
-        console.log("friend request accepted data:", data);
-        userStore.fetchUser();
-      });
+    console.log("SSE connection established");
 
-      eventSource.value.addEventListener("friendRequestReceived", (event) => {
-        const data = JSON.parse(event.data);
-        console.log("friend request received data:", data);
-        userStore.fetchUser();
-      });
+    eventSource.value.addEventListener("friendRequestAccepted", (event) => {
+      const data = JSON.parse(event.data);
+      console.log("friend request accepted:", data);
+      userStore.fetchUser();
+    });
 
-      eventSource.value.onerror = (error) => {
-        console.error("SSE error:", error);
-      };
-    } catch (error) {
-      console.error("Error setting up SSE:", error);
-    }
+    eventSource.value.addEventListener("friendRequestReceived", (event) => {
+      const data = JSON.parse(event.data);
+      console.log("friend request received:", data);
+      userStore.fetchUser();
+    });
+
+    eventSource.value.onerror = async () => {
+      try {
+        const success = await tryRefreshAuth();
+
+        if (!success) {
+          eventSource.value?.close();
+        }
+      } catch (error) {
+        eventSource.value?.close();
+      }
+    };
   }
+};
+
+onMounted(async () => {
+  if (!userStore.isAuthenticated) {
+    await userStore.fetchUser();
+  }
+
+  setupSSE();
 });
 
 onBeforeUnmount(() => {
