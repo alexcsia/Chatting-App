@@ -4,7 +4,7 @@ import * as redisDb from "redisDb/cache/messageCache";
 import { Server } from "socket.io";
 import { IMessage } from "@models/Message";
 
-jest.mock("redisDb/cache", () => ({
+jest.mock("redisDb/cache/messageCache", () => ({
   updateCachedMessages: jest.fn(),
 }));
 
