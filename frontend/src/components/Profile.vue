@@ -12,10 +12,11 @@
       </ul>
     </div>
 
-    <div v-if="friendInvites.length" class="friend-invites">
+    <!-- <div v-if="friendInvites.length" class="friend-invites"> -->
+    <div v-if="userStore.user?.friendRequests.length" class="friend-invites">
       <h3>Friend Invites</h3>
       <ul>
-        <li v-for="invite in friendInvites" :key="invite">
+        <li v-for="invite in userStore.user?.friendRequests" :key="invite">
           {{ invite }}
           <button @click="respondToInvite(invite, true)">Add friend</button>
           <button @click="respondToInvite(invite, false)">Reject</button>
@@ -56,7 +57,7 @@ const setupSSE = () => {
     const payload = JSON.parse(e.data) as { from: string };
     const requester = payload.from;
     if (!friendInvites.value.includes(requester)) {
-      friendInvites.value.push(requester);
+      userStore.user?.friendRequests.push(requester);
     }
   });
 
@@ -80,10 +81,14 @@ async function respondToInvite(inviteUsername: string, accepted: boolean) {
   try {
     await userService.resolveFriendRequest(accepted, inviteUsername);
     friendInvites.value = friendInvites.value.filter(
-      (u) => u !== inviteUsername
+      (username) => username !== inviteUsername
     );
     if (accepted && userStore.user) {
       userStore.user.friendList.push(inviteUsername);
+    } else if (!accepted && userStore.user) {
+      userStore.user.friendRequests.filter(
+        (username) => username !== inviteUsername
+      );
     }
   } catch (err) {
     console.error("failed to respond to invite:", err);

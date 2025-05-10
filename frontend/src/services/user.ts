@@ -4,6 +4,7 @@ export interface UserProfile {
   username: string;
   email: string;
   friendList: string[];
+  friendRequests: string[];
 }
 
 export interface ISearchResult {
