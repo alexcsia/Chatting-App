@@ -1,6 +1,7 @@
 import { getUserByUsername } from "@repositories/userRepo";
 import { ApiError } from "@api/errors/ApiError";
 import { addToFriendList } from "@repositories/userRepo";
+import { removeFriendRequest } from "./removeFriendReq";
 export const addUserToFriendList = async (
   requestingUsername: string,
   targetUsername: string
@@ -22,4 +23,5 @@ export const addUserToFriendList = async (
   if (!requester.friendList.includes(receiver.username)) {
     await addToFriendList(requester, receiver.username);
   }
+  await removeFriendRequest(requestingUsername, targetUsername);
 };

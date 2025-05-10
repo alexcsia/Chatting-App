@@ -18,6 +18,7 @@ export const userInfoController = async (
       email: user.email,
       userId: user._id,
       friendList: user.friendList,
+      friendRequests: user.pendingFriendRequests,
     });
   } catch (error: unknown) {
     if (error instanceof ApiError) {

@@ -7,6 +7,7 @@ import userServices from "@services/userServices";
 import { constructPayload } from "@services/userServices/helpers/sse/constructPayload";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { cache, pub } from "redisDb";
+import { checkIfOnline } from "redisDb/cache/sseCache";
 
 export const resolveFriendReqController = async (
   request: FastifyRequest<{
@@ -23,7 +24,7 @@ export const resolveFriendReqController = async (
     if (requestAccepted) {
       await userServices.addUserToFriendList(requestingUser, targetUser);
 
-      const isOnline = await cache.sIsMember("online-users", targetUser);
+      const isOnline = await checkIfOnline(targetUser);
 
       const payload = constructPayload("friendRequestAccepted", requestingUser);
       if (isOnline) {
