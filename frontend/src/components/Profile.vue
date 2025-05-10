@@ -11,6 +11,17 @@
         </li>
       </ul>
     </div>
+
+    <div v-if="friendInvites.length" class="friend-invites">
+      <h3>Friend Invites</h3>
+      <ul>
+        <li v-for="invite in friendInvites" :key="invite">
+          {{ invite }}
+          <button @click="respondToInvite(invite, true)">Add friend</button>
+          <button @click="respondToInvite(invite, false)">Reject</button>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
@@ -18,67 +29,77 @@
 import { useUserStore } from "@/stores/user";
 import { onMounted, onBeforeUnmount, ref } from "vue";
 import { tryRefreshAuth } from "@/services/helpers/refreshToken";
+import userService from "@/services/user";
 
 const userStore = useUserStore();
 const backendURL = import.meta.env.VITE_BACKEND_URL;
-
 const eventSource = ref<EventSource | null>(null);
+const friendInvites = ref<string[]>([]);
+const triedReconnect = ref(false);
 
 const setupSSE = () => {
-  if (eventSource.value) {
-    eventSource.value.close();
-  }
+  eventSource.value?.close();
+  if (!userStore.user?.username) return;
 
-  if (userStore.user?.username) {
-    eventSource.value = new EventSource(`${backendURL}/api/sse/connect`, {
-      withCredentials: true,
-    });
+  eventSource.value = new EventSource(`${backendURL}/api/sse/connect`, {
+    withCredentials: true,
+  });
 
-    console.log("SSE connection established");
+  eventSource.value.addEventListener("friendRequestAccepted", (e) => {
+    const newFriend = JSON.parse(e.data);
+    if (userStore.user && !userStore.user.friendList.includes(newFriend)) {
+      userStore.user.friendList.push(newFriend);
+    }
+  });
 
-    eventSource.value.addEventListener("friendRequestAccepted", (event) => {
-      const data = JSON.parse(event.data);
-      console.log("friend request accepted:", data);
-      if (userStore.user) {
-        if (!userStore.user.friendList.includes(data)) {
-          userStore.user.friendList.push(data);
-        }
-      }
-    });
+  eventSource.value.addEventListener("friendRequestReceived", (e) => {
+    const payload = JSON.parse(e.data) as { from: string };
+    const requester = payload.from;
+    if (!friendInvites.value.includes(requester)) {
+      friendInvites.value.push(requester);
+    }
+  });
 
-    eventSource.value.addEventListener("friendRequestReceived", (event) => {
-      const data = JSON.parse(event.data);
-      console.log("friend request received:", data);
-      userStore.fetchUser();
-    });
-
-    eventSource.value.onerror = async () => {
-      try {
-        const success = await tryRefreshAuth();
-
-        if (!success) {
-          eventSource.value?.close();
-        }
-      } catch (error) {
-        eventSource.value?.close();
-      }
-    };
-  }
+  eventSource.value.onerror = async () => {
+    if (triedReconnect.value) {
+      eventSource.value?.close();
+      return;
+    }
+    triedReconnect.value = true;
+    try {
+      const ok = await tryRefreshAuth();
+      if (ok) setupSSE();
+      else eventSource.value?.close();
+    } catch {
+      eventSource.value?.close();
+    }
+  };
 };
+
+async function respondToInvite(inviteUsername: string, accepted: boolean) {
+  try {
+    await userService.resolveFriendRequest(accepted, inviteUsername);
+    friendInvites.value = friendInvites.value.filter(
+      (u) => u !== inviteUsername
+    );
+    if (accepted && userStore.user) {
+      userStore.user.friendList.push(inviteUsername);
+    }
+  } catch (err) {
+    console.error("failed to respond to invite:", err);
+  }
+}
 
 onMounted(async () => {
   if (!userStore.isAuthenticated) {
     await userStore.fetchUser();
   }
-
   setupSSE();
 });
 
 onBeforeUnmount(() => {
-  if (eventSource.value) {
-    eventSource.value.close();
-    eventSource.value = null;
-  }
+  eventSource.value?.close();
+  eventSource.value = null;
 });
 </script>
 
