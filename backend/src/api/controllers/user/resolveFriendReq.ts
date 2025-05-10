@@ -4,6 +4,7 @@ import {
   IResolveRequestParams,
 } from "@api/routes/schemas/user/resolveFriendReq.schema";
 import userServices from "@services/userServices";
+import { constructPayload } from "@services/userServices/helpers/sse/constructPayload";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { cache, pub } from "redisDb";
 
@@ -24,10 +25,7 @@ export const resolveFriendReqController = async (
 
       const isOnline = await cache.sIsMember("online-users", targetUser);
 
-      const payload = {
-        event: "friendRequestAccepted",
-        data: { from: requestingUser },
-      };
+      const payload = constructPayload("friendRequestAccepted", requestingUser);
       if (isOnline) {
         await pub.publish(`sse:${targetUser}`, JSON.stringify(payload));
       } else {
