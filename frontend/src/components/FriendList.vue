@@ -53,7 +53,7 @@ const openChat = async (friendUsername: string) => {
   error.value = null;
 
   try {
-    const chatId = await chatService.getChatId(friendUsername);
+    const chatId = await chatService.getOrCreateChat(friendUsername);
     router.push(`/chat/${chatId}`);
   } catch (err) {
     console.error("Failed to open chat:", err);

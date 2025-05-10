@@ -30,7 +30,7 @@ const chatService = {
     }
   },
 
-  async getChatId(username: string) {
+  async getOrCreateChat(username: string) {
     try {
       const response = await apiClient.get(
         `/api/chats/fetch-chat?username=${encodeURIComponent(username)}`
