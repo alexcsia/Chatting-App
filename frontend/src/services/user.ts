@@ -38,6 +38,22 @@ const userService = {
       throw new Error(message);
     }
   },
+
+  async resolveFriendRequest(accepted: boolean, targetUser: string) {
+    try {
+      const response = await apiClient.post(
+        `/api/users/friend-request/${encodeURIComponent(targetUser)}`,
+        {
+          accepted,
+        }
+      );
+      return response.data;
+    } catch (error: any) {
+      const message =
+        error.response?.data?.message || "Failed to send friend request.";
+      throw new Error(message);
+    }
+  },
 };
 
 export default userService;
