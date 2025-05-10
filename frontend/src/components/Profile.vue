@@ -12,7 +12,6 @@
       </ul>
     </div>
 
-    <!-- <div v-if="friendInvites.length" class="friend-invites"> -->
     <div v-if="userStore.user?.friendRequests.length" class="friend-invites">
       <h3>Friend Invites</h3>
       <ul>
@@ -85,6 +84,9 @@ async function respondToInvite(inviteUsername: string, accepted: boolean) {
     );
     if (accepted && userStore.user) {
       userStore.user.friendList.push(inviteUsername);
+      userStore.user.friendRequests = userStore.user.friendRequests.filter(
+        (username) => username !== inviteUsername
+      );
     } else if (!accepted && userStore.user) {
       userStore.user.friendRequests.filter(
         (username) => username !== inviteUsername
