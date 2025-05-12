@@ -41,7 +41,7 @@ describe("create a new chat", () => {
 
     const response = await fastify.inject({
       method: "POST",
-      url: "/api/chats/new-chat",
+      url: "/api/chats",
       payload: {
         username: userToChat.username,
       },
@@ -55,7 +55,7 @@ describe("create a new chat", () => {
   it("should reject a request with a fake user", async () => {
     const response = await fastify.inject({
       method: "POST",
-      url: "/api/chats/new-chat",
+      url: "/api/chats",
       payload: {
         username: "inexistentUsername",
       },

@@ -1,15 +1,15 @@
 import { ApiError } from "@api/errors/ApiError";
-import { FetchChatQuery } from "@api/routes/schemas/chat/fetchChat.schema";
+import { FetchChatParams } from "@api/routes/schemas/chat/fetchChat.schema";
 import chatServices from "@services/chatServices";
 import { FastifyReply, FastifyRequest } from "fastify";
 
 export const fetchChatIdController = async (
-  request: FastifyRequest<{ Querystring: FetchChatQuery }>,
+  request: FastifyRequest<{ Params: FetchChatParams }>,
   reply: FastifyReply
 ) => {
   try {
     const usernameFromReq = request.user.username;
-    const usernameFromQuery = request.query.username;
+    const usernameFromQuery = request.params.username;
 
     const usernames: string[] = [usernameFromReq, usernameFromQuery];
 

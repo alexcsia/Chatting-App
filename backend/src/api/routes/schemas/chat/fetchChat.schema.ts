@@ -1,5 +1,5 @@
 export const fetchChatSchema = {
-  querystring: {
+  params: {
     type: "object",
     properties: {
       username: { type: "string" },
@@ -15,6 +15,6 @@ export const fetchChatSchema = {
   },
 };
 
-export interface FetchChatQuery {
+export interface FetchChatParams {
   username: string;
 }

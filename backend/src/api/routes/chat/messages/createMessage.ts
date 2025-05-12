@@ -4,7 +4,7 @@ import { createMessageController } from "@api/controllers/chat/messages/createMe
 
 export const createMessageRoute = (fastify: FastifyInstance) => {
   fastify.post(
-    "/new-message/:chatId",
+    "/:chatId/messages",
     {
       schema: newMessageSchema,
       onRequest: [fastify.verifyJWT],

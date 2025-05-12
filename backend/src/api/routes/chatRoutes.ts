@@ -8,6 +8,5 @@ export const chatRoutes: FastifyPluginAsync = async (
   chat.createChatRoute(fastify);
   chat.createMessageRoute(fastify);
   chat.fetchChatIdRoute(fastify);
-  chat.fetchChatsRoute(fastify);
   chat.fetchMessagesRoute(fastify);
 };

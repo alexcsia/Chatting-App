@@ -4,7 +4,7 @@ import { fetchMessagesSchema } from "../../schemas/chat/messages/fetchMessages.s
 
 export const fetchMessagesRoute = (fastify: FastifyInstance) => {
   fastify.get(
-    "/fetch-messages/:chatId",
+    "/:chatId/messages",
     {
       schema: fetchMessagesSchema,
       onRequest: [fastify.verifyJWT],

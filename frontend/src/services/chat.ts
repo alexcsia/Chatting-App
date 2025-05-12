@@ -5,8 +5,8 @@ const chatService = {
   async getMessages(chatId: string, before?: number): Promise<IMessage[]> {
     try {
       const url = before
-        ? `/api/chats/fetch-messages/${chatId}?before=${before}`
-        : `/api/chats/fetch-messages/${chatId}`;
+        ? `/api/chats/${chatId}/messages?before=${before}`
+        : `/api/chats/${chatId}/messages`;
       const response = await apiClient.get(url);
       return response.data;
     } catch (error) {
@@ -17,12 +17,9 @@ const chatService = {
 
   async sendMessage(chatId: string, messageText: string) {
     try {
-      const response = await apiClient.post(
-        `/api/chats/new-message/${chatId}`,
-        {
-          content: messageText,
-        }
-      );
+      const response = await apiClient.post(`/api/chats/${chatId}/messages`, {
+        content: messageText,
+      });
       return response.data;
     } catch (error) {
       console.error("Error sending message:", error);
@@ -33,12 +30,12 @@ const chatService = {
   async getOrCreateChat(username: string) {
     try {
       const response = await apiClient.get(
-        `/api/chats/fetch-chat?username=${encodeURIComponent(username)}`
+        `/api/chats/with/${encodeURIComponent(username)}`
       );
       return response.data;
     } catch (error: any) {
       if (error.response && error.response.status === 404) {
-        const res = await apiClient.post(`/api/chats/new-chat`, {
+        const res = await apiClient.post(`/api/chats`, {
           username: username,
         });
         return res.data.chatId;
