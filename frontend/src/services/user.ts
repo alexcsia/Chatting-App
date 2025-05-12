@@ -26,7 +26,7 @@ const userService = {
 
   async sendFriendRequest(username: string) {
     try {
-      const response = await apiClient.post("/api/users/friend-req", {
+      const response = await apiClient.post("/api/users/friend-requests", {
         username,
       });
       console.log("sent friend request");
@@ -42,7 +42,7 @@ const userService = {
 
   async resolveFriendRequest(accepted: boolean, targetUser: string) {
     try {
-      const response = await apiClient.post(
+      const response = await apiClient.patch(
         `/api/users/${encodeURIComponent(targetUser)}/friend-requests`,
         {
           accepted,
