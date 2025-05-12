@@ -31,7 +31,7 @@ const start = async () => {
           process.env.NODE_ENV === "production"
             ? process.env.CORS_ORIGIN
             : "http://localhost:8080",
-        methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+        methods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
         allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
         credentials: true,
         preflightContinue: true,
