@@ -88,7 +88,7 @@ async function respondToInvite(inviteUsername: string, accepted: boolean) {
         (username) => username !== inviteUsername
       );
     } else if (!accepted && userStore.user) {
-      userStore.user.friendRequests.filter(
+      userStore.user.friendRequests = userStore.user.friendRequests.filter(
         (username) => username !== inviteUsername
       );
     }
