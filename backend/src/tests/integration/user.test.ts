@@ -59,8 +59,8 @@ describe("resolve friend request endpoint", () => {
 
   it("should add a user to another user's friendlist", async () => {
     const response = await fastify.inject({
-      method: "POST",
-      url: `/api/users/friend-request/${newFriend.username}`,
+      method: "PATCH",
+      url: `/api/users/${newFriend.username}/friend-requests`,
       cookies: {
         accessToken: token,
       },
@@ -76,8 +76,8 @@ describe("resolve friend request endpoint", () => {
 
   it("should reject adding a user", async () => {
     const response = await fastify.inject({
-      method: "POST",
-      url: `/api/users/friend-request/${newFriend.username}`,
+      method: "PATCH",
+      url: `/api/users/${newFriend.username}/friend-requests`,
       cookies: {
         accessToken: token,
       },
@@ -110,7 +110,7 @@ describe("user info endpoint", () => {
   it("returns a user's info ", async () => {
     const response = await fastify.inject({
       method: "GET",
-      url: "/api/users/user-info",
+      url: "/api/users/me",
       cookies: {
         accessToken: token,
       },
@@ -130,7 +130,7 @@ describe("user info endpoint", () => {
   it("rejects if token is invalid ", async () => {
     const response = await fastify.inject({
       method: "GET",
-      url: "/api/users/user-info",
+      url: "/api/users/me",
       cookies: {
         accessToken: "token",
       },
@@ -164,7 +164,7 @@ describe("friend requests", () => {
   it("sends a friend request to another user", async () => {
     const response = await fastify.inject({
       method: "POST",
-      url: "/api/users/friend-req",
+      url: "/api/users/friend-requests",
       cookies: {
         accessToken: token,
       },
@@ -183,7 +183,7 @@ describe("friend requests", () => {
     );
     const response = await fastify.inject({
       method: "POST",
-      url: "/api/users/friend-req",
+      url: "/api/users/friend-requests",
       cookies: {
         accessToken: token,
       },

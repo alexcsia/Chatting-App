@@ -3,8 +3,8 @@ import { FastifyInstance } from "fastify";
 import { resolveFriendReqSchema } from "../schemas/user/resolveFriendReq.schema";
 
 export const resolveFriendReqRoute = (fastify: FastifyInstance) => {
-  fastify.post(
-    "/friend-request/:username",
+  fastify.patch(
+    "/:username/friend-requests",
     { schema: resolveFriendReqSchema, onRequest: [fastify.verifyJWT] },
     resolveFriendReqController
   );

@@ -4,7 +4,7 @@ import { basicFriendReqSchema } from "../schemas/user/basicFriendReq.schema";
 
 export const sendFriendReq = (fastify: FastifyInstance) => {
   fastify.post(
-    "/friend-req",
+    "/friend-requests",
     { schema: basicFriendReqSchema, onRequest: [fastify.verifyJWT] },
     sendFriendReqController
   );

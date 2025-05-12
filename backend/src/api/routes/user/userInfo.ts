@@ -4,7 +4,7 @@ import { userInfoController } from "@api/controllers/user/userInfo";
 
 export const userInfoRoute = (fastify: FastifyInstance) => {
   fastify.get(
-    "/user-info",
+    "/me",
     { schema: basicAuthSchema, onRequest: [fastify.verifyJWT] },
     userInfoController
   );

@@ -6,7 +6,6 @@ import {
 import userServices from "@services/userServices";
 import { constructPayload } from "@services/userServices/helpers/sse/constructPayload";
 import { FastifyReply, FastifyRequest } from "fastify";
-import { cache, pub } from "redisDb";
 import { addToPending, checkIfOnline } from "redisDb/cache/sseCache";
 import { publishEvent } from "redisDb/pub/pub";
 
