@@ -7,7 +7,8 @@ import userServices from "@services/userServices";
 import { constructPayload } from "@services/userServices/helpers/sse/constructPayload";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { cache, pub } from "redisDb";
-import { checkIfOnline } from "redisDb/cache/sseCache";
+import { addToPending, checkIfOnline } from "redisDb/cache/sseCache";
+import { publishEvent } from "redisDb/pub/pub";
 
 export const resolveFriendReqController = async (
   request: FastifyRequest<{
@@ -28,12 +29,9 @@ export const resolveFriendReqController = async (
 
       const payload = constructPayload("friendRequestAccepted", requestingUser);
       if (isOnline) {
-        await pub.publish(`sse:${targetUser}`, JSON.stringify(payload));
+        await publishEvent(targetUser, payload);
       } else {
-        await cache.rPush(
-          `pending-requests:${targetUser}`,
-          JSON.stringify(payload)
-        );
+        await addToPending(targetUser, payload);
       }
     } else await userServices.removeFriendRequest(requestingUser, targetUser);
 
