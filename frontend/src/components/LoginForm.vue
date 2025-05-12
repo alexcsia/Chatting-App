@@ -3,6 +3,7 @@
     <input v-model="email" type="email" placeholder="Email" required />
     <input v-model="password" type="password" placeholder="Password" required />
     <button type="submit">Login</button>
+    <button v-on:click="redirectSignUp">Sign up here</button>
   </form>
 </template>
 
@@ -23,5 +24,9 @@ const handleSubmit = async () => {
   } catch (error) {
     console.error("Login failed:", error);
   }
+};
+
+const redirectSignUp = async () => {
+  router.push("/signup");
 };
 </script>
