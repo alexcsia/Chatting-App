@@ -13,7 +13,7 @@ export interface ISearchResult {
 
 const userService = {
   async getCurrentUser(): Promise<UserProfile | null> {
-    const response = await apiClient.get("/api/users/user-info");
+    const response = await apiClient.get("/api/users/me");
     return response.data;
   },
 
@@ -43,7 +43,7 @@ const userService = {
   async resolveFriendRequest(accepted: boolean, targetUser: string) {
     try {
       const response = await apiClient.post(
-        `/api/users/friend-request/${encodeURIComponent(targetUser)}`,
+        `/api/users/${encodeURIComponent(targetUser)}/friend-requests`,
         {
           accepted,
         }
