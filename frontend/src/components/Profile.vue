@@ -46,7 +46,8 @@ const setupSSE = () => {
   });
 
   eventSource.value.addEventListener("friendRequestAccepted", (e) => {
-    const newFriend = JSON.parse(e.data);
+    const payload = JSON.parse(e.data) as { from: string };
+    const newFriend = payload.from;
     if (userStore.user && !userStore.user.friendList.includes(newFriend)) {
       userStore.user.friendList.push(newFriend);
     }
