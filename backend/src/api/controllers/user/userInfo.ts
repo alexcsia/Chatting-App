@@ -1,6 +1,7 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { getUserByUsername } from "@repositories/userRepo";
 import { ApiError } from "@api/errors/ApiError";
+import { presentUserInfo } from "./presenters/userInfoPresenter";
 
 export const userInfoController = async (
   request: FastifyRequest,
@@ -13,13 +14,7 @@ export const userInfoController = async (
     const user = await getUserByUsername(userFromJwt.username);
     if (!user) throw new ApiError(404, "User not found");
 
-    reply.status(200).send({
-      username: user.username,
-      email: user.email,
-      userId: user._id,
-      friendList: user.friendList,
-      friendRequests: user.pendingFriendRequests,
-    });
+    reply.status(200).send(presentUserInfo(user));
   } catch (error: unknown) {
     if (error instanceof ApiError) {
       reply.status(error.status).send({ message: error.message });
