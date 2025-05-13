@@ -34,7 +34,6 @@ import userService from "@/services/user";
 const userStore = useUserStore();
 const backendURL = import.meta.env.VITE_BACKEND_URL;
 const eventSource = ref<EventSource | null>(null);
-const friendInvites = ref<string[]>([]);
 const triedReconnect = ref(false);
 
 const setupSSE = () => {
@@ -48,6 +47,8 @@ const setupSSE = () => {
   eventSource.value.addEventListener("friendRequestAccepted", (e) => {
     const payload = JSON.parse(e.data) as { from: string };
     const newFriend = payload.from;
+    console.log("sent req event", payload);
+
     if (userStore.user && !userStore.user.friendList.includes(newFriend)) {
       userStore.user.friendList.push(newFriend);
     }
@@ -56,7 +57,9 @@ const setupSSE = () => {
   eventSource.value.addEventListener("friendRequestReceived", (e) => {
     const payload = JSON.parse(e.data) as { from: string };
     const requester = payload.from;
-    if (!friendInvites.value.includes(requester)) {
+    console.log("friend req received ", payload);
+
+    if (userStore.user && userStore.user.friendRequests.includes(requester)) {
       userStore.user?.friendRequests.push(requester);
     }
   });
@@ -80,18 +83,15 @@ const setupSSE = () => {
 async function respondToInvite(inviteUsername: string, accepted: boolean) {
   try {
     await userService.resolveFriendRequest(accepted, inviteUsername);
-    friendInvites.value = friendInvites.value.filter(
-      (username) => username !== inviteUsername
-    );
-    if (accepted && userStore.user) {
-      userStore.user.friendList.push(inviteUsername);
-      userStore.user.friendRequests = userStore.user.friendRequests.filter(
-        (username) => username !== inviteUsername
+
+    if (userStore.user) {
+      userStore.user.friendRequests.filter(
+        (username) => username != inviteUsername
       );
-    } else if (!accepted && userStore.user) {
-      userStore.user.friendRequests = userStore.user.friendRequests.filter(
-        (username) => username !== inviteUsername
-      );
+
+      if (accepted) {
+        userStore.user.friendList.push(inviteUsername);
+      }
     }
   } catch (err) {
     console.error("failed to respond to invite:", err);
