@@ -27,6 +27,10 @@ const authService = {
     const response = await apiClient.post("/api/auth/register", credentials);
     return response.data;
   },
+
+  async logout() {
+    const response = await apiClient.post("/api/auth/logout");
+  },
 };
 
 export default authService;
