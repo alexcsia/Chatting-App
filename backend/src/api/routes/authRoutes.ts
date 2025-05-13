@@ -7,4 +7,5 @@ export const authRoutes: FastifyPluginAsync = async (
   auth.loginRoute(fastify);
   auth.registerRoute(fastify);
   auth.refreshTokenRoute(fastify);
+  auth.logoutRoute(fastify);
 };
