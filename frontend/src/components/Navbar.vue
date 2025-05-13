@@ -1,11 +1,17 @@
 <template>
   <nav class="navbar">
-    <router-link to="/profile" class="nav-link">Profile</router-link>
-    <router-link to="/dashboard" class="nav-link">Chats</router-link>
+    <div>
+      <router-link to="/profile" class="nav-link">Profile</router-link>
+      <router-link to="/dashboard" class="nav-link">Chats</router-link>
+    </div>
 
-    <div class="search-container"><SearchBar /></div>
+    <div>
+      <SearchBar class="search-container" />
+    </div>
 
-    <button @click="logout" class="logout-button">Logout</button>
+    <div>
+      <button class="logout-button" @click="logout">Logout</button>
+    </div>
   </nav>
 </template>
 
@@ -29,18 +35,22 @@ const logout = async () => {
 
 <style scoped>
 .navbar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 60px;
-  background-color: #333;
-  color: white;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 20px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  height: 60px;
+  background-color: #333;
+  color: white;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+}
+
+.search-container {
+  width: 100%;
+  max-width: 300px;
 }
 
 .nav-link {
@@ -54,13 +64,6 @@ const logout = async () => {
   text-decoration: underline;
 }
 
-.search-container {
-  display: flex;
-  align-items: center;
-  flex-grow: 1;
-  justify-content: center;
-}
-
 .logout-button {
   background-color: #ff4d4d;
   color: white;
@@ -69,7 +72,8 @@ const logout = async () => {
   border-radius: 4px;
   cursor: pointer;
   font-size: 16px;
-  right: 100px;
+  position: relative;
+  right: 50px;
 }
 
 .logout-button:hover {
