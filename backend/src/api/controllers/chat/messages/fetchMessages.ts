@@ -3,6 +3,7 @@ import { fetchMessagesQuery } from "@api/routes/schemas/chat/messages/fetchMessa
 import chatService from "@services/chatServices";
 import { cacheMessages, getCachedMessages } from "redisDb/cache/messageCache";
 import { ApiError } from "@api/errors/ApiError";
+import { presentMessageList } from "../presenters/messageListPresenter";
 
 export const fetchChatMessagesController = async (
   request: FastifyRequest<{
@@ -28,7 +29,7 @@ export const fetchChatMessagesController = async (
       await cacheMessages(chatId, messageList);
     }
 
-    reply.status(200).send(messageList);
+    reply.status(200).send(presentMessageList(messageList));
   } catch (error: unknown) {
     if (error instanceof ApiError) {
       reply.status(error.status).send({ message: error.message });
