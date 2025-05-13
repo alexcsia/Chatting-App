@@ -29,6 +29,13 @@ export const sendFriendRequest = async (
     throw new ApiError(400, "Friend request already sent");
   }
 
+  const alreadyFriend = receivingUser.friendList.includes(
+    requestingUser.username
+  );
+  if (alreadyFriend) {
+    throw new ApiError(400, "Already friends");
+  }
+
   await addPendingRequest(requestingUser, receivingUser);
 
   const isOnline = await checkIfOnline(receivingUsername);
