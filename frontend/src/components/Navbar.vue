@@ -1,15 +1,15 @@
 <template>
   <nav class="navbar">
-    <div>
+    <div class="left-section">
       <router-link to="/profile" class="nav-link">Profile</router-link>
       <router-link to="/dashboard" class="nav-link">Chats</router-link>
     </div>
 
-    <div>
+    <div class="center-section">
       <SearchBar class="search-container" />
     </div>
 
-    <div>
+    <div class="right-section" v-show="userStore.user">
       <button class="logout-button" @click="logout">Logout</button>
     </div>
   </nav>
@@ -19,14 +19,16 @@
 import SearchBar from "./SearchBar.vue";
 import authService from "@/services/auth";
 import { useUserStore } from "@/stores/user";
+import { useRouter } from "vue-router";
 
 const userStore = useUserStore();
-
+const router = useRouter();
 const logout = async () => {
   try {
     await authService.logout();
     userStore.logout();
     sessionStorage.clear();
+    router.push("/login");
   } catch (error) {
     console.error("Logout failed", error);
   }
@@ -48,9 +50,23 @@ const logout = async () => {
   left: 0;
 }
 
+.left-section {
+  display: flex;
+  gap: 12px;
+}
+
+.center-section {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
 .search-container {
-  width: 100%;
-  max-width: 300px;
+  width: 300px;
+}
+
+.right-section {
+  margin-left: auto;
 }
 
 .nav-link {
@@ -73,7 +89,7 @@ const logout = async () => {
   cursor: pointer;
   font-size: 16px;
   position: relative;
-  right: 50px;
+  right: 50%;
 }
 
 .logout-button:hover {
