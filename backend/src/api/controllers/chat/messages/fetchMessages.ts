@@ -25,9 +25,7 @@ export const fetchChatMessagesController = async (
 
     const messageList = await chatService.fetchChatMessages(chatId, before);
 
-    if (!before) {
-      await cacheMessages(chatId, messageList);
-    }
+    await cacheMessages(chatId, messageList);
 
     reply.status(200).send(presentMessageList(messageList));
   } catch (error: unknown) {
