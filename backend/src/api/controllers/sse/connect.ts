@@ -10,26 +10,34 @@ export const sseConnectController = async (
   try {
     const username = request.user.username;
 
-    const requests = await sseServices.fetchAndClearPendingEvents(username);
+    reply.raw.writeHead(200, {
+      "Content-Type": "text/event-stream",
+      "Cache-Control": "no-cache",
+      Connection: "keep-alive",
+    });
 
+    const requests = await sseServices.fetchAndClearPendingEvents(username);
     for (const { event, data } of requests) {
       reply.sse({ event, data: JSON.stringify(data) });
     }
 
-    const handler = (data: string, event: string) => {
+    const handler = (event: string, data: any) => {
       reply.sse({ event, data: JSON.stringify(data) });
     };
 
     subscribeSSE(username, handler);
 
     const cleanup = async () => {
-      unsubscribeSSE(username, handler);
+      await unsubscribeSSE(username);
       await removeFromOnlineList(username);
-      request.raw.removeListener("close", cleanup);
     };
 
     request.raw.on("close", cleanup);
-  } catch (error: unknown) {
+    request.raw.on("end", cleanup);
+
+    request.socket.on("close", cleanup);
+  } catch (error) {
+    console.error("SSE connection error:", error);
     reply.code(500).send({ error: "SSE connection failed" });
   }
 };
