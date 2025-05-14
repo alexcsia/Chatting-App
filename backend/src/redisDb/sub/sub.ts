@@ -2,6 +2,7 @@ import { sub } from "redisDb";
 import { IMessage } from "@models/Message";
 
 let subscribed = false;
+const sseHandlers = new Map<string, (msg: string) => void>();
 
 export const subscribeRedis = (callback: (message: IMessage) => void) => {
   if (subscribed) return;
@@ -9,7 +10,6 @@ export const subscribeRedis = (callback: (message: IMessage) => void) => {
 
   sub.subscribe("chat", (rawMessage) => {
     const message: IMessage = JSON.parse(rawMessage);
-    console.log("redis sub message:", message);
     callback(message);
   });
 
@@ -20,18 +20,24 @@ export const subscribeSSE = (
   username: string,
   callback: (event: string, data: string) => void
 ) => {
-  if (subscribed) return;
-  subscribed = true;
+  const channel = `sse:${username}`;
 
-  sub.subscribe(`sse:${username}`, (payload: string) => {
+  if (sseHandlers.has(channel)) return;
+
+  const handler = (payload: string) => {
     const { event, data } = JSON.parse(payload);
     callback(event, data);
-  });
+  };
+
+  sseHandlers.set(channel, handler);
+  sub.subscribe(channel, handler);
 };
 
-export const unsubscribeSSE = async (
-  username: string,
-  callback: (event: string, data: string) => void
-) => {
-  await sub.unsubscribe(`sse:${username}`, callback);
+export const unsubscribeSSE = async (username: string) => {
+  const channel = `sse:${username}`;
+  const handler = sseHandlers.get(channel);
+  if (handler) {
+    await sub.unsubscribe(channel, handler);
+    sseHandlers.delete(channel);
+  }
 };
