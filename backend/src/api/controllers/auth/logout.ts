@@ -6,8 +6,20 @@ export const logoutController = async (
   reply: FastifyReply
 ) => {
   try {
-    reply.clearCookie("accessToken", { path: "/" });
-    reply.clearCookie("refreshToken", { path: "/" });
+    const isProduction = process.env.NODE_ENV == "production";
+    reply.clearCookie("accessToken", {
+      path: "/",
+      secure: isProduction,
+      sameSite: isProduction ? "none" : "lax",
+      httpOnly: true,
+    });
+
+    reply.clearCookie("refreshToken", {
+      path: "/",
+      secure: isProduction,
+      sameSite: isProduction ? "none" : "lax",
+      httpOnly: true,
+    });
 
     return reply.status(200).send({ message: "Logout successful" });
   } catch (error: unknown) {

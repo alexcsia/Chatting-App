@@ -49,6 +49,14 @@ const start = async () => {
       host: "0.0.0.0",
     });
     console.log("Fastify listening on port", PORT);
+    console.log(
+      "node env",
+      process.env.NODE_ENV,
+      "cors origin",
+      process.env.CORS_ORIGIN,
+      "enable cors",
+      process.env.ENABLE_CORS
+    );
   } catch (err) {
     fastify.log.error(err);
     if (process.env.NODE_ENV == "production") process.exit(1);
