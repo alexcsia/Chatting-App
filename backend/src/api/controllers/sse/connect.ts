@@ -14,6 +14,11 @@ export const sseConnectController = async (
       "Content-Type": "text/event-stream",
       "Cache-Control": "no-cache",
       Connection: "keep-alive",
+      "Access-Control-Allow-Origin":
+        process.env.NODE_ENV === "production"
+          ? process.env.CORS_ORIGIN!
+          : "http://localhost:8080",
+      "Access-Control-Allow-Credentials": "true",
     });
 
     const requests = await sseServices.fetchAndClearPendingEvents(username);
