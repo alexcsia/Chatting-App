@@ -27,65 +27,19 @@
 
 <script setup lang="ts">
 import { useUserStore } from "@/stores/user";
-import { onMounted, onBeforeUnmount, ref } from "vue";
-import { tryRefreshAuth } from "@/services/helpers/refreshToken";
+import { onMounted, onUnmounted } from "vue";
 import userService from "@/services/user";
+import { useFriendEvents } from "@/composables/useFriendEvents";
 
 const userStore = useUserStore();
-const backendURL = import.meta.env.VITE_BACKEND_URL;
-const eventSource = ref<EventSource | null>(null);
-const triedReconnect = ref(false);
-
-const setupSSE = () => {
-  eventSource.value?.close();
-  if (!userStore.user?.username) return;
-
-  eventSource.value = new EventSource(`${backendURL}/api/sse/connect`, {
-    withCredentials: true,
-  });
-
-  eventSource.value.addEventListener("friendRequestAccepted", (e) => {
-    const payload = JSON.parse(e.data) as { from: string };
-    const newFriend = payload.from;
-    console.log("sent req event", payload);
-
-    if (userStore.user && !userStore.user.friendList.includes(newFriend)) {
-      userStore.user.friendList.push(newFriend);
-    }
-  });
-
-  eventSource.value.addEventListener("friendRequestReceived", (e) => {
-    const payload = JSON.parse(e.data) as { from: string };
-    const requester = payload.from;
-    console.log("friend req received ", payload);
-
-    if (userStore.user && userStore.user.friendRequests.includes(requester)) {
-      userStore.user?.friendRequests.push(requester);
-    }
-  });
-
-  eventSource.value.onerror = async () => {
-    if (triedReconnect.value) {
-      eventSource.value?.close();
-      return;
-    }
-    triedReconnect.value = true;
-    try {
-      const ok = await tryRefreshAuth();
-      if (ok) setupSSE();
-      else eventSource.value?.close();
-    } catch {
-      eventSource.value?.close();
-    }
-  };
-};
+const { setupSSE, closeSSE } = useFriendEvents();
 
 async function respondToInvite(inviteUsername: string, accepted: boolean) {
   try {
     await userService.resolveFriendRequest(accepted, inviteUsername);
 
     if (userStore.user) {
-      userStore.user.friendRequests.filter(
+      userStore.user.friendRequests = userStore.user.friendRequests.filter(
         (username) => username != inviteUsername
       );
 
@@ -105,9 +59,8 @@ onMounted(async () => {
   setupSSE();
 });
 
-onBeforeUnmount(() => {
-  eventSource.value?.close();
-  eventSource.value = null;
+onUnmounted(() => {
+  closeSSE();
 });
 </script>
 
