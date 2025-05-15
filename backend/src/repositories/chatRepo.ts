@@ -22,7 +22,12 @@ export const getChatBetweenUsers = async (
 };
 
 export const isUserInChat = async (userId: string, chatId: string) => {
-  const chat = await Chat.findOne({ _id: chatId, users: userId });
+  const chat = await Chat.findOne(
+    { _id: chatId, users: userId },
+    {
+      projection: { _id: 1 },
+    }
+  );
 
   return !!chat;
 };
