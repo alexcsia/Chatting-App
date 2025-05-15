@@ -20,3 +20,9 @@ export const getChatBetweenUsers = async (
 
   return chat;
 };
+
+export const isUserInChat = async (userId: string, chatId: string) => {
+  const chat = await Chat.findOne({ _id: chatId, users: userId });
+
+  return !!chat;
+};

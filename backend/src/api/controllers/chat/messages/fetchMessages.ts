@@ -18,12 +18,18 @@ export const fetchChatMessagesController = async (
       ? parseInt(request.query.before, 10)
       : undefined;
 
+    const user = request.user.username;
+
     if (!before) {
       const cachedMessages = await getCachedMessages(chatId);
       if (cachedMessages) return reply.send(cachedMessages);
     }
 
-    const messageList = await chatService.fetchChatMessages(chatId, before);
+    const messageList = await chatService.fetchChatMessages(
+      chatId,
+      user,
+      before
+    );
 
     await cacheMessages(chatId, messageList);
 
